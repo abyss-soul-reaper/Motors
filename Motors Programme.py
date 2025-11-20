@@ -183,6 +183,78 @@ else :
 
     print ('File\'s Already Exists.')
 
+
+def check_user_data(email_to_check) :
+
+    file_name = 'Users Data.txt'
+
+    if not os.path.exists(file_name) :
+
+        return False
+
+    with open (file_name, 'r', encoding= 'utf-8') as file :
+
+        for line in file :
+
+            if "Name|Email|Address|Phone" in line:
+
+                continue
+
+            user_info = line.strip().split('|')
+
+            if len(user_info) > 1 and  user_info[1].lower() == email_to_check.lower() :
+
+                return True
+            
+    return False
+
+def save_useres_data() :
+
+    file_name = 'Users Data.txt'
+
+
+    name = input ('Please Write Your Name\n').strip().capitalize()
+
+    email = input (f'Please Write Your Email {name}\n').strip().lower()
+
+    while '@gmail.com' not in email :
+
+        print ('Invalid Email.')
+
+        email = input (f'Please Write Your Email And Make Sure It Contains @gmail.com\n').strip().lower()
+
+    address = input ('Please Write Your Address\n').strip()
+
+    phone = input ('Please Write Your Phone\n').strip()
+
+    user_data = f'{name}|{email}|{address}|{phone}\n'
+
+    if check_user_data(email) :
+
+        print ('\n🔴 Error: This Email Address Already Exists. Data Not Saved.')
+
+        return
+    
+    if not os.path.exists(file_name) :
+
+        print ('File Not Found. Creating New File...')
+
+        with open (file_name, 'w', encoding= 'utf-8') as file :
+
+            file.write('Name|Email|Address|Phone\n')
+
+            file.write(user_data)
+
+    else :
+
+        with open (file_name, 'a', encoding= 'utf-8') as file :
+
+            file.write(user_data)
+
+    print (f'Thank You {name} To Visit World Motors, Your Data Saved Successfully.')
+
+save_useres_data()
+
 # user_info = {
         
 #     'name' : 'Yasseen',
