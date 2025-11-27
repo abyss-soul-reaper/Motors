@@ -6,6 +6,8 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # print (os.getcwd())
 
+Available_features = ('Add', 'Remove', 'Clear', 'View', 'Total Price', 'List OF Prices', 'Update User Info', 'Feedback', 'Contact Us', 'Favourite Vehicles',)
+
 vehicles= {
     "Cars": {
         "Sport": {
@@ -171,18 +173,17 @@ def sort_names_alphabetically(vehicles_dict) :
 
     output_lines.append('Sorting Finished.')
 
-    return '\n'.join(output_lines)
-                
-if not os.path.exists('vehicles_data.txt') :
+    if not os.path.exists('vehicles_data.txt') :
 
-    with open ('vehicles_data.txt', 'w') as file :
-        
-        file.write(sort_names_alphabetically(vehicles))
+        with open ('vehicles_data.txt', 'w') as file :
+            
+            file.write(sort_names_alphabetically(vehicles))
 
-else :
+    else :
 
-    print ('File\'s Already Exists.')
-
+        print ('File\'s Already Exists.')
+    
+    return '\n'.join(output_lines)   
 
 def check_user_data(email_to_check) :
 
@@ -212,7 +213,6 @@ def save_useres_data() :
 
     file_name = 'Users Data.txt'
 
-
     name = input ('Please Write Your Name\n').strip().capitalize()
 
     email = input (f'Please Write Your Email {name}\n').strip().lower()
@@ -231,7 +231,7 @@ def save_useres_data() :
 
     if check_user_data(email) :
 
-        print ('\n🔴 Error: This Email Address Already Exists. Data Not Saved.')
+        print ('🔴 Error: This Email Address Already Exists. Data Not Saved.')
 
         return
     
@@ -250,32 +250,196 @@ def save_useres_data() :
         with open (file_name, 'a', encoding= 'utf-8') as file :
 
             file.write(user_data)
+    
+def ensure_cart_file_exists() :
+    
+    file_name = 'Cart Data.txt'
 
-    print (f'Thank You {name} To Visit World Motors, Your Data Saved Successfully.')
+    if not os.path.exists(file_name) :
 
-save_useres_data()
+        with open (file_name, 'w', encoding= 'utf-8') as file :
 
-# user_info = {
+            file.write('Email|Cart Items\n')
+
+def get_user_cart(email_to_check) :
+
+    ensure_cart_file_exists()
+
+    file_name = 'Cart Data.txt'
+
+    user_cart = []
+
+    with open (file_name, 'r', encoding= 'utf-8') as file :
+
+        for line in file :
+
+            if "Email|Cart Items" in line :
+
+                continue
+
+            cart_info = line.strip().split('|')
+
+            if len(cart_info) > 1 :
+                
+                if cart_info[0].lower() == email_to_check.lower() :
+
+                    user_cart_raw = cart_info[1:]
+
+                    user_cart = [item.strip() for item in user_cart_raw if item.strip()]
+
+                    return user_cart
+                                        
+    return user_cart 
+
+def update_user_cart(email, new_cart_items) :
+
+    found_and_updated = False
+
+    file_name = 'Cart Data.txt'
+
+    with open (file_name, 'r', encoding= 'utf-8')  as file :
+
+        lines = file.readlines()
+
+    new_cart_str = '|'.join(new_cart_items)
+
+    new_line = f'{email.lower()}|{new_cart_str}\n'
+
+    for i in range(len(lines)) :
+
+        if i == 0 :
+
+            continue
+
+        email_line = lines[i].split('|')[0].strip().lower()
+
+        if email_line == email.lower() :
+
+            lines[i] = new_line
+
+            found_and_updated = True
+
+            break
+
+    if not found_and_updated :
+
+        lines.append(new_line)
+
+    with open (file_name, 'w', encoding= 'utf-8') as file :
+
+        file.writelines(lines)
+
+    return True
         
-#     'name' : 'Yasseen',
-#     'E_mail' : 'User12345@gmail.com',
-#     'Address' : 'Egypt,Alex',
-#     'Phone' : '01212042272'
-# }
+def View_Cart(email_to_check) :
 
-# user_info2 = {
-        
-#     'name' : '',
-#     'E_mail' : '',
-#     'Address' : '',
-#     'Phone' : ''
-# }
+    user_cart = get_user_cart(email_to_check)
 
-# Cart = ["Kawasaki Ninja H2R", "Ferrari SF90 Stradale"]
+    if not user_cart :
 
-# Old_Cart = Cart.copy()
+        print (f'🛒 Your Cart Is Empty')
 
-# Available_features = ('List Of Prices', 'Update User Info', 'Feedback', 'Contact Us','Favourite', 'L', 'U', 'F', 'C', 'Fv')
+    else :
+
+        print ('🛒 Your Current Cart Items:')
+
+        for index, item in enumerate(user_cart, start= 1) :
+
+            print (f'- {index} {item.strip()}')
+
+def add_items_logic(current_cart):
+
+    new_items_list = []
+
+    while True :
+
+        item_to_add = input ('Please Write The Vehicle That You Want To Add.').strip()
+
+        if item_to_add.capitalize() in ('Done', 'Finish', 'F', 'D'):
+
+            print ('✅successfull.')
+
+            break
+
+        new_items_list.append(item_to_add)
+
+    updated_cart = current_cart + new_items_list
+
+    return updated_cart
+
+def manage_cart(email, action) :
+
+    user_cart = get_user_cart(email)
+
+    if action in ('Add', 'A') :
+
+        View_Cart(email)
+
+        final_cart_items = add_items_logic(user_cart)
+
+        if final_cart_items != user_cart :
+
+            update_user_cart(email, final_cart_items)
+
+        else :
+
+            print('🚫 No new items were added. Cart remains unchanged.')
+
+    if action in ('View', 'V') :
+
+        View_Cart(email)
+
+
+visitor = input ('Welcome To World Motors. Please Write Your Email.\n').strip().lower()
+
+first_round = True
+
+while True :
+
+    if not check_user_data(visitor) :
+
+        print ('Your Email Not Found. Please Sign Up.')
+
+        save_useres_data()
+
+    else :
+
+        file_name = 'Users Data.txt'
+
+        with open (file_name, 'r', encoding= 'utf-8') as file :
+
+            for line in file :
+
+                if "Name|Email|Address|Phone" in line:
+
+                    continue
+
+                user_info = line.strip().split('|')
+
+                if len(user_info) > 1 and  user_info[1].lower() == visitor.lower() :
+
+                    Action = input (f'Hello {user_info[0]}, How Can I Help You?\n').strip().capitalize()
+
+    manage_cart(visitor, Action)
+
+    if Action in ('Done', 'Finish', 'F', 'D') :
+
+        print ('✅successfull.')
+
+        break
+
+    else :
+
+        print ('That\'s The Available Features.')
+
+        for index, feature in enumerate(Available_features, start=1) :
+
+            print (f'- {index} {feature}')
+
+
+
+
+
 
 # media = {
 #      'FaceBook' : 'F.com',
@@ -292,7 +456,7 @@ save_useres_data()
 
 # rejection = ('No', 'Nope', 'N')
 
-# updates = ('Add', 'Remove', 'Clear', 'Total Price', 'A', 'R', 'C', 'T')
+# updates = ( 'A', 'R', 'C', 'T')
 
 # stop = 0
 
@@ -302,7 +466,6 @@ save_useres_data()
 
 # prices_list = (50000, 100000, 500000, 1000000)
 
-# Guest = input ('Welcome To World Motors, Please Write Your Name Or Email.\n').strip().capitalize()
 
 # while True :
 
