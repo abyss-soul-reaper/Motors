@@ -8,6 +8,10 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 Available_features = ('Add', 'Remove', 'Clear', 'View', 'Total Price', 'List OF Prices', 'Update User Info', 'Feedback', 'Contact Us', 'Favourite Vehicles',)
 
+Consent_Terms = ('Yes', 'Ok', 'Yeah', 'Yup', 'Confirm', 'Y', 'O', 'C')
+
+Termination_Terms = ('No', 'Nope', 'Cancel','Done', 'N', 'C', 'D' )
+
 vehicles= {
     "Cars": {
         "Sport": {
@@ -252,7 +256,7 @@ def save_useres_data() :
             file.write(user_data)
     
 def ensure_cart_file_exists() :
-    
+
     file_name = 'Cart Data.txt'
 
     if not os.path.exists(file_name) :
@@ -273,14 +277,14 @@ def get_user_cart(email_to_check) :
 
         for line in file :
 
-            if "Email|Cart Items" in line :
+            if 'Email|Cart Items' in line :
 
                 continue
 
-            cart_info = line.strip().split('|')
+            cart_info = line.strip().split("|")
 
             if len(cart_info) > 1 :
-                
+
                 if cart_info[0].lower() == email_to_check.lower() :
 
                     user_cart_raw = cart_info[1:]
@@ -288,8 +292,8 @@ def get_user_cart(email_to_check) :
                     user_cart = [item.strip() for item in user_cart_raw if item.strip()]
 
                     return user_cart
-                                        
-    return user_cart 
+
+    return user_cart
 
 def update_user_cart(email, new_cart_items) :
 
@@ -297,7 +301,7 @@ def update_user_cart(email, new_cart_items) :
 
     file_name = 'Cart Data.txt'
 
-    with open (file_name, 'r', encoding= 'utf-8')  as file :
+    with open (file_name, 'r', encoding= 'utf-8') as file :
 
         lines = file.readlines()
 
@@ -311,9 +315,9 @@ def update_user_cart(email, new_cart_items) :
 
             continue
 
-        email_line = lines[i].split('|')[0].strip().lower()
+        line_email = lines[i].split('|')[0].strip().lower()
 
-        if email_line == email.lower() :
+        if line_email == email.lower() :
 
             lines[i] = new_line
 
@@ -330,77 +334,182 @@ def update_user_cart(email, new_cart_items) :
         file.writelines(lines)
 
     return True
-        
-def View_Cart(email_to_check) :
 
-    user_cart = get_user_cart(email_to_check)
+def view_cart(email_to_check) :
 
-    if not user_cart :
+    user_cart =get_user_cart(email_to_check) 
 
-        print (f'🛒 Your Cart Is Empty')
+    if not user_cart:
+
+        print('🛒 Your Cart Is Empty')
 
     else :
 
         print ('🛒 Your Current Cart Items:')
 
-        for index, item in enumerate(user_cart, start= 1) :
+        for index, items in enumerate(user_cart, start=1) :
 
-            print (f'- {index} {item.strip()}')
+            print (f'- {index} {items.strip()}')
 
-def add_items_logic(current_cart):
+def add_items_logic(current_cart) :
 
-    new_items_list = []
+    updated_cart = list (current_cart)
+
+    count = 0
 
     while True :
 
-        item_to_add = input ('Please Write The Vehicle That You Want To Add.').strip()
+        item_to_add = input ('Please Write The Item That You Want To Add.').strip()
 
-        if item_to_add.capitalize() in ('Done', 'Finish', 'F', 'D'):
+        count += 1
 
-            print ('✅successfull.')
+        if item_to_add.capitalize() in ('Done', 'Finish', 'D', 'F') :
+
+            if count == 1 :
+
+                pass
+
+            else :
+
+                print ('✅ Finished Adding items. Cart updated.')
 
             break
 
-        new_items_list.append(item_to_add)
+        updated_cart.append(item_to_add)
 
-    updated_cart = current_cart + new_items_list
+        print (f'✅ successfully Added. "{item_to_add.strip()}"')
+
+        print ("🛒 Cart after Addition:")
+
+        for index, item in enumerate(updated_cart, start= 1) :
+
+            print (f'- {index} {item}')
 
     return updated_cart
 
-def manage_cart(email, action) :
+def addition(email) :
 
     user_cart = get_user_cart(email)
 
-    if action in ('Add', 'A') :
+    view_cart(email)
 
-        View_Cart(email)
+    final_cart_items = add_items_logic(user_cart)
 
-        final_cart_items = add_items_logic(user_cart)
+    if final_cart_items != user_cart :
 
-        if final_cart_items != user_cart :
+        update_user_cart(email, final_cart_items)
 
-            update_user_cart(email, final_cart_items)
+    else :
 
-        else :
+        print ('🚫 No new items were added. Cart remains unchanged.')
 
-            print('🚫 No new items were added. Cart remains unchanged.')
+def remove_items_logic(current_cart) :
 
-    if action in ('View', 'V') :
+    if not current_cart :
 
-        View_Cart(email)
+        print ('🛒 Your Cart Is Empty')
+
+        return current_cart
+    
+    temp_cart = list(current_cart)
+
+    count = 0
+
+    items_removed_successfully = False
+
+    while True :
+
+        item_index_to_remove = input ('Enter The Number OF The Item You Want To Remove: ').strip()
+
+        count += 1
+
+        if item_index_to_remove.capitalize() in Termination_Terms :
+
+            if count == 1 :
+
+                print ('🚫 No new items were removed. Cart remains unchanged.')
+
+                return temp_cart
+
+            if items_removed_successfully :
+
+                print('✅ Finished removing items. Cart updated.')
+
+                return temp_cart
+            
+            else :
+
+                print('❌ Removal operation cancelled. No items were removed.')    
+
+                return temp_cart
+            
+        try:
+
+            index_to_remove = int(item_index_to_remove)
+
+            if 1 <= index_to_remove <= len(temp_cart) :
+
+                items_removed_successfully = True
+
+                removed_item = temp_cart.pop(index_to_remove - 1)
+
+                print (f'🗑️ Successfully removed "{removed_item.strip()}".')
+
+                print ("🛒 Cart after removal:")
+
+                for index, item in enumerate(temp_cart, start= 1) : 
+
+                    print (f'- {index} {item}')
+
+                if not temp_cart :
+
+                    print ("✅ Last item removed. Cart is now empty.")
+
+                    return temp_cart
+                
+            else :
+
+                print ('⚠️ The number you entered is out of range.')
+
+        except ValueError:
+
+            print ('⚠️ Invalid input. Please enter the item number.')
+
+def removal(email) :
+
+    user_cart = get_user_cart(email)
+
+    if user_cart:
+
+        view_cart(email)
 
 
-visitor = input ('Welcome To World Motors. Please Write Your Email.\n').strip().lower()
+    final_cart_items = remove_items_logic(user_cart)
 
-first_round = True
+    if final_cart_items != user_cart :
+
+        update_user_cart(email, final_cart_items)
+
+
+client = input ('Welcome To World Motors. Please Write Your Email.\n').strip().lower()
 
 while True :
 
-    if not check_user_data(visitor) :
+    if not check_user_data(client) :
 
-        print ('Your Email Not Found. Please Sign Up.')
+        sign_up = input ('Your Email Not Found. Please Sign Up.\nDo You Want To Fill The Requirements\n').strip().capitalize()
 
-        save_useres_data()
+        if sign_up in Consent_Terms :
+
+            save_useres_data()
+
+            continue
+
+        else :
+
+            print ('👋 Thank You To Visit Motors.')
+
+            break
 
     else :
 
@@ -416,17 +525,27 @@ while True :
 
                 user_info = line.strip().split('|')
 
-                if len(user_info) > 1 and  user_info[1].lower() == visitor.lower() :
+                if len(user_info) > 1 and  user_info[1].lower() == client.lower() :
 
                     Action = input (f'Hello {user_info[0]}, How Can I Help You?\n').strip().capitalize()
 
-    manage_cart(visitor, Action)
+    if Action in Termination_Terms :
 
-    if Action in ('Done', 'Finish', 'F', 'D') :
-
-        print ('✅successfull.')
+        print ('✅ Exiting...')
 
         break
+
+    elif Action in ('Add', 'A') :
+
+        addition(client)
+
+    elif Action in ('View', 'V') :
+
+        view_cart(client)
+
+    elif Action in ('Remove', 'R') :
+
+        removal(client)
 
     else :
 
@@ -452,9 +571,9 @@ while True :
 
 # favourite = []
 
-# Agree = ('Yes', 'Ok', 'Yeah', 'Yup', 'Confirm', 'Y', 'O', 'c')
 
-# rejection = ('No', 'Nope', 'N')
+
+
 
 # updates = ( 'A', 'R', 'C', 'T')
 
