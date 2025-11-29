@@ -6,7 +6,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # print (os.getcwd())
 
-Available_features = ('Add', 'Remove', 'Clear', 'View', 'Total Price', 'List OF Prices', 'Update User Info', 'Feedback', 'Contact Us', 'Favourite Vehicles',)
+Available_features = ('Add', 'Remove', 'Clear', 'View', 'Total Price', 'Price List', 'Update User Info', 'Feedback', 'Contact Us', 'Favourite Vehicles',)
 
 Consent_Terms = ('Yes', 'Ok', 'Yeah', 'Yup', 'Confirm', 'Y', 'O', 'C')
 
@@ -217,21 +217,23 @@ def save_useres_data() :
 
     file_name = 'Users Data.txt'
 
-    name = input ('Please Write Your Name\n').strip().capitalize()
+    name = input ('Please Write Your Name.\n').strip().capitalize()
 
-    email = input (f'Please Write Your Email {name}\n').strip().lower()
+    email = input (f'Please Write Your Email {name}.\n').strip().lower()
 
     while '@gmail.com' not in email :
 
         print ('Invalid Email.')
 
-        email = input (f'Please Write Your Email And Make Sure It Contains @gmail.com\n').strip().lower()
+        email = input ('Please Write Your Email And Make Sure It Contains @gmail.com\n').strip().lower()
 
-    address = input ('Please Write Your Address\n').strip()
+    pasword = input ('Please Write Your Pasword.')
 
-    phone = input ('Please Write Your Phone\n').strip()
+    address = input ('Please Write Your Address.\n').strip()
 
-    user_data = f'{name}|{email}|{address}|{phone}\n'
+    phone = input ('Please Write Your Phone.\n').strip()
+
+    user_data = f'{name}|{email}|{pasword}|{address}|{phone}\n'
 
     if check_user_data(email) :
 
@@ -245,7 +247,7 @@ def save_useres_data() :
 
         with open (file_name, 'w', encoding= 'utf-8') as file :
 
-            file.write('Name|Email|Address|Phone\n')
+            file.write('Name|Email|Pasword|Address|Phone\n')
 
             file.write(user_data)
 
@@ -335,31 +337,25 @@ def update_user_cart(email, new_cart_items) :
 
     return True
 
-def view_cart(email_to_check) :
-
-    user_cart =get_user_cart(email_to_check) 
-
-    if not user_cart:
-
-        print('🛒 Your Cart Is Empty')
-
-    else :
-
-        print ('🛒 Your Current Cart Items:')
-
-        for index, items in enumerate(user_cart, start=1) :
-
-            print (f'- {index} {items.strip()}')
-
-def add_items_logic(current_cart) :
+def add_items_logic(current_cart, vehicles_dict) :
 
     updated_cart = list (current_cart)
 
     count = 0
 
+    cars_list = set()
+
+    for category, types in vehicles_dict.items() :
+
+        for type_name, cars in types.items() :
+
+            for car_name, price in cars.items() :
+
+                cars_list.add(car_name.lower())
+
     while True :
 
-        item_to_add = input ('Please Write The Item That You Want To Add.').strip()
+        item_to_add = input ('Please Write The Item That You Want To Add.\n').strip()
 
         count += 1
 
@@ -375,15 +371,20 @@ def add_items_logic(current_cart) :
 
             break
 
-        updated_cart.append(item_to_add)
+        if item_to_add.lower() in cars_list :
 
-        print (f'✅ successfully Added. "{item_to_add.strip()}"')
+            updated_cart.append(item_to_add)
 
-        print ("🛒 Cart after Addition:")
+            print (f'✅ successfully Added. "{item_to_add.strip()}"')
 
-        for index, item in enumerate(updated_cart, start= 1) :
+            print ("🛒 Cart after Addition:")
 
-            print (f'- {index} {item}')
+            for index, item in enumerate(updated_cart, start= 1) :
+
+                print (f'- {index} {item}')
+        else :
+
+            print ('⚠️ The item you entered is not available. Please choose from the available vehicles.')
 
     return updated_cart
 
@@ -393,7 +394,7 @@ def addition(email) :
 
     view_cart(email)
 
-    final_cart_items = add_items_logic(user_cart)
+    final_cart_items = add_items_logic(user_cart, vehicles)
 
     if final_cart_items != user_cart :
 
@@ -490,6 +491,176 @@ def removal(email) :
 
         update_user_cart(email, final_cart_items)
 
+def clear(email) :
+
+    user_cart = get_user_cart(email)
+
+    if user_cart :
+
+        view_cart(email)
+
+        update_user_cart(email, [])
+
+        print ('✅ Cart data successfully reset and saved.')
+    
+    else :
+
+        print ('🛒 Your Cart Is Already Empty')
+
+def view_cart(email_to_check) :
+
+    user_cart =get_user_cart(email_to_check) 
+
+    if not user_cart:
+
+        print('🛒 Your Cart Is Empty')
+
+    else :
+
+        print ('🛒 Your Current Cart Items:')
+
+        for index, items in enumerate(user_cart, start=1) :
+
+            print (f'- {index} {items.strip()}')
+
+def get_price_map(vehicles_dict) :
+
+    price_map = {}
+
+    for category, types in vehicles_dict.items() :
+
+        for type_name, cars in types.items() :
+
+            for car_name, price in cars.items() :
+
+                price_map[car_name.lower()] = price
+
+    return price_map
+
+def calculate_total_price(user_cart, vehicles_dict) :
+
+    if not user_cart :
+        print("🛒 Your cart is empty. Total Price: 0$")
+        return 0
+    
+    print("🧾 Generating Cart Summary and Total Price...")
+    print("-" * 40)
+
+    price_map = get_price_map(vehicles_dict)
+
+    total_price = 0
+
+    item_count = 0
+
+    for item in user_cart :
+
+        item_lower = item.lower()
+
+        if item_lower in price_map :
+            price = price_map[item_lower]
+            total_price += price
+            item_count += 1
+
+            print (f'| {item_count}. {item:<25} | {price:10,}$ |')
+
+        else :
+
+            print(f"| ⚠️ Item not found: {item:<25} | UNAVAILABLE |")
+            
+    print("-" * 40)
+    print(f"| Total Items: {item_count:<25} | {total_price:10,}$ |")
+    print("-" * 40)
+    
+    return total_price
+
+def total_price(email,vehicles_dict) :
+
+    user_cart = get_user_cart(email)
+
+    if not user_cart :
+
+        print("🛒 Your cart is empty. No total to calculate.")
+        return
+    
+    calculate_total_price(user_cart, vehicles_dict)
+
+def search(vehicles_dict) :
+
+    all_vehicles = []
+
+    for category, types in vehicles_dict.items() :
+
+        for type_name, cars in types.items() :
+
+            for car_name, price in cars.items() :
+
+                all_vehicles.append((price, car_name, category))
+
+    return all_vehicles
+
+def price_list(vehicles_dict) :
+
+    price_limits = [20000, 50000, 100000, 500000, 1000000, 2000000, 3000000, 4000000]
+
+    all_vehicles = search(vehicles_dict)
+
+    all_vehicles.sort()
+
+    remaining_vehicles = list(all_vehicles)
+
+    current_min_price = 0
+
+    for max_price in price_limits :
+
+        vehicles_in_range = []
+
+        i = 0
+
+        while i < len(remaining_vehicles) :
+
+            price, car_name, category = remaining_vehicles[i]
+
+            if  price < max_price :
+
+                vehicles_in_range.append((price,car_name,category))
+                remaining_vehicles.pop(i)
+
+            else:
+
+                break
+
+        if vehicles_in_range :
+
+            print ('=' * 30)
+            print (f'💸 Vehicles Between {current_min_price:,}$ and {max_price:,}$')
+            print ('=' * 30)
+            
+            count = 1
+
+            for price, car_name, category in vehicles_in_range :
+
+                print('-' * 30)
+                print (f'- {str(count).zfill(2)}. {car_name} ({category}) Price: {price:,}$')
+
+                count += 1
+
+        current_min_price = max_price
+
+    if remaining_vehicles :
+
+        print ('=' * 50)
+        print (f'👑 Exotic Vehicles (Over {price_limits[-1]:,}$):')
+        print ('=' * 50)
+
+        count = 1
+        for price, car_name, category in remaining_vehicles:
+
+            print (f'- {count}. {car_name} ({category}) Price: {price:,}$')
+            count += 1
+
+def get_new_info() :
+
+    choose_to_update = input ("Do You Want To Refill Your Info or To ")
 
 client = input ('Welcome To World Motors. Please Write Your Email.\n').strip().lower()
 
@@ -539,13 +710,25 @@ while True :
 
         addition(client)
 
+    elif Action in ('Remove', 'R') :
+
+        removal(client)
+
+    elif Action in ('Clear' 'Cl') :
+
+        clear(client)
+
     elif Action in ('View', 'V') :
 
         view_cart(client)
 
-    elif Action in ('Remove', 'R') :
+    elif Action in ('Total price', 'Total', 'T') :
 
-        removal(client)
+        total_price(client, vehicles)
+
+    elif Action in ('Price list', 'Pl') :
+
+        price_list(vehicles)
 
     else :
 
