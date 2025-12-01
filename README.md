@@ -1,40 +1,33 @@
-# 🚗 Motors: CLI E-Commerce Simulation
+# 🚗 Motors Vehicle Ordering System 🏍️
 
-### A complex procedural Python project demonstrating advanced data structure management for a simulated vehicle e-commerce platform.
+A comprehensive Python-based system for managing vehicle orders (cars and motorcycles). This system allows users to register, add vehicles to a shopping cart, view price lists, update their personal data, and save favourites. The project ensures **Data Persistency** by storing all user and cart data in flat text files (`.txt`).
 
-This project, developed using a procedural (pre-functional) approach, simulates the core logic of an e-commerce website's backend. It manages a complex, nested inventory of vehicles, user authentication, a persistent shopping cart, and dynamic data filtering, all within a single command-line interface.
+## ✨ Key Project Features
 
-## ✨ Key Features Implemented
+| Feature | Description | Shorthand Commands |
+| :--- | :--- | :--- |
+| **Login / Signup** | Complete flow for user authentication, checking existing credentials, or creating a new account. | - |
+| **Cart Management** | Add and remove vehicles from the shopping cart using either the item's full name or its list number. | `Add` / `Remove` |
+| **View & Total Price** | Display the current cart contents and calculate the sum of prices for all selected vehicles. | `View` / `Total Price` (T/Tp) |
+| **Favourites** | Save preferred vehicles to a separate list for easy access. | `Favourite Vehicles` (Fav/Fv) |
+| **Price List** | Show all available vehicles, organized and segmented by defined price ranges. | `Price List` (Pl) |
+| **User Info Update** | Capability to update user details (Name, Email, Address, Password, Phone number). | `Update User Info` (Ui/Up) |
+| **Feedback** | Submit suggestions or feedback, which is logged to a dedicated file. | `Feedback` (Fb) |
 
-* **Complex Inventory Database:** Utilizes nested Python Dictionaries to model a multi-level vehicle database (e.g., `Vehicles > Cars > Sport > Ferrari`).
-* **User Authentication & Sign-In:** A simple system to differentiate between registered users (like `Yasseen`) and new guests, including a basic sign-in process.
-* **Full Shopping Cart:** Complete cart management, allowing users to **Add**, **Remove**, **Clear**, and **Calculate Total Price** of items in their cart.
-* **Advanced Price Filtering:** A feature to browse and sort vehicles based on specific price ranges (e.g., "Under $50,000", "Under $100,000").
-* **Favourite List:** Allows users to add and manage a separate list of their "favourite" vehicles.
-* **Profile Management:** Users can update their personal information (Email, Address, Phone).
+## ⚙️ Prerequisites
 
-## 🛠️ Technical Skills & Concepts Demonstrated
+* **Python:** Version 3.6 or later is recommended.
+* **Libraries:** The project uses only standard Python libraries (`os`, `string`) and requires no external dependencies.
 
-This project showcases a strong grasp of intermediate Python concepts, even without the use of functions:
+## 🚀 How to Run
 
-| Skill / Concept | Description |
-| :--- | :--- |
-| **Advanced Data Structures** | **(Skill Highlight)** Using complex nested Dictionaries and Lists to manage application state and inventory. |
-| **State Management** | Managing the state of `Cart` and `favourite` lists dynamically throughout the user session. |
-| **Complex Loop Logic** | Heavy use of nested `while` and `for` loops to iterate through deep data structures (e.g., searching for items, calculating prices). |
-| **String & Input Handling** | Extensive use of `.strip()`, `.capitalize()`, and tuple-based validation (e.g., `Agree`, `rejection`) for robust user input. |
-| **Procedural Programming** | Demonstrates the ability to build a feature-rich application using a single, continuous execution loop. |
+Follow these steps to get the project running on your local machine:
 
-## 🚀 Getting Started
+### 1. Clone the Repository
 
-1.  Download the main Python file (`motors.py`).
-2.  Run the application using: `python motors.py`
-3.  Log in using the email: `User12345@gmail.com` to test the full features.
+```bash
+# Clone the project from GitHub
+git clone [https://github.com/YourUsername/RepoName.git](https://github.com/YourUsername/RepoName.git) 
 
-## 💡 Future Development (Next Steps)
-
-This project is the perfect candidate for refactoring. The immediate next steps are:
-
-1.  **Modularity (Refactoring):** Break down the single `while` loop into dedicated functions (e.g., `def handle_login()`, `def manage_cart()`, `def display_price_list()`) to make the code clean, readable, and maintainable.
-2.  **Data Persistence:** Use File Handling (like in the "Digital Contacts Manager" project) to save the `Cart` and `user_info` to a file, so data isn't lost when the program closes.
-3.  **Error Handling:** Implement `try/except` blocks to prevent crashes (e.g., if a user enters text instead of a number).
+# Navigate into the project directory
+cd RepoName
