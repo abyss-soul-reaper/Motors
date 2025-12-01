@@ -6,9 +6,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # print (os.getcwd())
 
-Available_features = ('Add', 'Remove', 'Clear', 'View', 'Total Price', 'Price List', 'Update User Info', 'Feedback', 'Contact Us', 'Favourite Vehicles',)
+Available_features = ('Add', 'Remove', 'Clear', 'View', 'Total Price', 'Price List', 'Update User Info', 'Feedback', 'Contact Us', 'Favourite Vehicles')
 
-Consent_Terms = ('Yes', 'Ok', 'Yeah', 'Yup', 'Confirm', 'Y', 'O', 'C')
+Consent_Terms = ('Yes', 'Ok', 'Yeah', 'Yup', 'Confirm', 'Y', 'O')
 
 Termination_Terms = ('No', 'Nope', 'Cancel','Done', 'N', 'C', 'D' )
 
@@ -117,6 +117,8 @@ vehicles= {
 
 def sort_names_alphabetically(vehicles_dict) :
 
+    file_name = 'vehicles_data.txt'
+
     cars_list = []
 
     bikes_list = []
@@ -177,21 +179,33 @@ def sort_names_alphabetically(vehicles_dict) :
 
     output_lines.append('Sorting Finished.')
 
-    if not os.path.exists('vehicles_data.txt') :
+    final_output = '\n'.join(output_lines)
 
-        with open ('vehicles_data.txt', 'w') as file :
+    if not os.path.exists(file_name) :
+
+        print ('File Not Found. Creating New File...')
+
+        with open (file_name, 'w', encoding= 'utf-8') as file :
             
-            file.write(sort_names_alphabetically(vehicles))
+            file.write(final_output)
 
     else :
 
         print ('File\'s Already Exists.')
     
-    return '\n'.join(output_lines)   
+    return final_output  
+
+def available_features() :
+
+    print ('That\'s The Available Features.')
+
+    for index, feature in enumerate(Available_features, start=1) :
+
+        print (f'- {index} {feature}')
 
 def check_user_data(email_to_check) :
 
-    file_name = 'Users Data.txt'
+    file_name = 'User Data.txt'
 
     if not os.path.exists(file_name) :
 
@@ -201,7 +215,7 @@ def check_user_data(email_to_check) :
 
         for line in file :
 
-            if "Name|Email|Address|Phone" in line:
+            if "Name|Email|Password|Address|Phone" in line:
 
                 continue
 
@@ -213,12 +227,43 @@ def check_user_data(email_to_check) :
             
     return False
 
+def get_user_name(email) :
+    
+    file_name = 'User Data.txt'
+
+    user_name = None
+
+    try :
+            
+        with open (file_name, 'r', encoding= 'utf-8') as file :
+
+            for line in file :
+
+                if "Name|Email|Password|Address|Phone" in line:
+
+                    continue
+
+                user_info = line.strip().split('|')
+
+                if len(user_info) > 1 and  user_info[1].lower() == email.lower() :
+
+                    return user_info[0]
+
+    except FileNotFoundError :
+
+        print(f"⚠️ Error: File '{file_name}' not found.")
+        return None
+
+    return user_name
+
 def save_useres_data() :
 
-    file_name = 'Users Data.txt'
+    file_name = 'User Data.txt'
 
+    # --- Name ---
     name = input ('Please Write Your Name.\n').strip().capitalize()
 
+    # --- Email ---
     email = input (f'Please Write Your Email {name}.\n').strip().lower()
 
     while '@gmail.com' not in email :
@@ -227,19 +272,22 @@ def save_useres_data() :
 
         email = input ('Please Write Your Email And Make Sure It Contains @gmail.com\n').strip().lower()
 
-    pasword = input ('Please Write Your Pasword.')
+    # --- Password ---
+    password = input ('Please Write Your Password.').strip().lower()
 
-    address = input ('Please Write Your Address.\n').strip()
+    # --- Address ---
+    address = input ('Please Write Your Address.\n').strip().title()
 
+    # --- Phone ---
     phone = input ('Please Write Your Phone.\n').strip()
 
-    user_data = f'{name}|{email}|{pasword}|{address}|{phone}\n'
+    user_data = f'{name}|{email}|{password}|{address}|{phone}\n'
 
     if check_user_data(email) :
 
         print ('🔴 Error: This Email Address Already Exists. Data Not Saved.')
 
-        return
+        return False, None
     
     if not os.path.exists(file_name) :
 
@@ -247,7 +295,7 @@ def save_useres_data() :
 
         with open (file_name, 'w', encoding= 'utf-8') as file :
 
-            file.write('Name|Email|Pasword|Address|Phone\n')
+            file.write('Name|Email|Password|Address|Phone\n')
 
             file.write(user_data)
 
@@ -256,6 +304,10 @@ def save_useres_data() :
         with open (file_name, 'a', encoding= 'utf-8') as file :
 
             file.write(user_data)
+
+    print(f"✅ User {name} registered successfully!")
+
+    return True, email
     
 def ensure_cart_file_exists() :
 
@@ -337,21 +389,52 @@ def update_user_cart(email, new_cart_items) :
 
     return True
 
+def show_vehicles(vehicles_dict) :
+    
+    all_vehicles_list = []
+
+    for category, types in vehicles_dict.items() :
+        for type_name, cars in types.items() :
+            for car_name, price in cars.items() :
+
+                all_vehicles_list.append((price, category, type_name, car_name))
+
+    all_vehicles_list.sort()
+
+    count = 1
+    current_type = ''
+    
+    print("=" * 50)
+    print("✨ Available Vehicles (Sorted by Price) ✨")
+    print("=" * 50)
+    
+    for price, main_category, type_name, car_name in all_vehicles_list :
+        
+        if type_name != current_type :
+            print("-" * 40)
+            print(f"- 🚗 {main_category} - {type_name.upper()} -")
+            print("-" * 40)
+            current_type = type_name 
+
+        print(f'{str(count).zfill(2)}. {car_name:<30} | Price: {price:10,}$ ({main_category})')
+        
+        count += 1
+        
+    print("=" * 50)
+    
+    return [name for price, category, type_name, name in all_vehicles_list]
+
 def add_items_logic(current_cart, vehicles_dict) :
 
     updated_cart = list (current_cart)
 
     count = 0
 
-    cars_list = set()
+    print("💡 Displaying vehicles list to assist you...")
 
-    for category, types in vehicles_dict.items() :
+    ordered_vehicles = show_vehicles(vehicles_dict)
 
-        for type_name, cars in types.items() :
-
-            for car_name, price in cars.items() :
-
-                cars_list.add(car_name.lower())
+    cars_list = {car_name.lower() for car_name in ordered_vehicles}
 
     while True :
 
@@ -360,31 +443,60 @@ def add_items_logic(current_cart, vehicles_dict) :
         count += 1
 
         if item_to_add.capitalize() in ('Done', 'Finish', 'D', 'F') :
-
             if count == 1 :
 
-                pass
-
+                print ('🚫 No new items were added. Cart remains unchanged.')
             else :
 
                 print ('✅ Finished Adding items. Cart updated.')
-
             break
 
-        if item_to_add.lower() in cars_list :
+        try :
 
-            updated_cart.append(item_to_add)
+            item_index = int(item_to_add)
 
-            print (f'✅ successfully Added. "{item_to_add.strip()}"')
+            if 1 <= item_index <= len(ordered_vehicles) :
 
-            print ("🛒 Cart after Addition:")
+                chosen_item = ordered_vehicles[item_index - 1]
 
-            for index, item in enumerate(updated_cart, start= 1) :
+                if chosen_item.lower() in cars_list:
 
-                print (f'- {index} {item}')
-        else :
+                    updated_cart.append(chosen_item)
 
-            print ('⚠️ The item you entered is not available. Please choose from the available vehicles.')
+                    print (f'✅ successfully Added BY Number. "{chosen_item.strip()}"')
+
+                    print ("🛒 Cart after Addition:")
+
+                    for index, item in enumerate(updated_cart, start= 1) :
+
+                        print (f'- {index} {item}')
+                    continue
+
+                else: 
+                    print(f'⚠️ Internal Error: Item "{chosen_item}" not found in available list.')
+
+            else :
+
+                print ('⚠️ The number you entered is out of range. Please enter a valid number or name.')
+
+                continue
+
+        except ValueError :
+
+            if item_to_add.lower() in cars_list :
+
+                updated_cart.append(item_to_add)
+                print (f'✅ successfully Added by Name. "{item_to_add.strip()}"')
+
+                print ("🛒 Cart after Addition:")
+
+                for index, item in enumerate(updated_cart, start= 1) :
+
+                    print (f'- {index} {item}')
+
+            else :
+
+                print ('⚠️ The item you entered is not available. Please choose from the available vehicles.')
 
     return updated_cart
 
@@ -399,10 +511,6 @@ def addition(email) :
     if final_cart_items != user_cart :
 
         update_user_cart(email, final_cart_items)
-
-    else :
-
-        print ('🚫 No new items were added. Cart remains unchanged.')
 
 def remove_items_logic(current_cart) :
 
@@ -484,7 +592,6 @@ def removal(email) :
 
         view_cart(email)
 
-
     final_cart_items = remove_items_logic(user_cart)
 
     if final_cart_items != user_cart :
@@ -495,17 +602,13 @@ def clear(email) :
 
     user_cart = get_user_cart(email)
 
-    if user_cart :
+    view_cart(email)
 
-        view_cart(email)
+    if user_cart :
 
         update_user_cart(email, [])
 
         print ('✅ Cart data successfully reset and saved.')
-    
-    else :
-
-        print ('🛒 Your Cart Is Already Empty')
 
 def view_cart(email_to_check) :
 
@@ -658,865 +761,489 @@ def price_list(vehicles_dict) :
             print (f'- {count}. {car_name} ({category}) Price: {price:,}$')
             count += 1
 
-def get_new_info() :
+def get_new_info(current_data) :
 
-    choose_to_update = input ("Do You Want To Refill Your Info or To ")
+    current_name = current_data['Name']
+    current_email = current_data['Email']
+    current_password = current_data['Password']
+    current_address = current_data['Address']
+    current_phone = current_data['Phone']
 
-client = input ('Welcome To World Motors. Please Write Your Email.\n').strip().lower()
+    print("User Data Update Options:")
+    print("1. Partial Update (Change one or more fields).")
+    print("2. Full Re-entry (Fill all fields again).")
+    print("3. Cancel Update.")
 
-while True :
+    choice = input().strip()
 
-    if not check_user_data(client) :
+    if choice == '3' or choice.capitalize() in Termination_Terms :
 
-        sign_up = input ('Your Email Not Found. Please Sign Up.\nDo You Want To Fill The Requirements\n').strip().capitalize()
+        print("🚫 Update operation cancelled.")
+        return None, None, None, None, None # Return None for all fields
+    
+    elif choice == '1' :
 
-        if sign_up in Consent_Terms :
+        print("📝 Partial Update Mode (Leave blank to keep current value):")
 
-            save_useres_data()
+        # --- Name ---
+        new_name = input(f"   Name (Current: {current_name}): ").strip().capitalize()
+        new_name = new_name if new_name else current_name
+        
+        # --- Email ---
+        new_email = input(f"   Email (Current: {current_email}): ").strip().lower()
+        new_email = new_email if new_email else current_email
+        
+        # --- Password ---
+        new_password = input(f"   Password (Current: {current_password}): ").strip()
+        new_password = new_password if new_password else current_password
 
-            continue
+        # --- Address ---
+        new_address = input(f"   Address (Current: {current_address}): ").strip().title()
+        new_address = new_address if new_address else current_address
+        
+        # --- Phone ---
+        new_phone = input(f"   Phone (Current: {current_phone}): ").strip()
+        new_phone = new_phone if new_phone else current_phone
 
-        else :
+        return new_name, new_email, new_password, new_address, new_phone
+    
+    elif choice == '2' :
 
-            print ('👋 Thank You To Visit Motors.')
+        print("📝 Full Re-entry Mode (All fields must be filled):")
+        
+        # --- New Name ---
+        new_name = input("   New Name: ").strip().capitalize()
+        while not new_name:
+            new_name = input("   Name cannot be empty. Enter Name: ").strip().capitalize()
+            
+        # --- New Email ---
+        new_email = input("   New Email: ").strip().lower()
+        while not new_email:
+            new_email = input("   Email cannot be empty. Enter Email: ").strip().lower()
+        
+        # --- New Password ---
+        new_password = input("   New Password: ").strip()
+        while not new_password:
+            new_password = input("   Password cannot be empty. Enter Password: ").strip()
 
-            break
+        # --- New Address ---
+        new_address = input("   New Address: ").strip().title()
+        while not new_address:
+            new_address = input("   Address cannot be empty. Enter Address: ").strip().title()
+            
+        # --- New Phone ---
+        new_phone = input("   New Phone: ").strip()
+        while not new_phone:
+            new_phone = input("   Phone cannot be empty. Enter Phone: ").strip()
+            
+        return new_name, new_email, new_password, new_address, new_phone
 
-    else :
+    else:
+        print("⚠️ Invalid option. Update cancelled.")
+        return None, None, None, None, None
 
-        file_name = 'Users Data.txt'
+def update_user_info(target_email) :
+
+    file_name = 'User Data.txt'
+    lines = []
+    found_user = False
+
+    try :
 
         with open (file_name, 'r', encoding= 'utf-8') as file :
 
-            for line in file :
+            lines = file.readlines()
+    except FileNotFoundError :
 
-                if "Name|Email|Address|Phone" in line:
+        print(f"❌ Error: User data file not found: {file_name}")
+        return
+    
+    for i, line in enumerate(lines) :
+
+        if i == 0 :
+
+            continue
+
+        parts = line.strip().split('|')
+
+        if len(parts) >= 5 and parts[1].strip().lower() == target_email.lower() :
+
+            current_data = {
+                'Name': parts[0].strip().capitalize(),
+                'Email': parts[1].strip().lower(),
+                'Password': parts[2].strip(),
+                'Address': parts[3].strip().title(),
+                'Phone': parts[4].strip()
+            }
+
+        results = get_new_info(current_data)
+
+        if results[0] is None :
+            return None, target_email
+        
+        new_name, new_email, new_password, new_Address, new_phone = results
+
+        updated_line = f'{new_name}|{new_email}|{new_password}|{new_Address}|{new_phone}\n'
+
+        lines[i] = updated_line
+
+        found_user = True
+        
+        break
+    
+    if not found_user :
+
+        print(f"❌ User with email '{target_email}' not found.")
+        return None, target_email
+    
+    try :
+
+        with open (file_name, 'w', encoding= 'utf-8') as file :
+
+            file.writelines(lines)
+
+            print("=" * 50)
+            print(f"✅ Success! User information for {new_email} has been updated and saved.")
+            print("=" * 50)
+
+            if new_email != target_email :
+
+                print(f"❗ Your new email is: {new_email}. Please use it for future logins.")
+    except Exception as e :
+
+        print(f"❌ An error occurred while writing to the file: {e}")
+    
+        return None
+    
+    return new_name, new_email
+
+def send_feedback(user_email) :
+
+    file_name = 'Feedback.txt'
+
+    print("💬 Feedback and Suggestions Center 💬")
+    print("-" * 45)
+
+    feedback_text = input("Please write your feedback/suggestions (or leave blank to cancel):\n> ").strip()
+
+    if not feedback_text :
+
+        print("🚫 No feedback submitted. Thank you.")
+        return
+    
+    log_entry = f"{user_email}|{feedback_text}\n"
+
+    try :
+    
+        if not os.path.exists(file_name) :
+
+            print ('File Not Found. Creating New File...')
+
+            with open (file_name, 'w', encoding= 'utf-8') as file :
+
+                file.write('Email|Feedback\n')
+
+                file.write(log_entry)
+
+        else :
+
+            with open(file_name, 'a', encoding='utf-8') as file:
+                file.write(log_entry)
+            
+        # Success message
+        print("-" * 45)
+        print("✅ Success! Your feedback has been successfully received. We appreciate your time.")
+
+    except Exception as e :
+
+        print(f"❌ An error occurred while saving the feedback: {e}")
+
+def contact_us():
+    """Displays all official and social contact channels."""
+    
+    print("📞 Contact Us & Support 📞")
+    print("=" * 55)
+    print("For sales, support, or inquiries, please use the following channels:")
+    print("-" * 55)
+
+    print("### Official Contact ###")
+    print("📧 Email Support: support@motors.com") 
+    print("☎️ Phone (Sales): +20 100 123 4567")
+    print("📍 Main Office: 123 Autostrad St, New Cairo, Egypt")
+    print("-" * 55)
+
+    print("--- Social Media & Messaging ---")
+    print("🔵 Facebook: MotorsOfficial")
+    print("📸 Instagram: @MotorsEG")
+    print("🟢 WhatsApp: +20 100 123 4567 (Direct chat)")
+    print("💬 Telegram: t.me/MotorsSupport")
+    print("🖥️ Website: www.motors.com") 
+    
+    print("=" * 55)
+
+def get_user_favourites(email_to_check) :
+
+    file_name = 'Favourite.txt'
+
+    user_favourites = []
+
+    if not os.path.exists(file_name) :
+
+        with open (file_name, 'w', encoding= 'utf-8') as file :
+
+            file.write('Email|Favourite Vehicles\n')
+
+        return user_favourites
+    
+    with open (file_name, 'r', encoding= 'utf-8') as file :
+
+        for line in file :
+
+            if "Email|Favourite Vehicles" in line :
+                continue
+
+            fav_info = line.strip().split('|')
+
+            if len(fav_info) > 1 :
+
+                if fav_info[0].lower() == email_to_check.lower() :
+
+                    user_favourites_raw = fav_info[1:]
+
+                    user_favourites = [item.strip() for item in user_favourites_raw if item.strip()]
+
+                    return user_favourites
+                
+    return user_favourites
+
+def update_user_favourites(email, new_favourites) :
+    
+    file_name = 'Favourite.txt'
+
+    lines = []
+
+    found_and_updated = False
+
+    if not os.path.exists(file_name):
+
+        with open(file_name, 'w', encoding='utf-8') as file:
+            file.write("Email|Favourite Vehicles\n")
+
+    with open (file_name, 'r', encoding= 'utf-8') as file :
+
+        lines = file.readlines()
+
+    new_fav_str = '|'.join(new_favourites)
+    new_line = f'{email}|{new_fav_str}\n'
+
+    for i in range(len(lines)) :
+
+        if i == 0 :
+            continue
+
+        line_email = lines[i].split('|')[0].strip().lower()
+
+        if line_email == email.lower() :
+
+            lines[i] = new_line
+            found_and_updated = True
+
+            break
+
+    if not found_and_updated :
+
+        lines.append(new_line)
+
+    with open (file_name, 'w', encoding= 'utf-8') as file :
+
+        file.writelines(lines)
+
+    return True
+
+def favourite_vehicles(email, vehicles_dict) :
+
+    current_favourites = get_user_favourites(email)
+
+    while True :
+        print("⭐ Favourite Vehicles Options ⭐")
+        print("1. Add Item to Favourites")
+        print("2. Remove Item from Favourites")
+        print("3. View Favourites")
+        print("4. Clear All Favourites")
+        print("5. Back to Main Menu")
+
+        choice = input ("Enter your choice (1-5): ").strip()
+
+        if choice == '5' or choice.capitalize() in Termination_Terms :
+
+            print("⬅️ Returning to Main Menu.")
+            break
+
+        elif choice == '1' :
+
+            print("📝 Adding Item to Favourites (Choose by name or number):")
+
+            new_favourites = add_items_logic(current_favourites, vehicles_dict)
+
+            if new_favourites != current_favourites :
+
+                if update_user_favourites(email, new_favourites) :
+                        
+                    current_favourites = new_favourites
+                    print("✅ Favourites list updated.")
+
+        elif choice == '2' :
+
+            if not current_favourites:
+                print("⚠️ Your Favourites list is empty. Nothing to remove.")
+                continue
+
+            else :
+
+                print("🗑️ Removing Item from Favourites:")
+
+                print("Your Current Favourites:")
+                for index, item in enumerate(current_favourites, start= 1) :
+
+                    print (f'- {index}. {item}')
+
+                new_favourites = remove_items_logic(current_favourites)
+
+                if new_favourites != current_favourites :
+
+                    if update_user_favourites(email, new_favourites) :
+
+                        current_favourites = new_favourites
+
+                        print("✅ Favourites list updated successfully.")
+
+        elif choice == '3' :
+
+            if not current_favourites :
+                print("⚠️ Your Favourites list is empty.")
+
+            else :
+                print("✨ Your Favourite Vehicles ✨")
+
+                for index, item in enumerate(current_favourites, start= 1) :
+
+                    print (f'- {index}. {item}')
+
+        elif choice == '4' :
+            if current_favourites :
+                confirm = input("Are you sure you want to clear ALL favourites? (Yes/No): ").strip().capitalize()
+                if confirm in Consent_Terms :
+                    if update_user_favourites(email, []) :
+                        current_favourites = []
+                        print("✅ All favourite items have been cleared.")
+                    else :
+                        print("❌ Failed to clear favourites.")
+                else :
+                    print("🚫 Clear operation cancelled.")
+            else :
+                print("⚠️ Favourites list is already empty.")
+        else :
+            print("⚠️ Invalid choice. Please enter a number between 1 and 5.")
+
+if __name__ == "__main__":
+    
+    print("🚗 Motors Vehicle Ordering System 🏍️")
+        
+    email_logged_in = input ('Welcome To Motors. Please Write Your Email.\n').strip().lower()
+
+    client = None
+
+    while True :
+
+        if check_user_data(email_logged_in) :
+
+            client = email_logged_in
+
+            break
+
+        else :
+
+            sign_up = input ('Your Email Not Found. Please Sign Up.\nDo You Want To Fill The Requirements\n').strip().capitalize()
+
+            if sign_up in Consent_Terms :
+
+                success, new_email = save_useres_data()
+
+                if success :
+
+                    email_logged_in = new_email
 
                     continue
 
-                user_info = line.strip().split('|')
+            else :
 
-                if len(user_info) > 1 and  user_info[1].lower() == client.lower() :
+                print ('👋 Thank You for visiting Motors.')
 
-                    Action = input (f'Hello {user_info[0]}, How Can I Help You?\n').strip().capitalize()
+                break
 
-    if Action in Termination_Terms :
+    if client:
 
-        print ('✅ Exiting...')
+        user_name = get_user_name(client)
 
-        break
+        while True :
 
-    elif Action in ('Add', 'A') :
+            Action = input (f'Hello {user_name}, How Can I Help You?\n').strip().capitalize()
 
-        addition(client)
+            if Action in Termination_Terms :
 
-    elif Action in ('Remove', 'R') :
+                print ('✅ Exiting...')
 
-        removal(client)
+                break
 
-    elif Action in ('Clear' 'Cl') :
+            elif Action in ('Add', 'A') :
 
-        clear(client)
+                addition(client)
 
-    elif Action in ('View', 'V') :
+            elif Action in ('Remove', 'R') :
 
-        view_cart(client)
+                removal(client)
 
-    elif Action in ('Total price', 'Total', 'T') :
+            elif Action in ('Clear', 'Cl') :
 
-        total_price(client, vehicles)
+                clear(client)
 
-    elif Action in ('Price list', 'Pl') :
+            elif Action in ('View', 'V') :
 
-        price_list(vehicles)
+                view_cart(client)
 
-    else :
+            elif Action in ('Total price', 'Total', 'T', 'Tp') :
 
-        print ('That\'s The Available Features.')
+                total_price(client, vehicles)
 
-        for index, feature in enumerate(Available_features, start=1) :
+            elif Action in ('Price list', 'Pl') :
 
-            print (f'- {index} {feature}')
+                price_list(vehicles)
 
+            elif Action in ('Update user info', 'Ui', 'Up') :
 
+                updated_name, updated_email = update_user_info(client) 
+        
+                if updated_name is not None:
 
+                    user_name = updated_name 
 
+                    client = updated_email
 
+                    print(f"👋 Welcome back, {user_name}!")
 
-# media = {
-#      'FaceBook' : 'F.com',
-#      'WhatsApp' : 'W.com',
-#      'Instgram' : 'I.com',
-#      'Telegram' : 'T.com',
-#      'OUR Numbers' : "012\n011\n010"
-
-# }
-
-# favourite = []
-
-
-
-
-
-# updates = ( 'A', 'R', 'C', 'T')
-
-# stop = 0
-
-# first_round = True
-
-# finish = ('Done', 'Finish', 'F', 'D')
-
-# prices_list = (50000, 100000, 500000, 1000000)
-
-
-# while True :
-
-#     count = 1
-
-#     if Guest == user_info["E_mail"]:
-
-#         choise1 = input (f'Hello {user_info["name"]}, How Can I Help You \nDo You Want To See Your Cart?\n' if first_round == True else 'What Do You Decide To Do?\n' ).strip().capitalize()
-
-#     else :
-            
-#         if Guest not in user_info.values() :
-
-#                 print (f'Hello {Guest}, My Pleasure To See You')
-
-#                 ask_s = input ('Do You Want To Sign In?\n').strip().capitalize()
-
-#                 while True :
-                     
-#                     if ask_s in Agree :
-                                            
-#                             info_e = input (f'Please Write Your Email {Guest}\n').strip()
-
-#                             if '@gmail.com' not in info_e :
-                                
-#                                 reinfo_e = input (f'Please Write Your Email And Make Sure It Contains @gmail.com\n').strip().capitalize()
-
-#                             info_a = input ('Please Write Your Address\n').strip()
-
-#                             info_p = input ('Please Write Your Phone\n').strip()
-
-#                             user_info2['name'] = Guest
-
-#                             user_info2['E_mail'] = info_e if '@gmail.com' in info_e else reinfo_e
-
-#                             user_info2['Address'] = info_a
-
-#                             user_info2['Phone'] = info_p
-
-#                             print ('That\'s Your Info.')
-
-#                             for info2, info3 in user_info2.items() :
-                                 
-#                                 print (f'- Your {info2} Is {info3}')  
-
-#                             print (f'Thank You {Guest} To Visit World Motors.')
-
-#                             break                        
-
-#                     elif ask_s in rejection :
-                        
-#                         print (f'Thank You {Guest} To Visit World Motors.')
-
-#                         break
-#                 break
-
-#         elif Guest in user_info.values() :
-
-#                 check = input  (f'Hello {user_info["name"]} \nWe Want To Check If You Are signed in.\nSo We Need You To Write Your Email To Know.\n').strip().capitalize()
-
-#                 if check == user_info['E_mail'] :
-
-#                     choise1 = input (f'Hello {user_info["name"]}, How Can I Help You \nDo You Want To See Your Cart?\n').strip().capitalize()
-
-#                 else :
-
-#                     sign = input (f'{Guest} You\'r Not Signed In Do You Want To sign In?\n').strip().capitalize()
-
-#                     if sign in Agree :
-                         
-#                         if '@gmail.com' not in check :
-                                
-#                                 reinfo_e3 = input (f'Please Write Your Email And Make Sure It Contains @gmail.com\n').strip().capitalize()
-
-#                         info_a3 = input ('Please Write Your Address\n').strip()
-
-#                         info_p3 = input ('Please Write Your Phone\n').strip()
-
-#                         user_info2['name'] = Guest
-
-#                         user_info2['E_mail'] = check if '@gmail.com' in check else reinfo_e3
-
-#                         user_info2['Address'] = info_a3
-
-#                         user_info2['Phone'] = info_p3
-
-#                         print ('That\'s Your Info.')
-
-#                         for info_2, info_3 in user_info2.items() :
-                                 
-#                             print (f'- Your {info_2} Is {info_3}')  
-
-#                         print (f'Thank You {Guest} To Visit World Motors.')
-
-#                     elif sign in rejection :
-                         
-#                         print (f'Thank You {Guest} To Visit World Motors.')
-
-#                     break
-               
-#     if choise1 in Agree  :
-
-#         print(f'Your Cart Is Empty.'if len (Cart) == stop else 'That\'s Your Cart.')
-
-#         count = 1
-
-#         for vehicles2 in Cart :
-            
-#             print (f'- {count} Is {vehicles2}')
-
-#             count += 1
-
-#         print ('-' * 20 if len (Cart) == stop else 'Do You Want To Confirm? \nAfter Confirmation The Vehicles Will Deliver To Your Address.')
-
-#         print ('Available Updates')
-
-#         count = 1
-
-#         for update in updates[:4] :
+            elif Action in ('Feedback', 'Fb') :
                 
-#                 print (f'- {count} {update}')
+                send_feedback(client)
 
-#                 count += 1
+            elif Action in ('Contact us', 'Cu') :
 
-#         show = input ('Or You Can choose From Available Updates.\n').strip().capitalize()
+                contact_us()
 
-#         if show in Agree :
-                
-#             print ('The Progress Is Finished.\nThe Vehicles Will Deliver To Your Addres.')
+            elif Action in ('Favourite vehicles', 'Fav', 'Fv') :
 
-#             break
+                favourite_vehicles(client,vehicles)
 
-#         while True :
+            else :
 
-#             if show == updates[0] or show ==updates[4] :
-                    
-#                 while True :
-                        
-#                     ask = input ('Please Write The Vehicle That You Want To Add.\n').strip()
+                available_features()
 
-#                     if ask in str(finish).lower() :
-                        
-#                         print ('The Progress Is Finished')
-
-#                         break
-
-#                     print  ('-' * 20)
-
-#                     found_vehicle = None
-
-#                     for key, value in vehicles.items() :
-
-#                         for key2, value2 in value.items() :
-
-#                             for key3, value3 in value2.items() :
-                                    
-#                                 if ask == key3 :
-                                        
-#                                     found_vehicle =key3
-
-#                             if found_vehicle : break
-
-#                         if found_vehicle : break
-
-#                     if found_vehicle :
-
-#                         if found_vehicle in Cart :
-                                
-#                             check2 = input (f'{found_vehicle} Is Aleardy In The List. \nDo You Want To Add It Again\n').strip().capitalize()
-
-#                             if check2 in Agree :
-                                
-#                                 Cart.append(found_vehicle)
-
-#                                 print('That\'s Your Cart.')
-
-#                                 count = 1
-
-#                                 for vehicles_n in Cart :
-                                        
-#                                     print (f'- {count} Is {vehicles_n}')
-
-#                                     count += 1
-
-#                             elif check2 in rejection :
-                                
-#                                 print (f'{found_vehicle} Didn\'t Add To Cart.')
-#                         else :
-                                
-#                             Cart.append(found_vehicle)
-
-#                             print('That\'s Your Cart.')
-
-#                             count = 1
-
-#                             for vehicles_n in Cart :
-                                    
-#                                 print (f'- {count} Is {vehicles_n}')
-
-#                                 count += 1
-
-#                             count = 1
-
-#                             print ('That\'s Your Old Cart')
-
-#                             for vehicles2 in Old_Cart :
-                                            
-#                                 print(f'- {count} Is {vehicles2}')
-
-#                                 count += 1
-
-#                     else :
-
-#                         print (f'- {ask} Is Not In The Available Vehicles. \nPlease Choose From Available vehicles.')
-
-#                         count = 1
-
-#                         print (f'Available Vehicles.')
-
-#                         category_l = []
-
-#                         count = 1
-
-#                         for one1, two2 in vehicles.items() :
-
-#                             for three3, four4 in two2.items() :
-
-#                                 for five5, six6 in four4.items() :
-                                     
-#                                     category_l.append((five5,one1))
-
-#                         category_n = ''
-
-#                         for cars_t, types in category_l :
-                                         
-#                             if types != category_n :
-                                              
-#                                 print (f'{types}')
-
-#                                 category_n = types
-                                     
-#                             print (f'- {str(count).zfill(2)} {cars_t}')
-
-#                             count += 1
-
-#             elif show == updates[1] or show == updates[5] :
-                    
-#                     while True :
-                        
-#                         removing = input ('Please Choose The Vehicle That You Want To Remove.\n').strip()
-
-#                         if removing in str (finish).lower() :
-
-#                             print ('The Progress Is Finished.')
-
-#                             break
-
-#                         if removing in Cart :
-                            
-#                             Cart.remove(removing)
-
-#                             print('-' * 20 if len (Cart) == stop else 'Done\nThat\'s Your Cart.')
-
-#                             count = 1
-
-#                             for vehicles2 in Cart :
-                                                    
-#                                 print (f'- {count} Is {vehicles2}')
-
-#                                 count += 1
-
-#                             print ('That\'s The Old cart.')
-
-#                             count = 1
-
-#                             for vehicles3 in Old_Cart :
-                                                        
-#                                     print(f'- {count} Is {vehicles3}')
-
-#                                     count += 1
-
-#                         elif removing not in Cart :
-                            
-#                             print (f'{removing} Is Not In The Cart.')
-
-#                             print('That\'s Your Cart.')
-                            
-#                             count = 1
-
-#                             for vehicles2 in Cart :
-                                                    
-#                                 print (f'- {count} Is {vehicles2}')
-
-#                                 count += 1
-
-#                         print ('-' * 20)
-
-#                         if len(Cart) == stop :
-                            
-#                             print ('Your Cart Is Empty')
-
-#                             break
-
-#             elif show == updates[2] or show == updates[6] :
-                
-#                 while True :
-                    
-#                     Cart.clear()
-
-#                     if len(Cart) == stop :
-                        
-#                         print ('Your Cart In Empty')
-
-#                         print ('that\'s The Old Cart.')
-
-#                         count = 1
-
-#                     for vehicles4 in Old_Cart :
-                                                
-#                         print(f'- {count} Is {vehicles4}')
-
-#                         count += 1
-                    
-#                     break
-
-#                 break
-
-#             elif show == updates[3] or show == updates[7] :
-                 
-#                 print('-' * 20 if len (Cart) == stop else 'Done\nThat\'s Your Cart.')
-
-#                 count = 1
-
-#                 for vehicles2 in Cart :
-                                        
-#                     print (f'- {count} Is {vehicles2}')
-
-#                     count += 1
-                
-#                 if len (Old_Cart) != len (Cart) :
-
-#                     print ('That\'s The Old cart.')
-
-#                     count = 1
-
-#                     for vehicles3 in Old_Cart :
-                                                
-#                             print(f'- {count} Is {vehicles3}')
-
-#                             count += 1
-
-#                 Total_Price = 0
-                
-#                 for item_in_cart in Cart :
-                     
-#                     found_price = 0
-                    
-#                     for catrgory, types_dict in vehicles.items() :
-                        
-#                         for type_name, cars_dict in types_dict.items() :
-                             
-#                              if item_in_cart in cars_dict :
-                                  
-#                                 found_price = cars_dict[item_in_cart]
-                                  
-#                                 Total_Price += found_price
-                                
-#                                 print (f'- {item_in_cart} Price Is ${found_price:,}')
-
-#                                 break
-                             
-#                         if found_price : break
-                    
-#                     if found_price == 0 :
-                         
-#                          print (f'Warning: Price For {item_in_cart} Not Found.')
-
-#                 print (f'Total Price Is ${Total_Price:,}')
-
-#                 break
-                
-#     elif choise1 in rejection :
-
-#                 print(f'Ok {user_info["name"]}, That\'s Things That I Can Help You with.')
-
-#                 count = 1
-
-#                 for featers in Available_features[:4] :
-                    
-#                     print (f'- {count} {featers}')
-                    
-#                     count += 1
-
-#                 first_round = False
-                
-#     elif choise1 in Available_features :
-         
-#         while True :
-              
-#             if choise1 == Available_features[0] or choise1 == Available_features[5] :
-                
-#                 print (f'Prices Under ${prices_list[0]}')
-
-#                 count = 1
-
-#                 sorting = []
-
-#                 for category_cars, cars_type in vehicles.items() :
-                    
-#                     for cars_shape, final_value in cars_type.items() :
-                            
-#                             for cars_name, price_value in final_value.items():
-                                
-#                                 if price_value < prices_list[0] :
-
-#                                     sorting.append((price_value, cars_name, category_cars))
-
-#                 sorting.sort(reverse=True)
-
-#                 current_category = ''
-
-#                 for sort_prices, name, categorys  in sorting :
-
-#                     if categorys != current_category :
-                         
-#                         print (f'- {categorys}')
-                        
-#                         current_category = categorys
-
-#                     print (f'- {count} {name} Price Is ${sort_prices}')
-
-#                     count += 1
-
-#                 print (f'Prices Under ${prices_list[1]}')
-
-#                 count = 1
-                
-#                 sorting_two = []
-
-#                 for dict_cars, dict_type in vehicles.items() :
-                    
-#                     for shape_cars, last_value in dict_type.items() :
-                            
-#                             for name_cars, cost in last_value.items():
-                                 
-#                                  if prices_list[0] < cost < prices_list[1] :
-                                      
-#                                       sorting_two.append((cost, name_cars, dict_cars))
-
-#                 sorting_two.sort(reverse=True)
-
-#                 new_category = ''
-
-#                 for sort, name_two, categorys2 in sorting_two :
-                     
-#                      if categorys2 != new_category :
-                          
-#                         print (f'- {categorys2}')
-
-#                         new_category = categorys2
-                     
-#                      print (f'- {count} {name_two} Price Is ${sort}')
-
-#                      count += 1
-
-#                 print (f'Prices Under ${prices_list[2]}')
-
-#                 count = 1
-                
-#                 sorting_three = []
-
-#                 for one, two in vehicles.items() :
-                    
-#                     for three, four in two.items() :
-                            
-#                             for five, six in four.items():
-                                 
-#                                  if prices_list[1] < six < prices_list[2] :
-                                      
-#                                       sorting_three.append((six, five, one))
-
-#                 sorting_three.sort(reverse=True)
-
-#                 just_category = ''
-
-#                 for sorted1, name_three, categorys3 in sorting_three :
-
-#                     if categorys3 != just_category :
-                         
-#                         print (f'{categorys3}')
-                    
-#                         just_category = categorys3
-                     
-#                     print (f'- {count} {name_three} Price Is ${sorted1}')
-
-#                     count += 1
-
-#                 print (f'Prices Under ${prices_list[3]}')
-
-#                 count = 1
-                
-#                 sorting_four = []
-
-#                 for seven, eight in vehicles.items() :
-                    
-#                     for nine, ten in eight.items() :
-                            
-#                             for eleven, twelve in ten.items():
-                                 
-#                                  if prices_list[2] < twelve < prices_list[3] :
-                                      
-#                                       sorting_four.append((twelve, eleven, seven))
-
-#                 sorting_four.sort(reverse=True)
-
-#                 last_category = ''
-
-#                 for sorted2, name_four, categorys4 in sorting_four :
-                     
-#                     if categorys4 != last_category :
-                         
-#                         print (f'{categorys4}')
-
-#                         last_category = categorys4
-                     
-#                     print (f'- {count} {name_four} Price Is ${sorted2}')
-
-#                     count += 1
-
-#                 break
-            
-#             elif choise1 == Available_features[1] or choise1 == Available_features[6] :
-
-#                 info_n = input ('Please Write Your Name\n').strip().capitalize()
-                 
-#                 info_e2 = input (f'Please Write Your Email {info_n}\n').strip().capitalize()
-
-#                 if '@gmail.com' not in info_e2 :
-                    
-#                     reinfo_e2 = input (f'Please Write Your Email And Make Sure It Contains @gmail.com\n').strip().capitalize()
-
-#                 info_a2 = input ('Please Write Your Address\n').strip()
-
-#                 info_p2 = input ('Please Write Your Phone\n').strip()
-
-#                 user_info['name'] = info_n
-
-#                 user_info['E_mail'] = info_e2 if '@gmail.com' in info_e2 else reinfo_e2
-
-#                 user_info['Address'] = info_a2
-
-#                 user_info['Phone'] = info_p2
-
-#                 print ('That\'s Your Info.')
-
-#                 for info4, info5 in user_info.items() :
-                        
-#                     print (f'- Your {info4} Is {info5}')  
-
-#                 print (f'Thank You {info_n} To Visit World Motors.')
-
-#                 break
-
-#             elif choise1 == Available_features[2] or choise1 == Available_features[7] :
-                 
-#                 feed_back = input ('Please Write Your FeedBack Here\n').strip().title()
-
-#                 if feed_back :
-                      
-#                     print ('Thanks To Your FeedBack.\nWe\'ll Do Our Best For You.')
-
-#                 break
-
-#             elif choise1 == Available_features[3] or choise1 == Available_features[8] :
-
-#                 print ('- OUR Media And Numbers')
-
-#                 print ('-' * 20)
-                 
-#                 for m_key, m_value in media.items() :
-                     
-#                     print (f'- {m_key} \n{m_value}')
-
-#                 break
-
-#             elif choise1 == Available_features[4] or choise1 == Available_features[9] :
-
-#                 stop = 0
-                 
-#                 if len (favourite) == stop :
-                     
-#                     print ('You Don\'t Have Any Favourite vehicle')
-
-#                     local_first_input = True
-
-#                     category_2 = []
-
-#                     count = 1
-
-#                     import string
-
-#                     current_row = []
-
-#                     cars_list = []
-
-#                     bikes_list = []
-                    
-#                     if first_round == True :
-
-#                         for one11, two22 in vehicles.items() :
-
-#                             for three33, four44 in two22.items() :
-
-#                                 for five55, six66 in four44.items() :
-                                        
-#                                     if one11 == 'Cars' :
-                                        
-#                                         cars_list.append((five55, one11))
-
-#                                     elif one11 == 'Bikes' :
-                                        
-#                                         bikes_list.append((five55, one11))
-
-#                                 category_2 = cars_list + bikes_list    
-
-#                         for letter in string.ascii_uppercase :
-                                
-#                             current_row.append(letter)
-
-#                         for letters in current_row :
-
-#                             category_n2 = ''
-
-#                             print (f'-{letters}-')
-
-#                             print ('-' * 30)
-                        
-#                             found_any = False
-
-#                             for cars_t2, types2 in category_2 :
-
-#                                 if cars_t2[0] == letters : 
-                                                        
-#                                     if types2 != category_n2 :
-                                                        
-#                                         print (f'{types2}')
-
-#                                         category_n2 = types2
-
-#                                     print (f'- {count} {cars_t2}')
-
-#                                     count += 1
-                                    
-#                                     found_any = True
-
-#                             if not found_any :
-                                        
-#                                 print (f'There Is No Vehicle Starts With {letters}')
-
-#                                 print ('-' * 30)
-
-#                         first_round = False
-
-#                         all_car_names = []
-
-#                         for car_name3, car_type5 in category_2 :
-
-#                             all_car_names.append(car_name3)
-
-#                     while True :
-                        
-#                         add = input ('Please choose The Vehicle You Want To Add To Your Favourite\n' if local_first_input == True else 'Do You Want To Add More?\nOr End The Progress?\n').strip()
-
-                        
-#                         if add in str(finish).lower() :
-                            
-#                             print ('The Progress Is Finished')
-
-#                             break
-
-#                         elif add in all_car_names :
-                            
-#                             favourite.append(add)
-
-#                             print ('That\'s Your Favourite Vehicles')
-
-#                             count = 1
-
-#                             for cars01 in favourite :
-                                
-#                                 print (f'- {count} {cars01}')
-
-#                                 count += 1
-
-#                             local_first_input = False
-
-#                         elif add not in all_car_names :
-                            
-#                             print ('You Can Choose From Available Vehicles')
-
-
-#                     break
-
-#                 else :
-                     
-#                     print ('That\'s Your Favourite Vehicles')
-
-#                     count = 1
-
-#                     for cars0 in favourite :
-                          
-#                         print (f'- {count} {cars0}')
-
-#                         count += 1
-
-#                     break
-
-#         break
-    
-#     else :
-
-#             print (f'You Just Can Use These.')
-
-#             count = 1
-
-#             for reactions in Agree[:5] :
-                    
-#                     print (f'- {count} {reactions}')
-
-#                     count += 1
-
-#             count = 1
-
-#             print ('Or')
-
-#             for reactions in rejection[:2] :
-                    
-#                     print (f'- {count} {reactions} ')
-
-#                     count += 1
-
-#             count = 1
-
-#             print ('Or')
-
-#             for featers in Available_features[:4] :
-                
-#                 print (f'- {count} {featers}')
-                
-#                 count += 1
-
-#             first_round = False
