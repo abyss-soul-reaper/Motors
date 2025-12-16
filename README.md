@@ -31,7 +31,6 @@ The project structure is now organized into specialized packages, ensuring maxim
 | :--- | :--- | :--- |
 | `main_program.py` | Entry Point | Application startup and main feature loop. |
 | `data_files/` | Data Storage | Isolated folder for all raw persistence files (`.txt`, to be migrated to `.json` later). |
-| `data_access/` | Repository Layer | Manages all read/write operations for data files (e.g., `user_repo.py`, `cart_repo.py`). **Knows WHERE the data is.** |
 | `user_cart_logic/` | Cart Business Logic | Contains functions related to cart addition, removal, and state management. |
 | `vehicle_processing/` | Vehicle Logic | Handles pricing calculations, searching, and filtering of vehicle data. |
 | `user_interface/` | Presentation Layer | Handles all user interaction, including prompts, input (`input()`), and output (`print()`). |
