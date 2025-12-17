@@ -1,3 +1,10 @@
+"""
+MOTORS: Vehicle Management System (VMS) Main Program.
+
+Handles application startup, user authentication flow, 
+and control structure for interacting with core packages.
+"""
+
 import os
 
 import user_cart_logic.user_cart_logic as ucl
@@ -12,16 +19,19 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # print (os.getcwd())
 
-Available_features = ('Add', 'Remove', 'Clear', 'View', 'Total Price', 'Price List', 'Update User Info', 'Feedback', 'Contact Us', 'Favourite Vehicles')
+AVAILABLE_FEATURES = (
+'Add', 'Remove', 'Clear', 'View', 'Total Price',
+'Price List', 'Update User Info', 'Feedback', 'Contact Us', 'Favourite Vehicles'
+    )
 
-Consent_Terms = ('Yes', 'Ok', 'Yeah', 'Yup', 'Confirm', 'Y', 'O')
+CONSENT_TERMS = ('Yes', 'Ok', 'Yeah', 'Yup', 'Confirm', 'Y', 'O')
 
-Termination_Terms = ('No', 'Nope', 'Cancel','Done', 'N', 'C', 'D' )
+TERMINATION_TERMS = ('No', 'Nope', 'Cancel','Done', 'N', 'C', 'D' )
 
 if __name__ == "__main__":
-    
+
     print("\n🚗 Motors Vehicle Ordering System 🏍️")
-        
+
     email_logged_in = input ('\nWelcome To Motors. Please Write Your Email.\n').strip().lower()
 
     client = None
@@ -36,9 +46,11 @@ if __name__ == "__main__":
 
         else :
 
-            sign_up = input ('\nYour Email Not Found. Please Sign Up.\nDo You Want To Fill The Requirements\n').strip().capitalize()
+            sign_up = input (
+                '\nYour Email Not Found. Please Sign Up.\nDo You Want To Fill The Requirements\n'
+                ).strip().capitalize()
 
-            if sign_up in Consent_Terms :
+            if sign_up in CONSENT_TERMS :
 
                 success, new_email = fs.save_useres_data()
 
@@ -62,60 +74,60 @@ if __name__ == "__main__":
 
             Action = input (f'\nHello {user_name}, How Can I Help You?\n').strip().capitalize()
 
-            if Action in Termination_Terms :
+            if Action in TERMINATION_TERMS :
 
                 print ('\n✅ Exiting...')
 
                 break
 
-            elif Action in ('Add', 'A') :
+            if Action in ('Add', 'A') :
 
                 ucl.addition(client)
 
-            elif Action in ('Remove', 'R') :
+            if Action in ('Remove', 'R') :
 
-                ucl.removal(client, Termination_Terms)
+                ucl.removal(client, TERMINATION_TERMS)
 
-            elif Action in ('Clear', 'Cl') :
+            if Action in ('Clear', 'Cl') :
 
                 ucl.clear(client)
 
-            elif Action in ('View', 'V') :
+            if Action in ('View', 'V') :
 
                 ucl.view_cart(client)
 
-            elif Action in ('Total price', 'Total', 'T', 'Tp') :
+            if Action in ('Total price', 'Total', 'T', 'Tp') :
 
                 vp.total_price(client, vp.vehicles)
 
-            elif Action in ('Price list', 'Pl') :
+            if Action in ('Price list', 'Pl') :
 
                 vp.price_list(vp.vehicles)
 
-            elif Action in ('Update user info', 'Ui', 'Up') :
+            if Action in ('Update user info', 'Ui', 'Up') :
 
-                updated_name, updated_email = fs.update_user_info(client, Termination_Terms)
-        
+                updated_name, updated_email = fs.update_user_info(client, TERMINATION_TERMS)
+
                 if updated_name is not None:
 
-                    user_name = updated_name 
+                    user_name = updated_name
 
                     client = updated_email
 
                     print(f"👋 Welcome back, {user_name}!")
 
-            elif Action in ('Feedback', 'Fb') :
-                
+            if Action in ('Feedback', 'Fb') :
+
                 fs.send_feedback(client)
 
-            elif Action in ('Contact us', 'Cu') :
+            if Action in ('Contact us', 'Cu') :
 
                 ui.contact_us()
 
-            elif Action in ('Favourite vehicles', 'Fav', 'Fv') :
+            if Action in ('Favourite vehicles', 'Fav', 'Fv') :
 
-                vp.favourite_vehicles(client, vp.vehicles, Termination_Terms, Consent_Terms)
+                vp.favourite_vehicles(client, vp.vehicles, TERMINATION_TERMS, CONSENT_TERMS)
 
             else :
 
-                ui.show_available_features(Available_features)
+                ui.show_available_features(AVAILABLE_FEATURES)
