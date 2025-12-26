@@ -1,8 +1,9 @@
-import vehicle_processing.vehicle_processing  as vp
+import file_storage.file_storage as fs
+import vehicle_processing.vehicle_processing as vp
 
 def add_items_logic(current_cart, vehicles_dict) :
 
-    updated_cart = list (current_cart)
+    updated_cart = list(current_cart)
 
     count = 0
 
@@ -78,7 +79,7 @@ def add_items_logic(current_cart, vehicles_dict) :
 
 def addition(email) :
 
-    user_cart = vp.get_user_cart(email)
+    user_cart = fs.get_user_cart(email)
 
     view_cart(email)
 
@@ -86,7 +87,7 @@ def addition(email) :
 
     if final_cart_items != user_cart :
 
-        vp.update_user_cart(email, final_cart_items)
+        fs.update_user_cart(email, final_cart_items)
 
 def remove_items_logic(current_cart, Termination_Terms) :
 
@@ -162,7 +163,7 @@ def remove_items_logic(current_cart, Termination_Terms) :
 
 def removal(email, Termination_Terms) :
 
-    user_cart = vp.get_user_cart(email)
+    user_cart = fs.get_user_cart(email)
 
     if user_cart:
 
@@ -172,17 +173,17 @@ def removal(email, Termination_Terms) :
 
     if final_cart_items != user_cart :
 
-        vp.update_user_cart(email, final_cart_items)
+        fs.update_user_cart(email, final_cart_items)
 
 def clear(email) :
 
-    user_cart = vp.get_user_cart(email)
+    user_cart = fs.get_user_cart(email)
 
     view_cart(email)
 
     if user_cart :
 
-        vp.update_user_cart(email, [])
+        fs.update_user_cart(email, [])
 
         print ('\n✅ Cart data successfully reset and saved.')
 
