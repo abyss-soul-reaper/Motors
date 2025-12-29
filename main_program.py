@@ -44,27 +44,25 @@ if __name__ == "__main__":
 
             break
 
+        sign_up = input (
+            '\nYour Email Not Found. Please Sign Up.\nDo You Want To Fill The Requirements\n'
+            ).strip().capitalize()
+
+        if sign_up in CONSENT_TERMS :
+
+            success, new_email = fs.save_useres_data()
+
+            if success :
+
+                email_logged_in = new_email
+
+                continue
+
         else :
 
-            sign_up = input (
-                '\nYour Email Not Found. Please Sign Up.\nDo You Want To Fill The Requirements\n'
-                ).strip().capitalize()
+            print ('\n👋 Thank You for visiting Motors.')
 
-            if sign_up in CONSENT_TERMS :
-
-                success, new_email = fs.save_useres_data()
-
-                if success :
-
-                    email_logged_in = new_email
-
-                    continue
-
-            else :
-
-                print ('\n👋 Thank You for visiting Motors.')
-
-                break
+            break
 
     if client:
 
