@@ -6,8 +6,8 @@ from base import BaseDataManager
 
 class UserManager(BaseDataManager):
     HASH_ALGORITHM = "sha256"
-    PHONE_PATTERN = '^01[0125]\d{8}$'
-    EMAIL_PATTERN = '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    PHONE_PATTERN = r'^01[0125]\d{8}$'
+    EMAIL_PATTERN = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
     def __init__(self):
         super().__init__(r'users.json')
