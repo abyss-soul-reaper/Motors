@@ -34,14 +34,20 @@ class VehiclesManager(BaseDataManager):
         user_vehicles = {v_id: v_data for v_id, v_data in all_vehicles.items() if v_data['owner_id'] == user_id}
         return user_vehicles
     
-    def delete_vehicle(self, vehicle_id):
+    def delete_vehicle(self, vehicle_id, request_user_id):
         vehicles = self.load_data()
+        vehicle = vehicles.get(vehicle_id)
 
-        if vehicles.pop(vehicle_id, None):
-            self.save_data(vehicles)
-            print(f"🗑️ Vehicle {vehicle_id} deleted successfully.")
-            return True
-    
+        if vehicle:
+            if vehicle['owner_id'] == request_user_id:
+                vehicles.pop(vehicle_id)
+                self.save_data(vehicles)
+                print(f"🗑️ Vehicle {vehicle_id} deleted successfully.")
+                return True
+            else:
+                print("🚫 Permission Denied: You don't own this vehicle.")
+                return False
+
         print(f"⚠️ Error: Vehicle ID {vehicle_id} not found.")
         return False
 
