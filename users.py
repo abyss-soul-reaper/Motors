@@ -17,7 +17,7 @@ class UserManager(BaseDataManager):
         hash_obj.update(password.encode())
         return hash_obj.hexdigest()
     
-    def register(self, name, email, password, phone, address):
+    def register(self, name, email, password, phone, address, user_role='user'):
         if not re.match(self.EMAIL_PATTERN, email):
             print("❌ Error: Invalid email format.")
             return False
@@ -34,6 +34,7 @@ class UserManager(BaseDataManager):
         
         user_id = str(uuid.uuid4())
         hashed_pwd = self._hash_password(password)
+        user_role = user_role.lower()
 
         users[user_id] = {
             "name": name,
@@ -41,11 +42,12 @@ class UserManager(BaseDataManager):
             "password": hashed_pwd,
             "phone": phone,
             "address": address,
+            "user_role": user_role,
             "created_at": datetime.now().isoformat()
         }
 
         self.save_data(users)
-        print(f"✅ Success: User '{name}' registered with ID: {user_id}")
+        print(f"✅ Success: New {user_role} account created for '{name}'.")
         return True
     
     def login(self, email, password):
@@ -54,8 +56,8 @@ class UserManager(BaseDataManager):
 
         for user_id, user_data in users.items():
             if user_data['email'] == email and user_data['password'] == hashed_input:
-                print(f"🔓 Welcome back, {user_data['name']}!")
-                return user_id 
+                print(f"🔓 Login successful! Welcome, {user_data['name']}.")
+                return user_id, user_data['user_role']
         
-        print("⚠️ Error: Invalid email or password.")
-        return None
+        print("⚠️ Login Failed: Check your email or password.")
+        return None, None
