@@ -57,7 +57,7 @@ class UserManager(BaseDataManager):
         for user_id, user_data in users.items():
             if user_data['email'] == email and user_data['password'] == hashed_input:
                 print(f"🔓 Login successful! Welcome, {user_data['name']}.")
-                return user_id, user_data['user_role']
+                return user_id, user_data['user_role'], user_data['name']
         
         print("⚠️ Login Failed: Check your email or password.")
         return None, None

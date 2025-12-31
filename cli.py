@@ -48,3 +48,27 @@ class UserInterface:
             print(f'   - {operation}')
         choice = input('\nSelect an option from the menu: ').strip().lower()
         return choice
+    
+    def show_internal_menu(self, role, user_name):
+        print(f"--- Welcome, {user_name.capitalize()}! | Role: {role.upper()} ---")
+        
+        if role == 'admin':
+            print("1. 📊 Dashboard (Stats & All Vehicles)")
+            print("2. 🔄 Update Vehicle Status")
+            print("3. 🗑️ Remove Any Vehicle")
+            print("4. ⚙️  Account Settings")
+            print("5. ☢️  Wipe All Data")
+            print("6. 🚪 Logout")
+            choice = input("\n✨ Select your next move: ").strip()
+            return choice
+        else:
+            print("1. ➕ List a New Vehicle")
+            print("2. 🚘 View My Garage")
+            print("3. 🔍 Search & Filter Market")
+            print("4. 💰 My Total Inventory Value")
+            print("5. ✏️  Edit Profile Info")
+            print("6. 🚪 Logout")
+            choice = input("\n✨ Select your next move: ").strip()
+            return choice
+            
+        return input("\n✨ Select your next move: ").strip()

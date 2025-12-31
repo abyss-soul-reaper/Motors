@@ -1,0 +1,802 @@
+{
+    "529c8e59-e731-4611-925a-93bacf76bd43": {
+        "brand": "Audi",
+        "model": "R8 V10 Performance",
+        "type": "Car",
+        "year": 2025,
+        "price": 190000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "de812300-7821-4a6c-bfdf-5b78b5f82a3c": {
+        "brand": "Audi",
+        "model": "RS Q8",
+        "type": "Car",
+        "year": 2020,
+        "price": 120000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "8fed65c9-f934-4a9e-830b-65bb5469f0a5": {
+        "brand": "Audi",
+        "model": "e-tron GT",
+        "type": "Car",
+        "year": 2024,
+        "price": 105000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "009d1e40-dfd6-4f42-8120-c748132149be": {
+        "brand": "Aprilia",
+        "model": "RSV4 Factory 1100",
+        "type": "Bike",
+        "year": 2026,
+        "price": 26000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "bfbf52d6-71a2-460b-9643-5b3001fb2540": {
+        "brand": "Arc",
+        "model": "Vector",
+        "type": "Bike",
+        "year": 2025,
+        "price": 120000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "70fce42d-6078-41bc-9eab-4d1f29348dc3": {
+        "brand": "BMW",
+        "model": "M4 Competition",
+        "type": "Car",
+        "year": 2022,
+        "price": 87000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "8674f100-1d79-4bc0-b7a9-8fcee1eb93d7": {
+        "brand": "BMW",
+        "model": "X7 M60i",
+        "type": "Car",
+        "year": 2020,
+        "price": 125000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "87f0745b-75fc-41fb-8348-958647465e37": {
+        "brand": "BMW",
+        "model": "iX M60",
+        "type": "Car",
+        "year": 2023,
+        "price": 110000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "f1685ca1-bca0-472c-9dfc-e9e17ef7a443": {
+        "brand": "Bentley",
+        "model": "Bentayga Speed",
+        "type": "Car",
+        "year": 2023,
+        "price": 250000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "f9e80ea0-e7e4-42aa-9357-8804ce39e45e": {
+        "brand": "Bugatti",
+        "model": "Chiron Super Sport 300+",
+        "type": "Car",
+        "year": 2020,
+        "price": 3900000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "afd8d627-3b15-41ff-a373-7f9cc935e69d": {
+        "brand": "BMW",
+        "model": "M 1000 RR",
+        "type": "Bike",
+        "year": 2024,
+        "price": 33000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "02779623-3f54-44de-ae45-44b4b7327b8b": {
+        "brand": "BMW",
+        "model": "R 1300 GS",
+        "type": "Bike",
+        "year": 2020,
+        "price": 19000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "a9d5a347-9482-44f9-8fc1-a4696dc24258": {
+        "brand": "Cadillac",
+        "model": "Escalade V",
+        "type": "Car",
+        "year": 2023,
+        "price": 150000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "b7ac4fcb-33b5-4afc-916b-10bb7db31bbc": {
+        "brand": "Chevrolet",
+        "model": "Corvette Z06",
+        "type": "Car",
+        "year": 2021,
+        "price": 110000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "650c543c-1115-468b-979d-5ac0db41596d": {
+        "brand": "Chevrolet",
+        "model": "Silverado ZR2",
+        "type": "Car",
+        "year": 2022,
+        "price": 72000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "645463fd-2fe1-4b3a-af4b-f5a9235bd8c2": {
+        "brand": "Cake",
+        "model": "Kalk OR",
+        "type": "Bike",
+        "year": 2023,
+        "price": 13000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "e2ace477-2015-47a1-848d-f968ff65b1dc": {
+        "brand": "Damon",
+        "model": "Hypersport Premier",
+        "type": "Bike",
+        "year": 2022,
+        "price": 40000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "fbc01903-5bee-4e9e-9bdf-832cd61e9fd8": {
+        "brand": "Ducati",
+        "model": "Diavel V4",
+        "type": "Bike",
+        "year": 2023,
+        "price": 27000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "9c1826fe-2021-47d0-89b5-4428576be30c": {
+        "brand": "Ducati",
+        "model": "Multistrada V4 Rally",
+        "type": "Bike",
+        "year": 2020,
+        "price": 29000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "7f35d5e5-6924-4659-ad25-6c4f4c5a8b19": {
+        "brand": "Ducati",
+        "model": "Superleggera V4",
+        "type": "Bike",
+        "year": 2020,
+        "price": 100000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "74e354ae-8446-4a0a-837a-4a7b01949959": {
+        "brand": "Energica",
+        "model": "Ego+ RS",
+        "type": "Bike",
+        "year": 2023,
+        "price": 25000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "a69a69b2-a22d-49b0-8472-3500f3e03468": {
+        "brand": "Ferrari",
+        "model": "SF90 Stradale",
+        "type": "Car",
+        "year": 2025,
+        "price": 520000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "a1129a90-eb7f-468c-924b-518705fddbd4": {
+        "brand": "Ford",
+        "model": "F-150 Raptor R",
+        "type": "Car",
+        "year": 2025,
+        "price": 109000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "6d39cc23-f849-47a5-a731-1b962624ae2d": {
+        "brand": "Ford",
+        "model": "Mustang Mach-E GT",
+        "type": "Car",
+        "year": 2026,
+        "price": 69000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "d89b61a4-c389-422b-bc7b-80b211d01cd5": {
+        "brand": "Ford",
+        "model": "Mustang Shelby GT500",
+        "type": "Car",
+        "year": 2020,
+        "price": 80000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "c1846572-7184-4846-b6b2-c23b60476263": {
+        "brand": "Ford",
+        "model": "Ranger Raptor",
+        "type": "Car",
+        "year": 2021,
+        "price": 55000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "6ecb58d3-168b-46c2-8f06-9f02706038ea": {
+        "brand": "Fantic",
+        "model": "Motor Caballero 500 E",
+        "type": "Bike",
+        "year": 2024,
+        "price": 15000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "08f58194-04b4-4b3d-bc88-070ccbe76290": {
+        "brand": "GMC",
+        "model": "Hummer EV Pickup Edition 1",
+        "type": "Car",
+        "year": 2022,
+        "price": 115000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "978f6ba8-52a7-496d-83a7-bf7be3c3c084": {
+        "brand": "GMC",
+        "model": "Sierra 1500 Denali Ultimate",
+        "type": "Car",
+        "year": 2025,
+        "price": 83000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "76366482-f332-400e-9da5-ea55a59d339a": {
+        "brand": "Honda",
+        "model": "Ridgeline Black Edition",
+        "type": "Car",
+        "year": 2025,
+        "price": 49000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "e1e7b84a-db80-4671-97f0-9ccd0e868184": {
+        "brand": "Hyundai",
+        "model": "Ioniq 5 Limited",
+        "type": "Car",
+        "year": 2026,
+        "price": 52000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "59c71321-4df3-4d24-9691-cfa090595aaf": {
+        "brand": "Harley-Davidson",
+        "model": "CVO Road Glide Limited",
+        "type": "Bike",
+        "year": 2026,
+        "price": 50000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "f4609ea6-7bb7-447d-9017-8954d1001e19": {
+        "brand": "Harley-Davidson",
+        "model": "Fat Boy 114",
+        "type": "Bike",
+        "year": 2022,
+        "price": 22000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "405d6e17-93ed-41ba-b70d-78291c33698a": {
+        "brand": "Harley-Davidson",
+        "model": "Pan America 1250 Special",
+        "type": "Bike",
+        "year": 2022,
+        "price": 20000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "de3d3ec5-b908-4cca-ad13-65b5360804bb": {
+        "brand": "Honda",
+        "model": "Africa Twin CRF1100L",
+        "type": "Bike",
+        "year": 2020,
+        "price": 15000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "bb6d86d5-77a0-40c7-afd9-7aa7deb6c66e": {
+        "brand": "Honda",
+        "model": "CBR1000RR-R Fireblade SP",
+        "type": "Bike",
+        "year": 2025,
+        "price": 28000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "5b63f5ce-6bb1-4ac4-8884-52aa13c1c454": {
+        "brand": "Honda",
+        "model": "Rebel 1100",
+        "type": "Bike",
+        "year": 2023,
+        "price": 9500,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "228f101c-ad19-4325-8374-0eafe9f0bc83": {
+        "brand": "Indian",
+        "model": "Challenger Dark Horse",
+        "type": "Bike",
+        "year": 2026,
+        "price": 27000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "7de8704c-0fcb-4bb7-94a6-16861908a47c": {
+        "brand": "Indian",
+        "model": "Scout Rogue",
+        "type": "Bike",
+        "year": 2023,
+        "price": 12000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "c4f43979-7469-4807-87cd-daf95ad429ef": {
+        "brand": "Kia",
+        "model": "EV6 GT",
+        "type": "Car",
+        "year": 2026,
+        "price": 55000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "27511ab1-cfbb-4a68-bba2-011e8f73c07d": {
+        "brand": "Koenigsegg",
+        "model": "Jesko Absolut",
+        "type": "Car",
+        "year": 2021,
+        "price": 2800000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "d1bec356-0bb0-421e-b7d3-1e1e84fc98e9": {
+        "brand": "KTM",
+        "model": "1290 Super Adventure R",
+        "type": "Bike",
+        "year": 2020,
+        "price": 21000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "10d89122-177a-45fc-b1d9-e688c492bb77": {
+        "brand": "KTM",
+        "model": "1290 Super Duke R Evo",
+        "type": "Bike",
+        "year": 2022,
+        "price": 19500,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "c3499740-e76f-4796-8933-db71571afd4e": {
+        "brand": "KTM",
+        "model": "890 Adventure R",
+        "type": "Bike",
+        "year": 2026,
+        "price": 14000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "b04b1f9e-7be5-4f60-b6a8-86492da51e4f": {
+        "brand": "Kawasaki",
+        "model": "Ninja H2R",
+        "type": "Bike",
+        "year": 2020,
+        "price": 58000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "b0e1b930-28b5-49ed-b503-bdb47a36ac7a": {
+        "brand": "Kawasaki",
+        "model": "Versys 1000 SE LT+",
+        "type": "Bike",
+        "year": 2020,
+        "price": 18000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "5c11f1d7-e9db-4c45-9736-08cd86218c04": {
+        "brand": "Kawasaki",
+        "model": "Vulcan S",
+        "type": "Bike",
+        "year": 2023,
+        "price": 7300,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "75923177-710e-401d-aca2-82053c1c77a0": {
+        "brand": "Kawasaki",
+        "model": "ZX-10R KRT Edition",
+        "type": "Bike",
+        "year": 2026,
+        "price": 17000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "81dd082a-c6ec-4b0a-b243-ef80198d0830": {
+        "brand": "Lamborghini",
+        "model": "Huracan STO",
+        "type": "Car",
+        "year": 2023,
+        "price": 330000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "db5e20cc-0120-41ec-88cc-baa3fd69956d": {
+        "brand": "Lamborghini",
+        "model": "Urus",
+        "type": "Car",
+        "year": 2021,
+        "price": 230000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "d0919206-82c2-4e3f-94b1-a59857dd37c4": {
+        "brand": "Lexus",
+        "model": "LX 600 F Sport",
+        "type": "Car",
+        "year": 2023,
+        "price": 105000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "ec6e9959-2f85-4d47-8e27-86eeafb5cfa1": {
+        "brand": "Lucid",
+        "model": "Air Grand Touring",
+        "type": "Car",
+        "year": 2022,
+        "price": 138000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "5a61844d-952b-4c16-8457-457e8fbb6f64": {
+        "brand": "Lightning",
+        "model": "LS-218",
+        "type": "Bike",
+        "year": 2021,
+        "price": 38000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "4d23c77b-9f25-48f0-aea1-681c6be093e8": {
+        "brand": "LiveWire",
+        "model": "One (Harley-Davidson)",
+        "type": "Bike",
+        "year": 2020,
+        "price": 23000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "6e057ef6-9c31-444c-b89a-e99480d2fa52": {
+        "brand": "McLaren",
+        "model": "Speedtail",
+        "type": "Car",
+        "year": 2025,
+        "price": 2250000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "cb17cc03-3902-4bea-819e-8546f435b560": {
+        "brand": "Mercedes-AMG",
+        "model": "G 63",
+        "type": "Car",
+        "year": 2023,
+        "price": 179000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "b24bbba2-6879-4d32-93eb-904dd2271790": {
+        "brand": "Mercedes-Benz",
+        "model": "EQS 580",
+        "type": "Car",
+        "year": 2025,
+        "price": 127000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "3d363b8e-1727-4459-9d72-7486dfbbc522": {
+        "brand": "Nissan",
+        "model": "Frontier Pro-4X",
+        "type": "Car",
+        "year": 2021,
+        "price": 45000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "91d19fff-a8e2-4aa2-a6be-ca949f370f1b": {
+        "brand": "Polestar",
+        "model": "2 Long Range Dual Motor",
+        "type": "Car",
+        "year": 2025,
+        "price": 62000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "bf589631-61a8-4397-8934-88abe569c257": {
+        "brand": "Porsche",
+        "model": "911 GT3 RS",
+        "type": "Car",
+        "year": 2023,
+        "price": 240000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "f2d1517c-b999-4073-8d39-2fa930b9de16": {
+        "brand": "Porsche",
+        "model": "Cayenne Turbo GT",
+        "type": "Car",
+        "year": 2024,
+        "price": 196000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "b2bf19b5-d885-40e0-ad4e-4cd3fd24947d": {
+        "brand": "Porsche",
+        "model": "Taycan Turbo S",
+        "type": "Car",
+        "year": 2022,
+        "price": 190000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "afb44e80-f545-4cce-b71c-dd192646169c": {
+        "brand": "Ram",
+        "model": "1500 TRX",
+        "type": "Car",
+        "year": 2021,
+        "price": 85000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "1e10202c-a268-414c-90d0-7eaad46aeaf8": {
+        "brand": "Range",
+        "model": "Rover Autobiography LWB",
+        "type": "Car",
+        "year": 2024,
+        "price": 185000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "cedd7801-fd0b-4f45-922e-20444932dcbd": {
+        "brand": "Rivian",
+        "model": "R1T",
+        "type": "Car",
+        "year": 2024,
+        "price": 75000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "786d3705-556c-453c-996c-a18d946555d0": {
+        "brand": "Rolls-Royce",
+        "model": "Cullinan",
+        "type": "Car",
+        "year": 2022,
+        "price": 350000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "d4651477-2e2b-4bf4-bb8a-98de1c09f5c7": {
+        "brand": "Super",
+        "model": "Soco TC Max",
+        "type": "Bike",
+        "year": 2024,
+        "price": 5500,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "790789e9-89d1-4c0d-a99c-7336d8b43d1a": {
+        "brand": "Suzuki",
+        "model": "Boulevard M109R B.O.S.S.",
+        "type": "Bike",
+        "year": 2021,
+        "price": 15000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    },
+    "f198e27f-bfb2-4e24-9926-5f4ecea79b4f": {
+        "brand": "Suzuki",
+        "model": "GSX-R1000R",
+        "type": "Bike",
+        "year": 2024,
+        "price": 18000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "12a70d4c-2065-41ac-8562-fc3a569d5b58": {
+        "brand": "Suzuki",
+        "model": "V-Strom 1050XT",
+        "type": "Bike",
+        "year": 2025,
+        "price": 15000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "0cbb2be0-9fee-44de-b748-59237a6906c2": {
+        "brand": "Tesla",
+        "model": "Model S Plaid",
+        "type": "Car",
+        "year": 2021,
+        "price": 110000,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "746e1422-1b04-463a-9cd1-97eab0bbde2d": {
+        "brand": "Toyota",
+        "model": "Tundra Capstone",
+        "type": "Car",
+        "year": 2026,
+        "price": 76000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "ccfe0818-2202-4eee-9032-d3190bb037e1": {
+        "brand": "Triumph",
+        "model": "Rocket 3 R",
+        "type": "Bike",
+        "year": 2024,
+        "price": 23500,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "1fd1f07a-0f4f-485c-922e-4af9cfe1f527": {
+        "brand": "Triumph",
+        "model": "Speed Triple 1200 RS",
+        "type": "Bike",
+        "year": 2023,
+        "price": 18500,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "ab1ae17f-8841-4f9a-bd01-0bbb9cec539c": {
+        "brand": "Triumph",
+        "model": "Tiger 1200 Rally Pro",
+        "type": "Bike",
+        "year": 2024,
+        "price": 23000,
+        "quantity": 2,
+        "role": "Admin",
+        "status": "available"
+    },
+    "32cdc1b2-9d88-4009-9633-6f76c08007e1": {
+        "brand": "Yamaha",
+        "model": "Bolt R-Spec",
+        "type": "Bike",
+        "year": 2022,
+        "price": 8500,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "c34e564d-d23e-4f2f-b3be-2125dc4ab060": {
+        "brand": "Yamaha",
+        "model": "Tenere 700",
+        "type": "Bike",
+        "year": 2025,
+        "price": 10500,
+        "quantity": 4,
+        "role": "Admin",
+        "status": "available"
+    },
+    "59a414cf-ef9a-43c3-98ce-de0b75bf6ad2": {
+        "brand": "Yamaha",
+        "model": "YZF-R1M",
+        "type": "Bike",
+        "year": 2022,
+        "price": 27000,
+        "quantity": 5,
+        "role": "Admin",
+        "status": "available"
+    },
+    "368e9b59-63f7-4f61-96b7-fe0848443701": {
+        "brand": "Zero",
+        "model": "DSR/X",
+        "type": "Bike",
+        "year": 2026,
+        "price": 21000,
+        "quantity": 1,
+        "role": "Admin",
+        "status": "available"
+    },
+    "ff8b6238-e192-4b2d-80a1-5a7e2c97ab42": {
+        "brand": "Zero",
+        "model": "SR/S Premium",
+        "type": "Bike",
+        "year": 2022,
+        "price": 20000,
+        "quantity": 3,
+        "role": "Admin",
+        "status": "available"
+    }
+}
