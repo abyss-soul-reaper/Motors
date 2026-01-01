@@ -1,7 +1,7 @@
 import re
 
 class UserInterface:
-    START_MENU = ('Login', 'Register', 'Exist')
+    START_MENU = ('Login', 'Register', 'Exit')
     PHONE_PATTERN = r'^01[0125]\d{8}$'
     EMAIL_PATTERN = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
@@ -43,9 +43,9 @@ class UserInterface:
         password = input('   🔑 Password: ').strip()
         return email, password
     
-    def show_start_menu(self):
-        for operation in self.START_MENU:
-            print(f'   - {operation}')
+    def show_start_menu(self):  
+        for option in self.START_MENU:
+            print(f'   - {option}')
         choice = input('\nSelect an option from the menu: ').strip().lower()
         return choice
     
@@ -53,22 +53,24 @@ class UserInterface:
         print(f"--- Welcome, {user_name.capitalize()}! | Role: {role.upper()} ---")
         
         if role == 'admin':
-            print("1. 📊 Dashboard (Stats & All Vehicles)")
-            print("2. 🔄 Update Vehicle Status")
-            print("3. 🗑️ Remove Any Vehicle")
-            print("4. ⚙️  Account Settings")
-            print("5. ☢️  Wipe All Data")
+            print("1. 🚗 View All Vehicles")
+            print("2. ➕ Smart Add Vehicle")
+            print("3. 📝 Update Vehicle Info")
+            print("4. 🗑️ Delete Vehicle")
+            print("5. 📑 View Sales Report")
             print("6. 🚪 Logout")
-            choice = input("\n✨ Select your next move: ").strip()
-            return choice
         else:
-            print("1. ➕ List a New Vehicle")
-            print("2. 🚘 View My Garage")
-            print("3. 🔍 Search & Filter Market")
-            print("4. 💰 My Total Inventory Value")
-            print("5. ✏️  Edit Profile Info")
+            print("1. 🏎️  Browse Showroom")
+            print("2. 🔍 Search Vehicle")
+            print("3. 🛒 Add to Cart")
+            print("4. 🛍️  View My Cart")
+            print("5. ✅ Checkout & Buy")
             print("6. 🚪 Logout")
-            choice = input("\n✨ Select your next move: ").strip()
-            return choice
             
         return input("\n✨ Select your next move: ").strip()
+    
+    def get_vehicle_search_input(self):
+        pass
+
+    def get_vehicle_data_input(self):
+        pass

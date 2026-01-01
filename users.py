@@ -61,3 +61,12 @@ class UserManager(BaseDataManager):
         
         print("⚠️ Login Failed: Check your email or password.")
         return None, None
+    
+    def add_to_cart(self, user_id):
+        pass
+
+    def view_my_cart(self, user_id):
+        pass
+
+    def clear_cart(self, user_id):
+        pass

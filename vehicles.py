@@ -36,7 +36,6 @@ class VehiclesManager(BaseDataManager):
             if v_data['quantity'] == 0: v_data['status'] = self.STATUS_SOLD
         
         self.save_data(vehicles)
-        
 
     def add_vehicle(self, owner_id, brand, model, v_type, year, price, quantity=1, role='user', status=None):
         if status is None:
@@ -96,3 +95,18 @@ class VehiclesManager(BaseDataManager):
 
         print(f"⚠️ Error: Vehicle ID {vehicle_id} not found.")
         return False
+
+    def the_finder_interface(self):
+            pass
+
+    def get_all_available(self):
+        pass
+
+    def view_all_vehicles(self):
+        pass
+
+    def smart_add_vehicle(self):
+        pass
+
+    def update_vehicle_info(self):
+        pass
