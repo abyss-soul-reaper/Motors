@@ -1,5 +1,6 @@
 import uuid
 import random
+from datetime import datetime
 import json
 import re
 
@@ -202,9 +203,10 @@ for line in raw_data.split('\n'):
             "type": current_type,
             "year": random.randint(2020, 2026),
             "price": price,
-            'quantity': random.randint(1, 5),
-            'role': 'Admin',
-            "status": "available"
+            "quantity": random.randint(1, 5),
+            "role": 'Admin',
+            "status": "available",
+            "created_at": datetime.now().isoformat()
         }
 with open('vehicles.json', 'w', encoding='utf-8') as f:
     json.dump(vehicles, f, indent=4)

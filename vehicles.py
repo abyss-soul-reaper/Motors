@@ -5,11 +5,26 @@ from base import BaseDataManager
 class VehiclesManager(BaseDataManager):
     STATUS_AVAILABLE = 'available'
     STATUS_SOLD = 'sold'
+    FILE_PATH = "vehicles.json"
 
     def __init__(self):
-        super().__init__("vehicles.json")
+        super().__init__(self.FILE_PATH)
 
-    def add_vehicle(self, owner_id, brand, model, year, price, status=None):
+    def the_finder(self, brand, model, year):
+        vehicles = self.load_data()
+        brand = brand.strip().lower()
+        model = model.strip().lower()
+        year = year.strip()
+
+        for v_id, v_data in vehicles.items():
+            if v_data['brand'].strip().lower() == brand and v_data['model'].strip().lower() == model and str(v_data['year']).strip() == year:
+                return {
+                    v_id: v_data
+                }
+            return None, None
+
+
+    def add_vehicle(self, owner_id, brand, model, v_type, year, price, quantity=1, role='user', status=None):
         if status is None:
             status = self.STATUS_AVAILABLE
 
@@ -20,8 +35,11 @@ class VehiclesManager(BaseDataManager):
             "owner_id": owner_id,
             "brand": brand,
             "model": model,
+            "type": v_type,
             "year": year,
             "price": price,
+            "quantity": quantity,
+            "role": role,
             "status": status.lower(),
             "created_at": datetime.now().isoformat()
         }
@@ -29,17 +47,6 @@ class VehiclesManager(BaseDataManager):
         self.save_data(vehicles)
         print(f"✅ Success: {brand} {model} added successfully with ID: {vehicle_id}")
         return vehicle_id
-
-    def get_all_vehicles(self):
-        return self.load_data()
-
-    def get_user_vehicles(self, user_id):
-        all_vehicles = self.load_data()
-
-        user_vehicles = {
-            v_id: v_data for v_id, v_data in all_vehicles.items() if v_data['owner_id'] == user_id
-            }
-        return user_vehicles
 
     def delete_vehicle(self, vehicle_id, requester_id, requester_role):
         vehicles = self.load_data()
