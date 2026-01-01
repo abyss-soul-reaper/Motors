@@ -10,16 +10,29 @@ class VehiclesManager(BaseDataManager):
     def __init__(self):
         super().__init__(self.FILE_PATH)
 
-    def the_finder(self, brand, model, year):
+    def advanced_search(self, filters):
         vehicles = self.load_data()
-        brand = brand.strip().lower()
-        model = model.strip().lower()
-        year = year.strip()
+        results = {}
 
         for v_id, v_data in vehicles.items():
-            if v_data['brand'].strip().lower() == brand and v_data['model'].strip().lower() == model and str(v_data['year']).strip() == year:
-                return v_id, vehicles
-        return None, vehicles
+            match = True
+
+            for key, value in filters.items():
+                if key in v_data and v_data[key] != value:
+                    match = False
+
+            if match:
+                results[v_id] = v_data
+        return results
+
+    def upt_v_ifo(self, v_id, upts):
+        vehicles = self.load_data()
+        
+        if v_id in vehicles:
+            vehicle = vehicles.get(v_id)
+            vehicle.update(upts)
+        
+        self.save_data(vehicles)
 
     def buy_vehicles(self, brand, model, year):
         v_id, vehicles = self.the_finder(brand, model, year)
