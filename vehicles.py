@@ -18,11 +18,25 @@ class VehiclesManager(BaseDataManager):
 
         for v_id, v_data in vehicles.items():
             if v_data['brand'].strip().lower() == brand and v_data['model'].strip().lower() == model and str(v_data['year']).strip() == year:
-                return {
-                    v_id: v_data
-                }
-            return None, None
+                return v_id, vehicles
+        return None, vehicles
 
+    def buy_vehicles(self, brand, model, year):
+        v_id, vehicles = self.the_finder(brand, model, year)
+        if v_id is None:
+            print('')
+            return False
+
+        v_data = vehicles[v_id]
+
+        crt_qty = v_data['quantity']
+        crt_sts = v_data['status']
+        if crt_sts == 'available' and crt_qty > 0:
+            v_data['quantity'] -= 1
+            if v_data['quantity'] == 0: v_data['status'] = self.STATUS_SOLD
+        
+        self.save_data(vehicles)
+        
 
     def add_vehicle(self, owner_id, brand, model, v_type, year, price, quantity=1, role='user', status=None):
         if status is None:
