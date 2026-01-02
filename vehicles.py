@@ -25,6 +25,26 @@ class VehiclesManager(BaseDataManager):
                 results[v_id] = v_data
         return results
 
+    def smart_add(self, new_v_data):
+        vehicles = self.load_data()
+        search_filter = {
+            "brand": new_v_data.get("brand"),
+            "model": new_v_data.get("model"),
+            "year": new_v_data.get("year")
+        }
+        is_exsist = self.advanced_search(search_filter)
+
+        if is_exsist:
+            v_id = list(is_exsist.keys())[0]
+            new_v_data = self._calculate_averages(vehicles.get(v_id), new_v_data)
+            self.upt_v_ifo(v_id, new_v_data)
+            return True
+        
+        v_id = str(uuid.uuid4())
+        vehicles[v_id] = new_v_data
+        self.save_data(vehicles)
+        return True
+        
     def upt_v_ifo(self, v_id, upts):
         vehicles = self.load_data()
         
@@ -34,67 +54,46 @@ class VehiclesManager(BaseDataManager):
         
         self.save_data(vehicles)
 
-    def smart_add(self, new_v_data):
-        vehicles = self.load_data()
-        is_exsist = self.advanced_search(new_v_data)
+    @staticmethod
+    def _calculate_averages(old_data, new_data):
+        old_qty = old_data.get("quantity", 0)
+        old_price = old_data.get("price", 0)
+        new_qty = new_data.get("quantity", 1)
+        new_price = new_data.get("price", 0)
 
-        if is_exsist:
-            v_id = list(is_exsist.keys())[0]
-            self.upt_v_ifo(v_id, new_v_data)
+        total_qty = old_qty + new_qty
+        if total_qty > 0:
+            avg_price = ((old_price * old_qty) + (new_price * new_qty)) // total_qty
         else:
-            v_id = str(uuid.uuid4())
-            sys_ifo = {
-                "quantity": 1 if "quantity" not in new_v_data.keys() else new_v_data["quantity"],
-                "role": 'user' if "role" not in new_v_data.keys() else new_v_data["role"],
-                "status": self.STATUS_AVAILABLE if "status" not in new_v_data.keys() else new_v_data["status"],
-                "created_at": datetime.now().isoformat(),
-            }
-            new_v_data.update(sys_ifo)
-            vehicles[v_id] = new_v_data
-            self.save_data(vehicles)
-            
-        
+            avg_price = new_price
+        new_data["quantity"] = total_qty
+        new_data["price"] = avg_price
 
+        return new_data
 
-    def buy_vehicles(self, brand, model, year):
-        v_id, vehicles = self.the_finder(brand, model, year)
-        if v_id is None:
-            print('')
+    def buy_vehicles(self, filters):
+        results = self.advanced_search(filters)
+        if not results:
+            print("⚠️ Error: No matching vehicle found.")
             return False
-
-        v_data = vehicles[v_id]
-
-        crt_qty = v_data['quantity']
-        crt_sts = v_data['status']
-        if crt_sts == 'available' and crt_qty > 0:
-            v_data['quantity'] -= 1
-            if v_data['quantity'] == 0: v_data['status'] = self.STATUS_SOLD
         
-        self.save_data(vehicles)
+        v_id = list(results.keys())[0]
+        v_data = results[v_id]
+        if v_data["status"] == self.STATUS_AVAILABLE and v_data.get("quantity", 0) > 0:
+            v_data["quantity"] -= 1
 
-    def add_vehicle(self, owner_id, brand, model, v_type, year, price, quantity=1, role='user', status=None):
-        if status is None:
-            status = self.STATUS_AVAILABLE
+            if v_data['quantity'] == 0:
+                v_data['status'] = self.STATUS_SOLD 
 
-        vehicles = self.load_data()
-        vehicle_id = str(uuid.uuid4())
-
-        vehicles[vehicle_id] = {
-            "owner_id": owner_id,
-            "brand": brand,
-            "model": model,
-            "type": v_type,
-            "year": year,
-            "price": price,
-            "quantity": quantity,
-            "role": role,
-            "status": status.lower(),
-            "created_at": datetime.now().isoformat()
-        }
-
-        self.save_data(vehicles)
-        print(f"✅ Success: {brand} {model} added successfully with ID: {vehicle_id}")
-        return vehicle_id
+            vehicles = self.load_data()
+            vehicles[v_id]  = v_data
+            self.save_data(vehicles)
+        
+            print(f"✅ Purchase successful! Remaining quantity: {v_data['quantity']}")
+            return True
+        
+        print("🚫 Vehicle is not available for sale.")
+        return False
 
     def delete_vehicle(self, vehicle_id, requester_id, requester_role):
         vehicles = self.load_data()
@@ -111,22 +110,6 @@ class VehiclesManager(BaseDataManager):
                 return True
             print("🚫 Permission Denied: You don't have authority to delete this.")
             return False
-
-        print(f"⚠️ Error: Vehicle ID {vehicle_id} not found.")
-        return False
-
-    def update_status(self, vehicle_id, new_status, user_role):
-        vehicles = self.load_data()
-
-        if user_role.lower() != 'admin':
-            print("🚫 Access Denied: Only staff can update vehicle status.")
-            return False
-
-        if vehicle_id in vehicles:
-            vehicles[vehicle_id]['status'] = new_status
-            self.save_data(vehicles)
-            print(f"🔄 Status updated to '{new_status}' for vehicle {vehicle_id}.")
-            return True
 
         print(f"⚠️ Error: Vehicle ID {vehicle_id} not found.")
         return False
