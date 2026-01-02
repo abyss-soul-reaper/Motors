@@ -34,6 +34,28 @@ class VehiclesManager(BaseDataManager):
         
         self.save_data(vehicles)
 
+    def smart_add(self, new_v_data):
+        vehicles = self.load_data()
+        is_exsist = self.advanced_search(new_v_data)
+
+        if is_exsist:
+            v_id = list(is_exsist.keys())[0]
+            self.upt_v_ifo(v_id, new_v_data)
+        else:
+            v_id = str(uuid.uuid4())
+            sys_ifo = {
+                "quantity": 1 if "quantity" not in new_v_data.keys() else new_v_data["quantity"],
+                "role": 'user' if "role" not in new_v_data.keys() else new_v_data["role"],
+                "status": self.STATUS_AVAILABLE if "status" not in new_v_data.keys() else new_v_data["status"],
+                "created_at": datetime.now().isoformat(),
+            }
+            new_v_data.update(sys_ifo)
+            vehicles[v_id] = new_v_data
+            self.save_data(vehicles)
+            
+        
+
+
     def buy_vehicles(self, brand, model, year):
         v_id, vehicles = self.the_finder(brand, model, year)
         if v_id is None:
@@ -108,18 +130,3 @@ class VehiclesManager(BaseDataManager):
 
         print(f"⚠️ Error: Vehicle ID {vehicle_id} not found.")
         return False
-
-    def the_finder_interface(self):
-            pass
-
-    def get_all_available(self):
-        pass
-
-    def view_all_vehicles(self):
-        pass
-
-    def smart_add_vehicle(self):
-        pass
-
-    def update_vehicle_info(self):
-        pass
