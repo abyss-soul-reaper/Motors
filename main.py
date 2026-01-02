@@ -7,8 +7,6 @@ if __name__ == '__main__':
     user_manager = users.UserManager()
     vehicle_manager = vehicles.VehiclesManager()
 
-    print("\n🚗 Motors Vehicle Ordering System 🏍️")
-
     while True:
         choice = ui.show_start_menu()
 
