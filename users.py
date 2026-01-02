@@ -11,53 +11,54 @@ class UserManager(BaseDataManager):
 
     def __init__(self):
         super().__init__(r'users.json')
-
-    def _hash_password(self, password):
-        hash_obj = hashlib.new(self.HASH_ALGORITHM)
+    @staticmethod
+    def _hash_password(password):
+        hash_obj = hashlib.new(UserManager.HASH_ALGORITHM)
         hash_obj.update(password.encode())
         return hash_obj.hexdigest()
     
-    def register(self, name, email, password, phone, address, user_role='user'):
-        if not re.match(self.EMAIL_PATTERN, email):
+    def register(self, user_data, user_role='user'):
+        if not re.match(self.EMAIL_PATTERN, user_data["email"]):
             print("❌ Error: Invalid email format.")
             return False
-        if not re.match(self.PHONE_PATTERN, phone):
-            print("❌ Error: Invalid Egyptian phone number.")
-            return False
+        if user_data.get("phone"):
+            if not re.match(self.PHONE_PATTERN, user_data["phone"]):
+                print("❌ Error: Invalid Egyptian phone number.")
+                return False
         
         users= self.load_data()
 
-        for user_data in users.values():
-            if user_data['email'] == email:
+        for usr_data in users.values():
+            if usr_data['email'] == user_data["email"]:
                 print("❌ Error: Email already registered.")
                 return False
         
         user_id = str(uuid.uuid4())
-        hashed_pwd = self._hash_password(password)
+        hashed_pwd = self._hash_password(user_data["password"])
         user_role = user_role.lower()
 
         users[user_id] = {
-            "name": name,
-            "email": email,
+            "name": user_data['name'],
+            "email": user_data['email'],
             "password": hashed_pwd,
-            "phone": phone,
-            "address": address,
             "user_role": user_role,
             "created_at": datetime.now().isoformat()
         }
+        if user_data.get("phone"): users[user_id]["phone"] = user_data["phone"]
+        if user_data.get("address"): users[user_id]["address"] = user_data["address"]
 
         self.save_data(users)
-        print(f"✅ Success: New {user_role} account created for '{name}'.")
+        print(f"✅ Success: New {user_role} account created for '{user_data["name"]}'.")
         return True
     
-    def login(self, email, password):
+    def authenticate(self, user_data):
         users = self.load_data()
-        hashed_input = self._hash_password(password)
+        hashed_input = self._hash_password(user_data['password'])
 
-        for user_id, user_data in users.items():
-            if user_data['email'] == email and user_data['password'] == hashed_input:
-                print(f"🔓 Login successful! Welcome, {user_data['name']}.")
-                return user_id, user_data['user_role'], user_data['name']
+        for user_id, usr_data in users.items():
+            if usr_data['email'] == user_data["email"] and usr_data['password'] == hashed_input:
+                print(f"🔓 Login successful! Welcome, {usr_data['name']}.")
+                return user_id, usr_data
         
         print("⚠️ Login Failed: Check your email or password.")
         return None, None

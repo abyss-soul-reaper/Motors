@@ -18,7 +18,7 @@ class VehiclesManager(BaseDataManager):
             match = True
 
             for key, value in filters.items():
-                if key in v_data and v_data[key] != value:
+                if key in v_data and v_data[key] <= value:
                     match = False
 
             if match:

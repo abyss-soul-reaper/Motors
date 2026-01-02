@@ -50,7 +50,7 @@ class UserInterface:
 
         return user_data
 
-    def get_login_ipt(self):
+    def get_authenticate_ipt(self):
         print ('\n--- Login ---')
 
         email = input('Email: ').strip().lower()
@@ -76,7 +76,8 @@ class UserInterface:
         choice = input('\n➤ Select your move: ').strip()
         return choice 
 
-    def get_v_data_ipt(self):
+    @staticmethod
+    def get_v_data_ipt():
         print("\n--- Add New Vehicle ---")
 
         brand = input('Brand: ').strip().title()
@@ -94,7 +95,7 @@ class UserInterface:
         while True:
             try:
                 year = int(input('Year: ').strip())
-                if 1886 <= year <= self.LAST_YEAR: break 
+                if 1886 <= year <= UserInterface.LAST_YEAR: break 
                 print("❌ Please enter a valid year (1886-2026).")
             except ValueError:
                 print("❌ Invalid input. Please enter the year as a number.")
@@ -128,37 +129,31 @@ class UserInterface:
             "quantity": quantity,
         }
         return v_data
-
-    def get_v_srh_ipt(self):
-        print() # المقدمة
-
+    
+    @staticmethod
+    def get_v_srh_ipt():
+        print("\n--- Search Inventory (Press Enter to skip any field) ---")
         v_srh_data = {}
 
-        brand = input('Brand: ').strip().title()
+        brand = input('➤ Brand: ').strip().title()
         if brand: v_srh_data["brand"] = brand
 
-        model = input('Model: ').strip().title()
+        model = input('➤ Model: ').strip().title()
         if model: v_srh_data["model"] = model
 
-        v_type = input('Type (e.g., Sedan, SUV): ').strip().title()
-        if v_type: v_srh_data["v_type"] = v_type
+        v_type = input('➤ Type : ').strip().title()
+        if v_type: v_srh_data["type"] = v_type
 
         try:
-            year = int(input('Year: ').strip())
-            if year: v_srh_data["year"] = year
+            year_input = input('➤ Year : ').strip()
+            if year_input: v_srh_data["year"] = int(year_input)
         except ValueError:
-            print("❌ Invalid input.")
+            print("  ⚠️ Invalid year ignored. Searching by other criteria...")
 
         try:
-            price = int(input('Price: ').strip())
-            if price: v_srh_data["price"] = price
+            price_input = input('➤ Max Price: ').strip()
+            if price_input: v_srh_data["price"] = int(price_input)
         except ValueError:
-            print("❌ Invalid input.")
-
-        try:
-            qty_input = input('Quantity : ').strip()
-            if qty_input: v_srh_data["quantity"] = int(qty_input)
-        except ValueError:
-            print("❌ Invalid input.")
+            print("  ⚠️ Invalid price ignored. Searching by other criteria...")
 
         return v_srh_data
