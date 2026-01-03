@@ -204,9 +204,10 @@ for line in raw_data.split('\n'):
             "year": random.randint(2020, 2026),
             "price": price,
             "quantity": random.randint(1, 5),
-            "role": 'Admin',
             "status": "available",
+            "owner_type": "system",
+            "owner_id": None,
             "created_at": datetime.now().isoformat()
         }
-with open('vehicles.json', 'w', encoding='utf-8') as f:
+with open(r'DATA\vehicles.json', 'w', encoding='utf-8') as f:
     json.dump(vehicles, f, indent=4)
