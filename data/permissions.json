@@ -1,0 +1,90 @@
+{
+  "CORE_FEATURES": [
+    "AUTHENTICATION",
+    "PROFILE_MANAGEMENT",
+    "ACCOUNT_COMPLETION",
+    "CHANGE_PASSWORD",
+    "LOGOUT",
+    "VIEW_NOTIFICATIONS",
+    "DELETE_ACCOUNT"
+  ],
+  "GUEST_FEATURES": {
+    "PUBLIC": [
+      "BROWSE_VEHICLES",
+      "VEHICLE_DETAILS",
+      "ADVANCED_SEARCH",
+      "REGISTER",
+      "LOGIN"
+    ]
+  },
+  "BUYER_FEATURES": {
+    "BROWSING": [
+      "BROWSE_VEHICLES",
+      "ADVANCED_SEARCH",
+      "VEHICLE_DETAILS"
+    ],
+    "CART": [
+      "ADD_ITEM",
+      "REMOVE_ITEM",
+      "VIEW_CART",
+      "CLEAR_CART",
+      "CALCULATE_TOTAL"
+    ],
+    "WISHLIST": [
+      "ADD_TO_WISHLIST",
+      "REMOVE_FROM_WISHLIST",
+      "VIEW_WISHLIST",
+      "CLEAR_WISHLIST",
+      "FOLLOW_SELLER"
+    ],
+    "ORDERS": [
+      "CHECKOUT",
+      "ORDER_HISTORY",
+      "FEEDBACK_CONTACT"
+    ]
+  },
+  "SELLER_FEATURES": {
+    "INVENTORY": [
+      "ADD_VEHICLE",
+      "UPDATE_VEHICLE",
+      "REMOVE_VEHICLE",
+      "VIEW_MY_VEHICLES",
+      "VIEW_SALES",
+      "ORDER_FULFILLMENT"
+    ],
+    "FINANCE": [
+      "VIEW_EARNINGS",
+      "WITHDRAW_MONEY"
+    ],
+    "SHOP": [
+      "EDIT_SHOP_INFO"
+    ]
+  },
+  "ADMIN_FEATURES": {
+    "SYSTEM": [
+      "SYSTEM_DASHBOARD",
+      "USER_MANAGEMENT",
+      "VEHICLE_MODERATION",
+      "ORDER_MONITORING",
+      "FEEDBACK_MODERATION",
+      "SYSTEM_SETTINGS"
+    ],
+    "USER_MANAGEMENT_ACTIONS": [
+      "VIEW_USERS",
+      "CHANGE_USER_ROLE",
+      "DEACTIVATE_USER",
+      "DELETE_USER"
+    ],
+    "VEHICLE_MANAGEMENT_ACTIONS": [
+      "VIEW_ALL_VEHICLES",
+      "APPROVE_REJECT_VEHICLE",
+      "REMOVE_VEHICLE"
+    ]
+  },
+  "REQUIRES_COMPLETE_PROFILE": [
+    "ADD_VEHICLE",
+    "SELL_VEHICLE",
+    "CHECKOUT",
+    "RECEIVE_PAYMENTS"
+  ]
+}
