@@ -1,5 +1,5 @@
-from core.base import BaseDataManager
-from core.roles import Roles
+from APP.core.base import BaseDataManager
+from APP.core.roles import Roles
 
 class Permissions(BaseDataManager):
     """
@@ -50,7 +50,7 @@ class Permissions(BaseDataManager):
         CORE = tuple(DATA.get("CORE_FEATURES", []))
 
         return {
-            Roles.GUEST: self._to_sets(DATA.get("GUEST_FEATURES", {})),
+            Roles.GUEST: DATA.get("GUEST_FEATURES", {}),
 
             Roles.BUYER: {
                 "CORE": CORE,

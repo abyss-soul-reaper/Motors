@@ -1,8 +1,8 @@
 import re
 from datetime import datetime
-from models.user_model import UserModel
-from core.utils.validators import is_valid_email, is_valid_phone
-from core.permissions import Permissions
+from APP.models.user_model import UserModel
+from APP.core.utils.validators import is_valid_email, is_valid_phone
+from APP.core.permissions import Permissions
 class UserInterface:
     def __init__(self):
         pass
@@ -72,4 +72,4 @@ class UserInterface:
         role_perms = permissions.get_role_permissions(role)
         print(f"\n=== {role} Features ===")
         for group, actions in role_perms.items():
-            print(f"{group}: {', '.join(actions)}")
+            for i, act in enumerate(actions, start=1): print(f'-{group}- {i}. {act}')

@@ -1,8 +1,8 @@
 from APP.core.roles import Roles
-from ui.user_cli import UserInterface
-from managers.user_manager import UserManager
-from core.context import SystemContext
-from core.permissions import Permissions 
+from APP.ui.user_cli import UserInterface
+from APP.managers.user_manager import UserManager
+from APP.core.context import SystemContext
+from APP.core.permissions import Permissions 
 
 class SystemController:
     def __init__(self):

@@ -1,7 +1,7 @@
 import uuid
-from core.base import BaseDataManager
-from core.utils.security import hash_password
-from core.utils.validators import is_valid_email, is_valid_phone
+from APP.core.base import BaseDataManager
+from APP.core.utils.security import hash_password
+from APP.core.utils.validators import is_valid_email, is_valid_phone
 
 class UserManager(BaseDataManager):
     FILE_PATH = r'data\users.json'
@@ -35,16 +35,16 @@ class UserManager(BaseDataManager):
             }
 
         user_data.pop("user_id", None)  # Ensure user_id is not set
-        user_data["user_id"] = str(uuid.uuid4())
+        user_id = str(uuid.uuid4())
         hashed_pwd = hash_password(user_data["basic_info"]["password"])
         user_data["basic_info"]["password"] = hashed_pwd
-        users[user_data["user_id"]] = user_data
+        users[user_id] = user_data
 
         self.save_data(users)
         return {
         "success": True,
-        "user_id": usr_data["user_id"],
-        "role": usr_data["account"]["role"],
+        "user_id": user_id,
+        "role": user_data["account"]["role"],
         "is_profile_complete": usr_data["account"]["is_profile_complete"]
     }
 
