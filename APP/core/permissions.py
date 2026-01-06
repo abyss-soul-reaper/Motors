@@ -46,25 +46,25 @@ class Permissions(BaseDataManager):
         Returns:
             dict: Mapping of Roles to their permission groups.
         """
-        data = self._raw_data
-        CORE = tuple(data.get("CORE_FEATURES", []))
+        DATA = self._raw_data
+        CORE = tuple(DATA.get("CORE_FEATURES", []))
 
         return {
-            Roles.GUEST: self._to_sets(data.get("GUEST_FEATURES", {})),
+            Roles.GUEST: self._to_sets(DATA.get("GUEST_FEATURES", {})),
 
             Roles.BUYER: {
                 "CORE": CORE,
-                **self._to_sets(data.get("BUYER_FEATURES", {}))
+                **self._to_sets(DATA.get("BUYER_FEATURES", {}))
             },
 
             Roles.SELLER: {
                 "CORE": CORE,
-                **self._to_sets(data.get("SELLER_FEATURES", {}))
+                **self._to_sets(DATA.get("SELLER_FEATURES", {}))
             },
 
             Roles.ADMIN: {
                 "CORE": CORE,
-                **self._to_sets(data.get("ADMIN_FEATURES", {}))
+                **self._to_sets(DATA.get("ADMIN_FEATURES", {}))
             }
         }
 
@@ -98,8 +98,8 @@ class Permissions(BaseDataManager):
         Returns:
             bool: True if the action is permitted for the role, otherwise False.
         """
-        role_permissions = self.permissions.get(role, {})
-        return any(action in actions for actions in role_permissions.values())
+        ROLE_PERMISSIONS = self.permissions.get(role, {})
+        return any(action in actions for actions in ROLE_PERMISSIONS.values())
 
     def is_complete_required(self, action):
         """
@@ -112,3 +112,6 @@ class Permissions(BaseDataManager):
             bool: True if the action requires profile completion, otherwise False.
         """
         return action in self._requires_complete
+
+    def get_role_permissions(self, role):
+        return self.permissions.get(role, {})

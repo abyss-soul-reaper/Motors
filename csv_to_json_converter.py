@@ -209,5 +209,5 @@ for line in raw_data.split('\n'):
             "owner_id": None,
             "created_at": datetime.now().isoformat()
         }
-with open(r'DATA\vehicles.json', 'w', encoding='utf-8') as f:
+with open(r'data\vehicles.json', 'w', encoding='utf-8') as f:
     json.dump(vehicles, f, indent=4)
