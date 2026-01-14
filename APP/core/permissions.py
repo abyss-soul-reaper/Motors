@@ -29,7 +29,7 @@ class Permissions(BaseDataManager):
         super().__init__(self.FILE_PATH)
         self._raw_data = self.load_data()
 
-        self._requires_complete = set(
+        self.requires_complete = set(
             self._raw_data.get("REQUIRES_COMPLETE_PROFILE", [])
         )
 
@@ -111,7 +111,7 @@ class Permissions(BaseDataManager):
         Returns:
             bool: True if the action requires profile completion, otherwise False.
         """
-        return action in self._requires_complete
+        return action in self.requires_complete
 
-    def get_role_permissions(self, role):
+    def get_role_perms(self, role):
         return self.permissions.get(role, {})

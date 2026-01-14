@@ -45,7 +45,7 @@ class UserManager(BaseDataManager):
         "success": True,
         "user_id": user_id,
         "role": user_data["account"]["role"],
-        "is_profile_complete": usr_data["account"]["is_profile_complete"]
+        "is_profile_complete": user_data["account"]["is_profile_complete"]
     }
 
     def login(self, user_data):

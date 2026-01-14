@@ -36,17 +36,35 @@ class SystemController:
             return True
         else:
             return False
-        
-    def show_permissions(self):
-        return self.ui.role_features(self.perms, self.context.role)
+
+    def get_group_index_map(self):
+        permissions = self.perms.get_role_perms(self.context.role)
+        index_map = {}
+        for i, group_name in enumerate(permissions.keys(), start=1):
+            index_map[i] = group_name
+        return index_map, permissions
+    
+    def get_action_index_map(self, actions):    
+        action_map = {}
+        for i, act in enumerate(actions, start=1):
+            action_map[i] = act
+        return action_map
+    
+    def choose_permission(self):
+        index_map, permissions = self.get_group_index_map()
+        group = self.ui.role_groups(index_map, self.context.role)
+        action_map = self.get_action_index_map(permissions[group])
+        feature = self.ui.role_features(action_map, self.context.role)
+        return feature
         
     def check_permission(self, action):
         has_perm = self.perms.has_permission(self.context.role, action)
         if has_perm:
-            if action in self.perms._requires_complete:
+            if action in self.perms.requires_complete:
                 if not self.context.is_profile_complete:
                     return False
             return True
+        return False
         
     def logout_user(self):
         self.context.logout()

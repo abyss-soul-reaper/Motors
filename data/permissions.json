@@ -14,7 +14,8 @@
       "VEHICLE_DETAILS",
       "ADVANCED_SEARCH",
       "REGISTER",
-      "LOGIN"
+      "LOGIN",
+      "LOGOUT"
     ]
   },
   "BUYER_FEATURES": {
