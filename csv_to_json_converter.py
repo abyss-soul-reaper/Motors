@@ -2,212 +2,138 @@ import uuid
 import random
 from datetime import datetime
 import json
-import re
 
-pattern = r'^- (.+?) (.+?) : ([\d,]+)\$'
-
-raw_data = """------------------------------
--A-
-------------------------------
-Cars
-- Audi R8 V10 Performance : 190,000$
-- Audi RS Q8 : 120,000$
-- Audi e-tron GT : 105,000$
-Bikes
-- Aprilia RSV4 Factory 1100 : 26,000$
-- Arc Vector : 120,000$
-------------------------------
--B-
-------------------------------
-Cars
-- BMW M4 Competition : 87,000$
-- BMW X7 M60i : 125,000$
-- BMW iX M60 : 110,000$
-- Bentley Bentayga Speed : 250,000$
-- Bugatti Chiron Super Sport 300+ : 3,900,000$
-Bikes
-- BMW M 1000 RR : 33,000$
-- BMW R 1300 GS : 19,000$
-------------------------------
--C-
-------------------------------
-Cars
-- Cadillac Escalade V : 150,000$
-- Chevrolet Corvette Z06 : 110,000$
-- Chevrolet Silverado ZR2 : 72,000$
-Bikes
-- Cake Kalk OR : 13,000$
-------------------------------
--D-
-------------------------------
-Bikes
-- Damon Hypersport Premier : 40,000$
-- Ducati Diavel V4 : 27,000$
-- Ducati Multistrada V4 Rally : 29,000$
-- Ducati Superleggera V4 : 100,000$
-------------------------------
--E-
-------------------------------
-Bikes
-- Energica Ego+ RS : 25,000$
-------------------------------
--F-
-------------------------------
-Cars
-- Ferrari SF90 Stradale : 520,000$
-- Ford F-150 Raptor R : 109,000$
-- Ford Mustang Mach-E GT : 69,000$
-- Ford Mustang Shelby GT500 : 80,000$
-- Ford Ranger Raptor : 55,000$
-Bikes
-- Fantic Motor Caballero 500 E : 15,000$
-------------------------------
--G-
-------------------------------
-Cars
-- GMC Hummer EV Pickup Edition 1 : 115,000$
-- GMC Sierra 1500 Denali Ultimate : 83,000$
-------------------------------
--H-
-------------------------------
-Cars
-- Honda Ridgeline Black Edition : 49,000$
-- Hyundai Ioniq 5 Limited : 52,000$
-Bikes
-- Harley-Davidson CVO Road Glide Limited : 50,000$
-- Harley-Davidson Fat Boy 114 : 22,000$
-- Harley-Davidson Pan America 1250 Special : 20,000$
-- Honda Africa Twin CRF1100L : 15,000$
-- Honda CBR1000RR-R Fireblade SP : 28,000$
-- Honda Rebel 1100 : 9,500$
-------------------------------
--I-
-------------------------------
-Bikes
-- Indian Challenger Dark Horse : 27,000$
-- Indian Scout Rogue : 12,000$
-------------------------------
--K-
-------------------------------
-Cars
-- Kia EV6 GT : 55,000$
-- Koenigsegg Jesko Absolut : 2,800,000$
-Bikes
-- KTM 1290 Super Adventure R : 21,000$
-- KTM 1290 Super Duke R Evo : 19,500$
-- KTM 890 Adventure R : 14,000$
-- Kawasaki Ninja H2R : 58,000$
-- Kawasaki Versys 1000 SE LT+ : 18,000$
-- Kawasaki Vulcan S : 7,300$
-- Kawasaki ZX-10R KRT Edition : 17,000$
-------------------------------
--L-
-------------------------------
-Cars
-- Lamborghini Huracan STO : 330,000$
-- Lamborghini Urus : 230,000$
-- Lexus LX 600 F Sport : 105,000$
-- Lucid Air Grand Touring : 138,000$
-Bikes
-- Lightning LS-218 : 38,000$
-- LiveWire One (Harley-Davidson) : 23,000$
-------------------------------
--M-
-------------------------------
-Cars
-- McLaren Speedtail : 2,250,000$
-- Mercedes-AMG G 63 : 179,000$
-- Mercedes-Benz EQS 580 : 127,000$
-------------------------------
--N-
-------------------------------
-Cars
-- Nissan Frontier Pro-4X : 45,000$
-------------------------------
--P-
-------------------------------
-Cars
-- Polestar 2 Long Range Dual Motor : 62,000$
-- Porsche 911 GT3 RS : 240,000$
-- Porsche Cayenne Turbo GT : 196,000$
-- Porsche Taycan Turbo S : 190,000$
-------------------------------
--R-
-------------------------------
-Cars
-- Ram 1500 TRX : 85,000$
-- Range Rover Autobiography LWB : 185,000$
-- Rivian R1T : 75,000$
-- Rolls-Royce Cullinan : 350,000$
-------------------------------
--S-
-------------------------------
-Bikes
-- Super Soco TC Max : 5,500$
-- Suzuki Boulevard M109R B.O.S.S. : 15,000$
-- Suzuki GSX-R1000R : 18,000$
-- Suzuki V-Strom 1050XT : 15,000$
-------------------------------
--T-
-------------------------------
-Cars
-- Tesla Model S Plaid : 110,000$
-- Toyota Tundra Capstone : 76,000$
-Bikes
-- Triumph Rocket 3 R : 23,500$
-- Triumph Speed Triple 1200 RS : 18,500$
-- Triumph Tiger 1200 Rally Pro : 23,000$
-------------------------------
--Y-
-------------------------------
-Bikes
-- Yamaha Bolt R-Spec : 8,500$
-- Yamaha Tenere 700 : 10,500$
-- Yamaha YZF-R1M : 27,000$
-------------------------------
--Z-
-------------------------------
-Bikes
-- Zero DSR/X : 21,000$
-- Zero SR/S Premium : 20,000$
-Sorting Finished."""
-
-vehicles = {}
-current_type = 'Car'
-
-for line in raw_data.split('\n'):
-
-    if line == 'Cars': 
-        current_type = 'Car'
-        continue
-    elif line == 'Bikes': 
-        current_type = 'Bike'
-        continue
-
-    if re.match(r'^-+\s*([A-Z])\s*-+$', line):
-        continue
-
-    type_match = re.match(r'^-+\s*([A-Z])\s*-+$', line)
-    if type_match:
-        continue
-    
-    match = re.search(pattern, line)
-    if match:
-        brand = match.group(1).strip()
-        model = match.group(2).strip()
-        price = int(match.group(3).replace(',', '').strip())
-        vehicle_id = str(uuid.uuid4())
-        vehicles[vehicle_id] = {
-            "brand": brand,
-            "model": model,
-            "type": current_type,
-            "year": random.randint(2020, 2026),
-            "price": price,
-            "quantity": random.randint(1, 5),
-            "status": "available",
-            "owner_type": "system",
-            "owner_id": None,
-            "created_at": datetime.now().isoformat()
+vehicles= {
+    "Cars": {
+        "Sport": {
+            "Bugatti Chiron Super Sport 300+": 3900000,
+            "Koenigsegg Jesko Absolut": 2800000,
+            "McLaren Speedtail": 2250000,
+            "Ferrari SF90 Stradale": 520000,
+            "Lamborghini Huracan STO": 330000,
+            "Porsche 911 GT3 RS": 240000,
+            "Audi R8 V10 Performance": 190000,
+            "Chevrolet Corvette Z06": 110000,
+            "BMW M4 Competition": 87000,
+            "Ford Mustang Shelby GT500": 80000
+        },
+        "SUV": {
+            "Rolls-Royce Cullinan": 350000,
+            "Bentley Bentayga Speed": 250000,
+            "Lamborghini Urus": 230000,
+            "Mercedes-AMG G 63": 179000,
+            "Range Rover Autobiography LWB": 185000,
+            "Porsche Cayenne Turbo GT": 196000,
+            "Cadillac Escalade V": 150000,
+            "BMW X7 M60i": 125000,
+            "Audi RS Q8": 120000,
+            "Lexus LX 600 F Sport": 105000
+        },
+        "Truck": {
+            "GMC Hummer EV Pickup Edition 1": 115000,
+            "Ford F-150 Raptor R": 109000,
+            "Ram 1500 TRX": 85000,
+            "Rivian R1T": 75000,
+            "Chevrolet Silverado ZR2": 72000,
+            "GMC Sierra 1500 Denali Ultimate": 83000,
+            "Toyota Tundra Capstone": 76000,
+            "Ford Ranger Raptor": 55000,
+            "Nissan Frontier Pro-4X": 45000,
+            "Honda Ridgeline Black Edition": 49000
+        },
+        "Electric": {
+            "Tesla Model S Plaid": 110000,
+            "Porsche Taycan Turbo S": 190000,
+            "Lucid Air Grand Touring": 138000,
+            "Mercedes-Benz EQS 580": 127000,
+            "BMW iX M60": 110000,
+            "Audi e-tron GT": 105000,
+            "Ford Mustang Mach-E GT": 69000,
+            "Polestar 2 Long Range Dual Motor": 62000,
+            "Kia EV6 GT": 55000,
+            "Hyundai Ioniq 5 Limited": 52000
         }
+    },
+    "Bikes": {
+        "Sport": {
+            "Ducati Superleggera V4": 100000,
+            "Kawasaki Ninja H2R": 58000,
+            "BMW M 1000 RR": 33000,
+            "Honda CBR1000RR-R Fireblade SP": 28000,
+            "Yamaha YZF-R1M": 27000,
+            "Aprilia RSV4 Factory 1100": 26000,
+            "KTM 1290 Super Duke R Evo": 19500,
+            "Suzuki GSX-R1000R": 18000,
+            "Triumph Speed Triple 1200 RS": 18500,
+            "Kawasaki ZX-10R KRT Edition": 17000
+        },
+        "Cruiser": {
+            "Harley-Davidson CVO Road Glide Limited": 50000,
+            "Ducati Diavel V4": 27000,
+            "Indian Challenger Dark Horse": 27000,
+            "Triumph Rocket 3 R": 23500,
+            "Harley-Davidson Fat Boy 114": 22000,
+            "Indian Scout Rogue": 12000,
+            "Honda Rebel 1100": 9500,
+            "Yamaha Bolt R-Spec": 8500,
+            "Kawasaki Vulcan S": 7300,
+            "Suzuki Boulevard M109R B.O.S.S.": 15000
+        },
+        "Adventure": {
+            "Ducati Multistrada V4 Rally": 29000,
+            "BMW R 1300 GS": 19000,
+            "KTM 1290 Super Adventure R": 21000,
+            "Triumph Tiger 1200 Rally Pro": 23000,
+            "Harley-Davidson Pan America 1250 Special": 20000,
+            "Honda Africa Twin CRF1100L": 15000,
+            "Yamaha Tenere 700": 10500,
+            "Suzuki V-Strom 1050XT": 15000,
+            "Kawasaki Versys 1000 SE LT+": 18000,
+            "KTM 890 Adventure R": 14000
+        },
+        "Electric": {
+            "Arc Vector": 120000,
+            "LiveWire One (Harley-Davidson)": 23000,
+            "Energica Ego+ RS": 25000,
+            "Zero SR/S Premium": 20000,
+            "Zero DSR/X": 21000,
+            "Cake Kalk OR": 13000,
+            "Fantic Motor Caballero 500 E": 15000,
+            "Lightning LS-218": 38000,
+            "Damon Hypersport Premier": 40000,
+            "Super Soco TC Max": 5500
+        }
+    }
+}
+
+vehicles_data = {}
+current_type = None
+current_category = None
+
+for types, category in vehicles.items():
+    if types == "Cars":
+        current_type = "Car"
+    elif types == "Bikes":
+        current_type = "Bike"
+
+    for category_name, cars in category.items():
+        if category_name:
+            current_category = category_name
+
+        for car_name, price in cars.items():
+            vehicle_id = str(uuid.uuid4())
+            vehicles_data[vehicle_id] = {
+                "brand": car_name,
+                "type": current_type,
+                "category": current_category,
+                "year": random.randint(2020, 2026),
+                "price": price,
+                "quantity": random.randint(1, 5),
+                "status": "available",
+                "owner_type": "system",
+                "owner_id": None,
+                "created_at": datetime.now().isoformat()
+            }
+
 with open(r'data\vehicles.json', 'w', encoding='utf-8') as f:
-    json.dump(vehicles, f, indent=4)
+    json.dump(vehicles_data, f, indent=4)

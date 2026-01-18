@@ -15,7 +15,7 @@ class Permissions(BaseDataManager):
     to keep the system scalable and easy to maintain.
     """
 
-    FILE_PATH = "data/permissions.json"
+    FILE_PATH = r"data/permissions.json"
 
     def __init__(self):
         """

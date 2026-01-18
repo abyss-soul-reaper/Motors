@@ -81,13 +81,13 @@ class UserInterface:
         return index_map[int(group_choice)]
 
     @staticmethod
-    def role_features(action_map, role):
-        print(f"\n=== {role} Actions ===")
+    def role_features(action_map, group):
+        print(f"\n=== {group} Actions ===")
         for i, act in action_map.items():
             print(f"-- {i}. {act} --")
 
         action_choice = input("Select action number :")
         while not action_choice.isdigit() or int(action_choice) not in action_map:
             action_choice = input("❌ Invalid choice. Select a valid action number: ").strip()
-
+        print(action_map[int(action_choice)])
         return action_map[int(action_choice)]

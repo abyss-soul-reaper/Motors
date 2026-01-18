@@ -1,0 +1,70 @@
+Start
+  │
+  ▼
+[User chooses action]
+  │
+  ├──► Register
+  │       │
+  │       ▼
+  │   [UserInterface.register()]
+  │       │
+  │       ▼
+  │   [UserManager.register(user_data)]
+  │       │
+  │       ▼
+  │   Success? ──► No ──► Show error & retry
+  │       │
+  │      Yes
+  │       │
+  │       ▼
+  │   [SystemContext.set_user(...)]
+  │
+  └──► Login
+          │
+          ▼
+      [UserInterface.login()]
+          │
+          ▼
+      [UserManager.login(credentials)]
+          │
+          ▼
+      Success? ──► No ──► Show error & retry
+          │
+         Yes
+          │
+          ▼
+      [SystemContext.set_user(...)]
+  
+  ▼
+[User chooses permission]
+  │
+  ▼
+[SystemController.get_group_index_map()]
+  │
+  ▼
+[UserInterface.role_groups()]  ← user selects group by number
+  │
+  ▼
+[SystemController.get_action_index_map()]
+  │
+  ▼
+[UserInterface.role_features()]  ← user selects action by number
+  │
+  ▼
+[SystemController.check_permission(action)]
+  │
+  ├──► Allowed? ──► No ──► Show message: "Complete profile first"
+  │
+  └──► Yes
+          │
+          ▼
+      Execute action (placeholder for real functionality)
+  
+  ▼
+Logout
+  │
+  ▼
+[SystemContext.logout()]
+  │
+  ▼
+End

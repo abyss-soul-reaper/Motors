@@ -1,6 +1,7 @@
 from APP.core.roles import Roles
 from APP.ui.user_cli import UserInterface
 from APP.managers.user_manager import UserManager
+from APP.managers.vehicles_manager import VehiclesManager
 from APP.core.context import SystemContext
 from APP.core.permissions import Permissions 
 
@@ -8,6 +9,7 @@ class SystemController:
     def __init__(self):
         self.ui = UserInterface()
         self.u_mgr = UserManager()
+        self.v_mgr = VehiclesManager()
         self.context = SystemContext()
         self.perms = Permissions()
 
@@ -21,8 +23,7 @@ class SystemController:
                 "is_profile_complete": result["is_profile_complete"]
             })
             return True
-        else:
-            return False
+        return False
         
     def login_user(self):
         credentials = self.ui.login()
@@ -34,8 +35,7 @@ class SystemController:
                 "is_profile_complete": result.get("is_profile_complete", False)
             })
             return True
-        else:
-            return False
+        return False
 
     def get_group_index_map(self):
         permissions = self.perms.get_role_perms(self.context.role)
@@ -54,7 +54,7 @@ class SystemController:
         index_map, permissions = self.get_group_index_map()
         group = self.ui.role_groups(index_map, self.context.role)
         action_map = self.get_action_index_map(permissions[group])
-        feature = self.ui.role_features(action_map, self.context.role)
+        feature = self.ui.role_features(action_map, group)
         return feature
         
     def check_permission(self, action):
