@@ -1,4 +1,3 @@
-import re
 from datetime import datetime
 from APP.models.user_model import UserModel
 from APP.core.utils.validators import is_valid_email, is_valid_phone, is_valid_role
@@ -91,3 +90,58 @@ class UserInterface:
             action_choice = input("❌ Invalid choice. Select a valid action number: ").strip()
         print(action_map[int(action_choice)])
         return action_map[int(action_choice)]
+
+    def browse_vehicles(self, paginator):
+        print("\n--- Available Vehicles ---\n")
+        page_num = 1
+        count = 1
+
+        while True:
+            page = paginator.get_page(page_num)
+            items = page.get("items", [])
+            current_page = page.get("current_page", 1)
+            total_pages = page.get("total_pages", 1)
+
+            if not items:
+                print("No available vehicles at the moment.")
+                return
+            
+            print(f"--- Page {current_page} of {total_pages} ---\n")
+
+            for vehicle in items:
+        
+                print(f"[{count}]")
+                print("-" * 50)
+                print(f"Model    : {vehicle.get('model')}")
+                print(f"Type     : {vehicle.get('type')}")
+                print(f"Category : {vehicle.get('category')}")
+                print(f"Price    : {vehicle.get('price'):,} $")
+                print(f"Year     : {vehicle.get('year')}")
+                print("-" * 50 + "\n")
+
+                count += 1
+
+            print("n - Next Page | p - Previous Page | q - Quit Browsing")
+            cmd = input("Enter command: ").strip().lower()
+
+            if cmd == 'n':
+                if current_page < total_pages:
+                    page_num += 1
+                    count = 1
+                else:
+                    print("\nlast page.")
+                    count = 1
+
+            elif cmd == 'p':
+                if current_page > 1:
+                    page_num -= 1
+                    count = 1
+                else:
+                    print("\nfirst page.")
+                    count = 1
+                    
+            elif cmd == 'q':
+                print("\nExiting vehicle browsing.")
+                break
+            else:
+                print("\nInvalid command. Please try again.")

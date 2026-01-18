@@ -1,522 +1,522 @@
 {
-    "afcffbaa-01a5-41e3-bbc3-d8a15e8747df": {
-        "brand": "Bugatti Chiron Super Sport 300+",
-        "type": "Car",
-        "category": "Sport",
-        "year": 2025,
-        "price": 3900000,
-        "quantity": 3,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.032874"
-    },
-    "6a8948e9-7738-44ab-80d1-43f46c213e9b": {
-        "brand": "Koenigsegg Jesko Absolut",
-        "type": "Car",
-        "category": "Sport",
-        "year": 2020,
-        "price": 2800000,
-        "quantity": 4,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033308"
-    },
-    "414166c2-bd6b-43b2-99f0-29a3cc1b2520": {
-        "brand": "McLaren Speedtail",
+    "70524cd1-b6c2-4b67-b0c0-861006f88c1a": {
+        "model": "Bugatti Chiron Super Sport 300+",
         "type": "Car",
         "category": "Sport",
         "year": 2021,
-        "price": 2250000,
+        "price": 3900000,
         "quantity": 2,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033326"
+        "created_at": "2026-01-18T11:34:14.935244"
     },
-    "24179472-7704-4131-ac16-8a220c1aa97a": {
-        "brand": "Ferrari SF90 Stradale",
+    "30fede85-8e9f-4577-a45a-2f07ec510888": {
+        "model": "Koenigsegg Jesko Absolut",
         "type": "Car",
         "category": "Sport",
-        "year": 2023,
-        "price": 520000,
-        "quantity": 2,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033341"
-    },
-    "b677b48d-2f75-4dae-b343-b14ad5e7fa78": {
-        "brand": "Lamborghini Huracan STO",
-        "type": "Car",
-        "category": "Sport",
-        "year": 2020,
-        "price": 330000,
+        "year": 2026,
+        "price": 2800000,
         "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033354"
+        "created_at": "2026-01-18T11:34:14.935858"
     },
-    "cb1d6be5-ae87-427f-ad79-90707ec617ae": {
-        "brand": "Porsche 911 GT3 RS",
+    "c74d142a-6f56-4c12-84b9-d5d0259053de": {
+        "model": "McLaren Speedtail",
         "type": "Car",
         "category": "Sport",
         "year": 2023,
+        "price": 2250000,
+        "quantity": 5,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.935959"
+    },
+    "974cbe2a-2789-4b8b-8375-d217d69fa4a4": {
+        "model": "Ferrari SF90 Stradale",
+        "type": "Car",
+        "category": "Sport",
+        "year": 2020,
+        "price": 520000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.935979"
+    },
+    "5c7ff533-ab2c-472f-96dd-caa296b94673": {
+        "model": "Lamborghini Huracan STO",
+        "type": "Car",
+        "category": "Sport",
+        "year": 2023,
+        "price": 330000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.935999"
+    },
+    "dd36b9ae-21cb-4367-b53a-4eae3b0a1ea9": {
+        "model": "Porsche 911 GT3 RS",
+        "type": "Car",
+        "category": "Sport",
+        "year": 2025,
         "price": 240000,
         "quantity": 5,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033368"
+        "created_at": "2026-01-18T11:34:14.936024"
     },
-    "6a8dabd4-4336-4f00-be15-c4c3a17a50b7": {
-        "brand": "Audi R8 V10 Performance",
+    "a676ab7c-54ae-4468-867d-5c8fda9ae670": {
+        "model": "Audi R8 V10 Performance",
         "type": "Car",
         "category": "Sport",
-        "year": 2025,
+        "year": 2024,
         "price": 190000,
-        "quantity": 3,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033381"
-    },
-    "9332ccf8-b3c5-447f-8f43-19c1021c93ac": {
-        "brand": "Chevrolet Corvette Z06",
-        "type": "Car",
-        "category": "Sport",
-        "year": 2020,
-        "price": 110000,
         "quantity": 1,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033432"
+        "created_at": "2026-01-18T11:34:14.936777"
     },
-    "5692fba1-4831-4985-9889-3642a0d61b0e": {
-        "brand": "BMW M4 Competition",
+    "66c3127d-9d4e-49e3-a108-1c8a63766588": {
+        "model": "Chevrolet Corvette Z06",
         "type": "Car",
         "category": "Sport",
-        "year": 2021,
-        "price": 87000,
+        "year": 2020,
+        "price": 110000,
         "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033457"
+        "created_at": "2026-01-18T11:34:14.936873"
     },
-    "8e7bf71e-994b-484e-aa45-cfb32421d1a2": {
-        "brand": "Ford Mustang Shelby GT500",
+    "ced304ea-b321-49a8-874f-ab0177e0b255": {
+        "model": "BMW M4 Competition",
         "type": "Car",
         "category": "Sport",
-        "year": 2025,
-        "price": 80000,
-        "quantity": 5,
+        "year": 2023,
+        "price": 87000,
+        "quantity": 1,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033471"
+        "created_at": "2026-01-18T11:34:14.936888"
     },
-    "0d01c042-b86d-418c-8ee8-8c7e162495b7": {
-        "brand": "Rolls-Royce Cullinan",
+    "0edb885f-be39-4904-a9ec-155e8a3a234f": {
+        "model": "Ford Mustang Shelby GT500",
+        "type": "Car",
+        "category": "Sport",
+        "year": 2021,
+        "price": 80000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.936904"
+    },
+    "f72d5b05-2064-49c0-b064-ad238489d72d": {
+        "model": "Rolls-Royce Cullinan",
         "type": "Car",
         "category": "SUV",
         "year": 2020,
         "price": 350000,
-        "quantity": 5,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033501"
-    },
-    "00f22ded-9b9e-4522-966e-749aa0ae03fd": {
-        "brand": "Bentley Bentayga Speed",
-        "type": "Car",
-        "category": "SUV",
-        "year": 2023,
-        "price": 250000,
         "quantity": 2,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033514"
+        "created_at": "2026-01-18T11:34:14.936937"
     },
-    "5cfdc591-bed8-4e3c-83ba-4628570b42ca": {
-        "brand": "Lamborghini Urus",
+    "eed1598c-376f-46f2-9891-e0448b5a68de": {
+        "model": "Bentley Bentayga Speed",
         "type": "Car",
         "category": "SUV",
-        "year": 2020,
+        "year": 2024,
+        "price": 250000,
+        "quantity": 3,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.936957"
+    },
+    "4d3ebc9a-02f0-4ddf-a6f7-0ab8d5c8bd24": {
+        "model": "Lamborghini Urus",
+        "type": "Car",
+        "category": "SUV",
+        "year": 2025,
         "price": 230000,
         "quantity": 1,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033527"
+        "created_at": "2026-01-18T11:34:14.936973"
     },
-    "03587238-d104-4493-a0d6-53b85b3f3200": {
-        "brand": "Mercedes-AMG G 63",
+    "ec4b9eee-961b-4933-b163-88b30b0dc9e1": {
+        "model": "Mercedes-AMG G 63",
         "type": "Car",
         "category": "SUV",
-        "year": 2020,
+        "year": 2024,
         "price": 179000,
         "quantity": 4,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033541"
+        "created_at": "2026-01-18T11:34:14.936989"
     },
-    "654fa7f1-6092-4669-a0ec-4d5c67c49865": {
-        "brand": "Range Rover Autobiography LWB",
+    "97b90739-9254-4274-bd13-d1a0c344dfa0": {
+        "model": "Range Rover Autobiography LWB",
         "type": "Car",
         "category": "SUV",
         "year": 2025,
         "price": 185000,
-        "quantity": 5,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033553"
-    },
-    "4546a10b-8c55-494f-8ba4-5a70fc73e4e4": {
-        "brand": "Porsche Cayenne Turbo GT",
-        "type": "Car",
-        "category": "SUV",
-        "year": 2021,
-        "price": 196000,
-        "quantity": 4,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033566"
-    },
-    "87645cd4-7cde-46ee-97e2-64f30609cdbc": {
-        "brand": "Cadillac Escalade V",
-        "type": "Car",
-        "category": "SUV",
-        "year": 2022,
-        "price": 150000,
         "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033580"
+        "created_at": "2026-01-18T11:34:14.937005"
     },
-    "7e2a38de-d027-4fca-84e3-216165f537e4": {
-        "brand": "BMW X7 M60i",
+    "3d99b401-27cb-49f8-ba17-c8be9ed35f0e": {
+        "model": "Porsche Cayenne Turbo GT",
         "type": "Car",
         "category": "SUV",
-        "year": 2022,
+        "year": 2020,
+        "price": 196000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937031"
+    },
+    "270994e0-4a65-42c4-861f-4c9600c75790": {
+        "model": "Cadillac Escalade V",
+        "type": "Car",
+        "category": "SUV",
+        "year": 2026,
+        "price": 150000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937046"
+    },
+    "6e2acea2-c241-4446-a42f-a352e5e339ee": {
+        "model": "BMW X7 M60i",
+        "type": "Car",
+        "category": "SUV",
+        "year": 2026,
         "price": 125000,
-        "quantity": 2,
+        "quantity": 1,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033594"
+        "created_at": "2026-01-18T11:34:14.937060"
     },
-    "fbb00f18-0ef5-4e79-9da5-d170abb820c4": {
-        "brand": "Audi RS Q8",
+    "c11c8eca-d610-457a-9464-be86367d23be": {
+        "model": "Audi RS Q8",
         "type": "Car",
         "category": "SUV",
-        "year": 2023,
+        "year": 2020,
         "price": 120000,
-        "quantity": 2,
+        "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033607"
+        "created_at": "2026-01-18T11:34:14.937074"
     },
-    "dd654caf-adc3-4b43-b507-3d838ffab1a0": {
-        "brand": "Lexus LX 600 F Sport",
+    "2a325db1-4871-40bb-a396-832a36a39be9": {
+        "model": "Lexus LX 600 F Sport",
         "type": "Car",
         "category": "SUV",
-        "year": 2021,
+        "year": 2025,
         "price": 105000,
         "quantity": 1,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033627"
+        "created_at": "2026-01-18T11:34:14.937101"
     },
-    "ae53a8b2-1413-4558-8745-505ec653963c": {
-        "brand": "GMC Hummer EV Pickup Edition 1",
+    "4ef21bac-2aa7-40af-ba71-517f1541465b": {
+        "model": "GMC Hummer EV Pickup Edition 1",
         "type": "Car",
         "category": "Truck",
-        "year": 2026,
+        "year": 2022,
         "price": 115000,
         "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033641"
+        "created_at": "2026-01-18T11:34:14.937118"
     },
-    "4bd5efed-4e4a-447a-8ddb-5c3f096df9a5": {
-        "brand": "Ford F-150 Raptor R",
+    "92aed6cd-fb9b-4dd9-a05c-c3b2324b8e2a": {
+        "model": "Ford F-150 Raptor R",
+        "type": "Car",
+        "category": "Truck",
+        "year": 2023,
+        "price": 109000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937133"
+    },
+    "2cc35eb1-123c-45d1-ad8d-73bdb7edb037": {
+        "model": "Ram 1500 TRX",
+        "type": "Car",
+        "category": "Truck",
+        "year": 2025,
+        "price": 85000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937158"
+    },
+    "a9ff34da-588f-44ff-893e-0b79fa23fc36": {
+        "model": "Rivian R1T",
         "type": "Car",
         "category": "Truck",
         "year": 2024,
-        "price": 109000,
-        "quantity": 5,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033654"
-    },
-    "a99b4961-9e9a-440c-a7ee-d0d687323122": {
-        "brand": "Ram 1500 TRX",
-        "type": "Car",
-        "category": "Truck",
-        "year": 2021,
-        "price": 85000,
-        "quantity": 4,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033669"
-    },
-    "04a87e9c-5ffc-41fa-81a1-6704f2d56864": {
-        "brand": "Rivian R1T",
-        "type": "Car",
-        "category": "Truck",
-        "year": 2026,
         "price": 75000,
         "quantity": 2,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033681"
+        "created_at": "2026-01-18T11:34:14.937172"
     },
-    "61a68a6e-70cd-4d6c-bf95-0e96e926bdac": {
-        "brand": "Chevrolet Silverado ZR2",
+    "c59e25fc-127d-42d4-ad99-7f4a2c33fd82": {
+        "model": "Chevrolet Silverado ZR2",
         "type": "Car",
         "category": "Truck",
-        "year": 2025,
+        "year": 2022,
         "price": 72000,
-        "quantity": 2,
+        "quantity": 1,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033694"
+        "created_at": "2026-01-18T11:34:14.937187"
     },
-    "b69be76e-d1b8-4096-bb00-063dec927344": {
-        "brand": "GMC Sierra 1500 Denali Ultimate",
+    "40b9b5a8-326c-45fe-a7b9-8f00ee6fc177": {
+        "model": "GMC Sierra 1500 Denali Ultimate",
         "type": "Car",
         "category": "Truck",
         "year": 2020,
         "price": 83000,
+        "quantity": 2,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937200"
+    },
+    "7549cdfc-534a-4141-957d-414c3f1eb214": {
+        "model": "Toyota Tundra Capstone",
+        "type": "Car",
+        "category": "Truck",
+        "year": 2023,
+        "price": 76000,
         "quantity": 5,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033706"
+        "created_at": "2026-01-18T11:34:14.937215"
     },
-    "9f05e18e-2c72-4960-8ff2-a9f91bc6415d": {
-        "brand": "Toyota Tundra Capstone",
+    "c2107500-8cc1-4559-8341-2cb67594b0e0": {
+        "model": "Ford Ranger Raptor",
         "type": "Car",
         "category": "Truck",
-        "year": 2021,
-        "price": 76000,
-        "quantity": 3,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033719"
-    },
-    "97a3c25f-bd3d-4c0e-8be2-11164272abbb": {
-        "brand": "Ford Ranger Raptor",
-        "type": "Car",
-        "category": "Truck",
-        "year": 2026,
+        "year": 2023,
         "price": 55000,
         "quantity": 4,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033732"
+        "created_at": "2026-01-18T11:34:14.937228"
     },
-    "1ee2bca2-1b11-4a58-809b-f50000eafc96": {
-        "brand": "Nissan Frontier Pro-4X",
+    "3dc5131b-1ce2-452d-bdcc-c49017d777b8": {
+        "model": "Nissan Frontier Pro-4X",
         "type": "Car",
         "category": "Truck",
         "year": 2021,
         "price": 45000,
-        "quantity": 2,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033744"
-    },
-    "439be478-38a5-4c5b-b6aa-1c8acff73063": {
-        "brand": "Honda Ridgeline Black Edition",
-        "type": "Car",
-        "category": "Truck",
-        "year": 2021,
-        "price": 49000,
-        "quantity": 1,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033757"
-    },
-    "28be2827-2f0c-40bb-8551-d23222ea3dd6": {
-        "brand": "Tesla Model S Plaid",
-        "type": "Car",
-        "category": "Electric",
-        "year": 2022,
-        "price": 110000,
-        "quantity": 2,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033771"
-    },
-    "b0788406-6ce1-4d07-8051-9c79aa8a4d83": {
-        "brand": "Porsche Taycan Turbo S",
-        "type": "Car",
-        "category": "Electric",
-        "year": 2025,
-        "price": 190000,
-        "quantity": 3,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033783"
-    },
-    "a8f799e5-ddc7-491b-a5b5-923652edced0": {
-        "brand": "Lucid Air Grand Touring",
-        "type": "Car",
-        "category": "Electric",
-        "year": 2025,
-        "price": 138000,
-        "quantity": 2,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033796"
-    },
-    "769717e2-73ce-445a-843a-d1f3d014fc78": {
-        "brand": "Mercedes-Benz EQS 580",
-        "type": "Car",
-        "category": "Electric",
-        "year": 2023,
-        "price": 127000,
         "quantity": 5,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033812"
+        "created_at": "2026-01-18T11:34:14.937242"
     },
-    "d01d3024-db77-4e17-be22-c32e9ce8e5ff": {
-        "brand": "BMW iX M60",
+    "ebbc2d19-a507-48f2-b244-8b15fdf8e4a2": {
+        "model": "Honda Ridgeline Black Edition",
+        "type": "Car",
+        "category": "Truck",
+        "year": 2025,
+        "price": 49000,
+        "quantity": 3,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937259"
+    },
+    "7f4f9be7-7522-4cf3-ad91-3c358455d8b2": {
+        "model": "Tesla Model S Plaid",
         "type": "Car",
         "category": "Electric",
-        "year": 2020,
+        "year": 2024,
         "price": 110000,
+        "quantity": 2,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937278"
+    },
+    "5e85984d-8d64-420f-be6c-808cccccb59c": {
+        "model": "Porsche Taycan Turbo S",
+        "type": "Car",
+        "category": "Electric",
+        "year": 2025,
+        "price": 190000,
         "quantity": 4,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033824"
+        "created_at": "2026-01-18T11:34:14.937291"
     },
-    "322cb2cd-737b-48d7-bd1c-c99c8b66b5e3": {
-        "brand": "Audi e-tron GT",
+    "15a5045c-e1c5-4850-a5db-7f0f4e010a64": {
+        "model": "Lucid Air Grand Touring",
         "type": "Car",
         "category": "Electric",
-        "year": 2025,
-        "price": 105000,
+        "year": 2024,
+        "price": 138000,
         "quantity": 1,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033836"
+        "created_at": "2026-01-18T11:34:14.937313"
     },
-    "6fe66f32-04ed-4628-a20c-110f9106c818": {
-        "brand": "Ford Mustang Mach-E GT",
+    "19232a78-fc01-4351-a8ca-d679f7d0ed21": {
+        "model": "Mercedes-Benz EQS 580",
         "type": "Car",
         "category": "Electric",
-        "year": 2024,
+        "year": 2020,
+        "price": 127000,
+        "quantity": 4,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937329"
+    },
+    "3662598a-87a0-4222-accd-4fb623ac3036": {
+        "model": "BMW iX M60",
+        "type": "Car",
+        "category": "Electric",
+        "year": 2022,
+        "price": 110000,
+        "quantity": 5,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937342"
+    },
+    "f1f8eb7e-c0f5-4577-a83b-011a94fc1c36": {
+        "model": "Audi e-tron GT",
+        "type": "Car",
+        "category": "Electric",
+        "year": 2025,
+        "price": 105000,
+        "quantity": 4,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937357"
+    },
+    "085b7361-886d-49ff-8409-5ac369939378": {
+        "model": "Ford Mustang Mach-E GT",
+        "type": "Car",
+        "category": "Electric",
+        "year": 2020,
         "price": 69000,
         "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033848"
+        "created_at": "2026-01-18T11:34:14.937373"
     },
-    "ac406fc9-a455-4cea-a59b-4048725a8b30": {
-        "brand": "Polestar 2 Long Range Dual Motor",
+    "4443b2ac-df8f-4ab2-9195-730747e4baae": {
+        "model": "Polestar 2 Long Range Dual Motor",
         "type": "Car",
         "category": "Electric",
-        "year": 2025,
+        "year": 2021,
         "price": 62000,
-        "quantity": 4,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033860"
-    },
-    "96fcaa91-bfa0-4e40-81b6-cce5a79db383": {
-        "brand": "Kia EV6 GT",
-        "type": "Car",
-        "category": "Electric",
-        "year": 2023,
-        "price": 55000,
         "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033898"
+        "created_at": "2026-01-18T11:34:14.937388"
     },
-    "82aa8076-e3ed-4dab-8295-a20a784cebe9": {
-        "brand": "Hyundai Ioniq 5 Limited",
+    "f2f655af-1ab9-494b-a70c-0b5df5dba100": {
+        "model": "Kia EV6 GT",
+        "type": "Car",
+        "category": "Electric",
+        "year": 2023,
+        "price": 55000,
+        "quantity": 5,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937410"
+    },
+    "6dcbf89c-585f-4e2d-a214-85d4e56a987e": {
+        "model": "Hyundai Ioniq 5 Limited",
         "type": "Car",
         "category": "Electric",
         "year": 2021,
         "price": 52000,
-        "quantity": 2,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033927"
-    },
-    "8bfbd28c-2ba3-401a-9f8f-15fecc2b3e38": {
-        "brand": "Ducati Superleggera V4",
-        "type": "Bike",
-        "category": "Sport",
-        "year": 2024,
-        "price": 100000,
         "quantity": 4,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033943"
+        "created_at": "2026-01-18T11:34:14.937429"
     },
-    "1f1d82b9-a6f2-4744-be7b-0ac1a3e72fd9": {
-        "brand": "Kawasaki Ninja H2R",
+    "43b51c17-b064-4168-97b0-315182d46309": {
+        "model": "Ducati Superleggera V4",
         "type": "Bike",
         "category": "Sport",
-        "year": 2024,
+        "year": 2022,
+        "price": 100000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937454"
+    },
+    "b411d54b-57e4-44c2-b889-784578f77a08": {
+        "model": "Kawasaki Ninja H2R",
+        "type": "Bike",
+        "category": "Sport",
+        "year": 2021,
         "price": 58000,
         "quantity": 5,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033955"
+        "created_at": "2026-01-18T11:34:14.937468"
     },
-    "6d20dd7e-c0c1-43aa-95b9-d98886cc6e3b": {
-        "brand": "BMW M 1000 RR",
+    "f8abb520-5201-4916-be21-c4428e9b7fbb": {
+        "model": "BMW M 1000 RR",
         "type": "Bike",
         "category": "Sport",
-        "year": 2025,
+        "year": 2023,
         "price": 33000,
         "quantity": 1,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033967"
+        "created_at": "2026-01-18T11:34:14.937483"
     },
-    "bea52529-dd9c-4672-a22d-378264ef2238": {
-        "brand": "Honda CBR1000RR-R Fireblade SP",
+    "8822de49-7ca7-4495-8362-e40f4dfb2a4a": {
+        "model": "Honda CBR1000RR-R Fireblade SP",
         "type": "Bike",
         "category": "Sport",
         "year": 2024,
@@ -525,178 +525,178 @@
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033982"
+        "created_at": "2026-01-18T11:34:14.937510"
     },
-    "be720e43-debd-458c-a04f-800184f92d22": {
-        "brand": "Yamaha YZF-R1M",
+    "3650f0cd-f6a8-4897-b2b5-8679bba75826": {
+        "model": "Yamaha YZF-R1M",
         "type": "Bike",
         "category": "Sport",
-        "year": 2026,
+        "year": 2025,
         "price": 27000,
-        "quantity": 3,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.033994"
-    },
-    "17b4bad1-c02d-4a82-8619-a37d04725f44": {
-        "brand": "Aprilia RSV4 Factory 1100",
-        "type": "Bike",
-        "category": "Sport",
-        "year": 2021,
-        "price": 26000,
-        "quantity": 1,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034019"
-    },
-    "92dcc504-b83e-4e98-bbe8-8a16830bf9c0": {
-        "brand": "KTM 1290 Super Duke R Evo",
-        "type": "Bike",
-        "category": "Sport",
-        "year": 2021,
-        "price": 19500,
-        "quantity": 4,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034034"
-    },
-    "f82ab33c-be9e-489d-acbe-da24a4b87cb7": {
-        "brand": "Suzuki GSX-R1000R",
-        "type": "Bike",
-        "category": "Sport",
-        "year": 2024,
-        "price": 18000,
-        "quantity": 5,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034046"
-    },
-    "815d3a7e-5398-4e22-aa26-926fdd5b7d6a": {
-        "brand": "Triumph Speed Triple 1200 RS",
-        "type": "Bike",
-        "category": "Sport",
-        "year": 2026,
-        "price": 18500,
         "quantity": 2,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034059"
+        "created_at": "2026-01-18T11:34:14.937525"
     },
-    "fd4ed7df-018d-4a59-b780-42667a4a82a6": {
-        "brand": "Kawasaki ZX-10R KRT Edition",
+    "8d8b53ae-060d-419b-8861-6c84462b762d": {
+        "model": "Aprilia RSV4 Factory 1100",
         "type": "Bike",
         "category": "Sport",
-        "year": 2023,
+        "year": 2024,
+        "price": 26000,
+        "quantity": 2,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937539"
+    },
+    "d31600c2-7347-48f0-a899-0e8397d8de30": {
+        "model": "KTM 1290 Super Duke R Evo",
+        "type": "Bike",
+        "category": "Sport",
+        "year": 2020,
+        "price": 19500,
+        "quantity": 5,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937872"
+    },
+    "72c7cbd1-1171-4ef7-aaa0-075a83d2b87a": {
+        "model": "Suzuki GSX-R1000R",
+        "type": "Bike",
+        "category": "Sport",
+        "year": 2025,
+        "price": 18000,
+        "quantity": 3,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937919"
+    },
+    "5c6e1c48-b2ac-49e6-b4bf-e761a98b1ba5": {
+        "model": "Triumph Speed Triple 1200 RS",
+        "type": "Bike",
+        "category": "Sport",
+        "year": 2020,
+        "price": 18500,
+        "quantity": 5,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937943"
+    },
+    "1acdf03e-7732-490a-b8b4-33f4e79ec8b2": {
+        "model": "Kawasaki ZX-10R KRT Edition",
+        "type": "Bike",
+        "category": "Sport",
+        "year": 2025,
         "price": 17000,
+        "quantity": 3,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937958"
+    },
+    "02d10247-d4a6-4b17-8a94-e9f4565cf338": {
+        "model": "Harley-Davidson CVO Road Glide Limited",
+        "type": "Bike",
+        "category": "Cruiser",
+        "year": 2023,
+        "price": 50000,
+        "quantity": 3,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937980"
+    },
+    "c543e0bf-fc4a-4e78-b651-d7c44cc8469f": {
+        "model": "Ducati Diavel V4",
+        "type": "Bike",
+        "category": "Cruiser",
+        "year": 2026,
+        "price": 27000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.937994"
+    },
+    "b19ea287-4cf7-407f-abbe-f1d4decf7cf3": {
+        "model": "Indian Challenger Dark Horse",
+        "type": "Bike",
+        "category": "Cruiser",
+        "year": 2025,
+        "price": 27000,
+        "quantity": 5,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.938020"
+    },
+    "2ee94329-4a3f-4359-b4e5-923b96db939b": {
+        "model": "Triumph Rocket 3 R",
+        "type": "Bike",
+        "category": "Cruiser",
+        "year": 2026,
+        "price": 23500,
+        "quantity": 5,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.938036"
+    },
+    "28088455-b986-455b-81b1-006eca4321bb": {
+        "model": "Harley-Davidson Fat Boy 114",
+        "type": "Bike",
+        "category": "Cruiser",
+        "year": 2021,
+        "price": 22000,
+        "quantity": 2,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.942951"
+    },
+    "f6c69e13-1662-4f3f-855c-e0831599f570": {
+        "model": "Indian Scout Rogue",
+        "type": "Bike",
+        "category": "Cruiser",
+        "year": 2023,
+        "price": 12000,
+        "quantity": 5,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.943286"
+    },
+    "6ab27a20-a440-471e-abe3-7bbdb7843c64": {
+        "model": "Honda Rebel 1100",
+        "type": "Bike",
+        "category": "Cruiser",
+        "year": 2021,
+        "price": 9500,
         "quantity": 4,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034071"
+        "created_at": "2026-01-18T11:34:14.943340"
     },
-    "ae860fd4-373d-4b5c-9809-92271a91185e": {
-        "brand": "Harley-Davidson CVO Road Glide Limited",
-        "type": "Bike",
-        "category": "Cruiser",
-        "year": 2024,
-        "price": 50000,
-        "quantity": 1,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034084"
-    },
-    "bf86045f-fbe7-4da8-a9c7-c5c292a87d19": {
-        "brand": "Ducati Diavel V4",
-        "type": "Bike",
-        "category": "Cruiser",
-        "year": 2020,
-        "price": 27000,
-        "quantity": 3,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034097"
-    },
-    "be8c98e2-deb1-437a-9662-580ce3d7224a": {
-        "brand": "Indian Challenger Dark Horse",
-        "type": "Bike",
-        "category": "Cruiser",
-        "year": 2024,
-        "price": 27000,
-        "quantity": 5,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034109"
-    },
-    "80af2134-988e-4b71-928b-d8ba40acdfa2": {
-        "brand": "Triumph Rocket 3 R",
-        "type": "Bike",
-        "category": "Cruiser",
-        "year": 2021,
-        "price": 23500,
-        "quantity": 1,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034122"
-    },
-    "fb1f8b2b-a482-4449-a508-aa87135e4f42": {
-        "brand": "Harley-Davidson Fat Boy 114",
-        "type": "Bike",
-        "category": "Cruiser",
-        "year": 2025,
-        "price": 22000,
-        "quantity": 1,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034134"
-    },
-    "366d172c-87c3-4ff6-9553-628d18c41a6c": {
-        "brand": "Indian Scout Rogue",
-        "type": "Bike",
-        "category": "Cruiser",
-        "year": 2020,
-        "price": 12000,
-        "quantity": 3,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034146"
-    },
-    "9f00e43d-be97-404c-b0c2-daf5fc62baa3": {
-        "brand": "Honda Rebel 1100",
-        "type": "Bike",
-        "category": "Cruiser",
-        "year": 2023,
-        "price": 9500,
-        "quantity": 5,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034158"
-    },
-    "f5533597-3704-48c7-9d07-6166a124427f": {
-        "brand": "Yamaha Bolt R-Spec",
+    "c53ddf4b-68dd-47bd-8a4d-00414f63dc9b": {
+        "model": "Yamaha Bolt R-Spec",
         "type": "Bike",
         "category": "Cruiser",
         "year": 2025,
         "price": 8500,
-        "quantity": 4,
+        "quantity": 2,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034171"
+        "created_at": "2026-01-18T11:34:14.943359"
     },
-    "39618bc6-42bc-4e52-97b0-9452cf4c8a7f": {
-        "brand": "Kawasaki Vulcan S",
+    "7bc74919-7484-4108-ae35-746b51e4f81e": {
+        "model": "Kawasaki Vulcan S",
         "type": "Bike",
         "category": "Cruiser",
         "year": 2025,
@@ -705,238 +705,238 @@
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034195"
+        "created_at": "2026-01-18T11:34:14.943399"
     },
-    "6f11f9c4-fe80-4916-bb07-589d9c1d97a3": {
-        "brand": "Suzuki Boulevard M109R B.O.S.S.",
+    "1f91a442-a60d-4f32-9f60-14c1dd6fc110": {
+        "model": "Suzuki Boulevard M109R B.O.S.S.",
         "type": "Bike",
         "category": "Cruiser",
-        "year": 2022,
+        "year": 2024,
         "price": 15000,
-        "quantity": 5,
+        "quantity": 1,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034211"
+        "created_at": "2026-01-18T11:34:14.943415"
     },
-    "1ffef5c3-f680-4f31-8411-f5d63d0ac413": {
-        "brand": "Ducati Multistrada V4 Rally",
+    "e4b8ed6f-3b01-4a05-8c9d-b0175e82a56c": {
+        "model": "Ducati Multistrada V4 Rally",
         "type": "Bike",
         "category": "Adventure",
-        "year": 2022,
+        "year": 2023,
         "price": 29000,
-        "quantity": 4,
+        "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034224"
+        "created_at": "2026-01-18T11:34:14.943434"
     },
-    "c3482b38-8c4f-4493-9c62-ad8e6502decc": {
-        "brand": "BMW R 1300 GS",
+    "68ce9b9c-c267-4ae0-b550-ce8e8b98474e": {
+        "model": "BMW R 1300 GS",
+        "type": "Bike",
+        "category": "Adventure",
+        "year": 2021,
+        "price": 19000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.943449"
+    },
+    "e4f48687-15c9-4bbb-9e77-267268aac3b5": {
+        "model": "KTM 1290 Super Adventure R",
         "type": "Bike",
         "category": "Adventure",
         "year": 2026,
-        "price": 19000,
-        "quantity": 2,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034237"
-    },
-    "79b8e54d-9b84-4441-87e1-19daaca2e4a7": {
-        "brand": "KTM 1290 Super Adventure R",
-        "type": "Bike",
-        "category": "Adventure",
-        "year": 2024,
         "price": 21000,
-        "quantity": 5,
+        "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034249"
+        "created_at": "2026-01-18T11:34:14.943462"
     },
-    "b4cb0067-c5de-483c-89e7-4ee7dfc69915": {
-        "brand": "Triumph Tiger 1200 Rally Pro",
+    "221a58c5-c8d2-4ea6-b069-55395a404e65": {
+        "model": "Triumph Tiger 1200 Rally Pro",
         "type": "Bike",
         "category": "Adventure",
         "year": 2021,
         "price": 23000,
-        "quantity": 2,
+        "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034261"
+        "created_at": "2026-01-18T11:34:14.943478"
     },
-    "8bab6d1a-ea0d-4d9a-aec6-19a5ba5567b6": {
-        "brand": "Harley-Davidson Pan America 1250 Special",
+    "a8d507e7-60a3-455d-9401-f46c3a4416e4": {
+        "model": "Harley-Davidson Pan America 1250 Special",
         "type": "Bike",
         "category": "Adventure",
-        "year": 2024,
+        "year": 2023,
         "price": 20000,
         "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034274"
+        "created_at": "2026-01-18T11:34:14.943492"
     },
-    "f6a5b6d9-785e-4a9a-ba40-1e8d92fd4f74": {
-        "brand": "Honda Africa Twin CRF1100L",
+    "d2861b7d-b187-4227-bcc5-1e70d473b024": {
+        "model": "Honda Africa Twin CRF1100L",
         "type": "Bike",
         "category": "Adventure",
-        "year": 2020,
+        "year": 2025,
         "price": 15000,
         "quantity": 4,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034286"
+        "created_at": "2026-01-18T11:34:14.943505"
     },
-    "0accc723-a2f0-42c7-822a-76da05da2789": {
-        "brand": "Yamaha Tenere 700",
+    "f7d5d7d2-bfa1-4f71-866c-a0207e892fc2": {
+        "model": "Yamaha Tenere 700",
         "type": "Bike",
         "category": "Adventure",
-        "year": 2023,
+        "year": 2021,
         "price": 10500,
-        "quantity": 5,
+        "quantity": 2,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034298"
+        "created_at": "2026-01-18T11:34:14.943519"
     },
-    "21f681b3-eb27-4476-89dc-9a0c990e3ae5": {
-        "brand": "Suzuki V-Strom 1050XT",
+    "9a7f4614-4b85-42fc-a4d8-efa621a100bb": {
+        "model": "Suzuki V-Strom 1050XT",
+        "type": "Bike",
+        "category": "Adventure",
+        "year": 2026,
+        "price": 15000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.943532"
+    },
+    "02400480-f7c1-433d-9d35-0f54fe60999b": {
+        "model": "Kawasaki Versys 1000 SE LT+",
+        "type": "Bike",
+        "category": "Adventure",
+        "year": 2022,
+        "price": 18000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.943547"
+    },
+    "b3508dfd-bab9-4db6-a171-ef7835d42276": {
+        "model": "KTM 890 Adventure R",
         "type": "Bike",
         "category": "Adventure",
         "year": 2025,
-        "price": 15000,
-        "quantity": 3,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034310"
-    },
-    "89c5e6e6-4b37-439c-ad9d-17b77f82dc90": {
-        "brand": "Kawasaki Versys 1000 SE LT+",
-        "type": "Bike",
-        "category": "Adventure",
-        "year": 2020,
-        "price": 18000,
-        "quantity": 3,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034322"
-    },
-    "23a7fc96-7029-4dfb-94aa-1c5f029ad24a": {
-        "brand": "KTM 890 Adventure R",
-        "type": "Bike",
-        "category": "Adventure",
-        "year": 2020,
         "price": 14000,
         "quantity": 5,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034334"
+        "created_at": "2026-01-18T11:34:14.943560"
     },
-    "c50b2b18-fce5-4689-920f-34910fd4d5f8": {
-        "brand": "Arc Vector",
+    "79eca196-6b06-426e-8ec3-474e4ca22492": {
+        "model": "Arc Vector",
         "type": "Bike",
         "category": "Electric",
-        "year": 2026,
+        "year": 2023,
         "price": 120000,
-        "quantity": 2,
+        "quantity": 3,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034346"
+        "created_at": "2026-01-18T11:34:14.943692"
     },
-    "f72d1761-29a4-48b3-99b6-71056484f67a": {
-        "brand": "LiveWire One (Harley-Davidson)",
+    "bc96cbc4-86ff-403f-8930-96bc3333e644": {
+        "model": "LiveWire One (Harley-Davidson)",
         "type": "Bike",
         "category": "Electric",
         "year": 2023,
         "price": 23000,
-        "quantity": 2,
+        "quantity": 5,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034358"
+        "created_at": "2026-01-18T11:34:14.943750"
     },
-    "e98193d0-d8ad-430f-baca-b69067acc426": {
-        "brand": "Energica Ego+ RS",
+    "8a1dc7b9-5432-43e2-a190-09c6f898ea17": {
+        "model": "Energica Ego+ RS",
         "type": "Bike",
         "category": "Electric",
-        "year": 2020,
+        "year": 2023,
         "price": 25000,
         "quantity": 5,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034371"
+        "created_at": "2026-01-18T11:34:14.943767"
     },
-    "8220fe6d-4fa7-46cb-a198-0fa48d0f176e": {
-        "brand": "Zero SR/S Premium",
-        "type": "Bike",
-        "category": "Electric",
-        "year": 2024,
-        "price": 20000,
-        "quantity": 5,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034383"
-    },
-    "7dbcb1e8-0f3a-48fc-ab2a-105293ed2b07": {
-        "brand": "Zero DSR/X",
-        "type": "Bike",
-        "category": "Electric",
-        "year": 2022,
-        "price": 21000,
-        "quantity": 1,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034398"
-    },
-    "e647e1e9-378a-4158-80bd-e64bb60423e0": {
-        "brand": "Cake Kalk OR",
-        "type": "Bike",
-        "category": "Electric",
-        "year": 2024,
-        "price": 13000,
-        "quantity": 1,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034412"
-    },
-    "b5679d2a-2b97-4c61-86a7-ce4245cd46a6": {
-        "brand": "Fantic Motor Caballero 500 E",
-        "type": "Bike",
-        "category": "Electric",
-        "year": 2020,
-        "price": 15000,
-        "quantity": 1,
-        "status": "available",
-        "owner_type": "system",
-        "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034425"
-    },
-    "9576cf81-9b68-42b3-8a76-e7a5ccb067b2": {
-        "brand": "Lightning LS-218",
+    "afc99502-19cf-4385-9d69-6d16582ad8cb": {
+        "model": "Zero SR/S Premium",
         "type": "Bike",
         "category": "Electric",
         "year": 2021,
-        "price": 38000,
+        "price": 20000,
         "quantity": 4,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034452"
+        "created_at": "2026-01-18T11:34:14.943786"
     },
-    "5d612d9b-fbac-4640-bc00-728788b084e7": {
-        "brand": "Damon Hypersport Premier",
+    "242bffff-ef8c-454d-b563-ed5930787a01": {
+        "model": "Zero DSR/X",
+        "type": "Bike",
+        "category": "Electric",
+        "year": 2025,
+        "price": 21000,
+        "quantity": 2,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.943801"
+    },
+    "30930313-20fd-491e-a7ba-1dc7611df3e8": {
+        "model": "Cake Kalk OR",
+        "type": "Bike",
+        "category": "Electric",
+        "year": 2024,
+        "price": 13000,
+        "quantity": 5,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.943816"
+    },
+    "145d58fc-f2bf-4e14-ac23-b6824d28fbeb": {
+        "model": "Fantic Motor Caballero 500 E",
+        "type": "Bike",
+        "category": "Electric",
+        "year": 2024,
+        "price": 15000,
+        "quantity": 3,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.943830"
+    },
+    "14838ab9-5d1b-4929-98cb-57eb041c8071": {
+        "model": "Lightning LS-218",
+        "type": "Bike",
+        "category": "Electric",
+        "year": 2025,
+        "price": 38000,
+        "quantity": 1,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-18T11:34:14.943863"
+    },
+    "570bba49-7a42-4b76-93f3-72215f026455": {
+        "model": "Damon Hypersport Premier",
         "type": "Bike",
         "category": "Electric",
         "year": 2020,
@@ -945,18 +945,18 @@
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034465"
+        "created_at": "2026-01-18T11:34:14.943877"
     },
-    "e117e81c-9520-4cae-9425-373db6d35130": {
-        "brand": "Super Soco TC Max",
+    "25072a17-4f03-4515-b48e-8fc540bbec71": {
+        "model": "Super Soco TC Max",
         "type": "Bike",
         "category": "Electric",
-        "year": 2021,
+        "year": 2026,
         "price": 5500,
-        "quantity": 5,
+        "quantity": 4,
         "status": "available",
         "owner_type": "system",
         "owner_id": null,
-        "created_at": "2026-01-18T09:52:14.034477"
+        "created_at": "2026-01-18T11:34:14.943892"
     }
 }

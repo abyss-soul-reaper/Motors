@@ -107,8 +107,6 @@ vehicles= {
 }
 
 vehicles_data = {}
-current_type = None
-current_category = None
 
 for types, category in vehicles.items():
     if types == "Cars":
@@ -123,7 +121,7 @@ for types, category in vehicles.items():
         for car_name, price in cars.items():
             vehicle_id = str(uuid.uuid4())
             vehicles_data[vehicle_id] = {
-                "brand": car_name,
+                "model": car_name,
                 "type": current_type,
                 "category": current_category,
                 "year": random.randint(2020, 2026),

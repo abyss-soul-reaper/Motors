@@ -8,12 +8,8 @@ class Application:
         while True:
             if not self.sys_ctrl.context.is_authenticated:
                     # self.sys_ctrl.choose_permission()
-                    v = self.sys_ctrl.v_mgr.browsevehicles()
-                    for vehicle in v:
-                        print(vehicle)
-                        break
+                    self.sys_ctrl.browse_vehicles()
                     break
-
 if __name__ == "__main__":
     main = Application()
     main.run()

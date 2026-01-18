@@ -1,4 +1,5 @@
 from APP.core.roles import Roles
+from APP.core.utils.pagination import Paginator
 from APP.ui.user_cli import UserInterface
 from APP.managers.user_manager import UserManager
 from APP.managers.vehicles_manager import VehiclesManager
@@ -36,6 +37,11 @@ class SystemController:
             })
             return True
         return False
+    
+    def browse_vehicles(self):
+        vehicles = self.v_mgr.browse_vehicles()
+        paginator = Paginator(vehicles, per_page=10)
+        self.ui.browse_vehicles(paginator)
 
     def get_group_index_map(self):
         permissions = self.perms.get_role_perms(self.context.role)
