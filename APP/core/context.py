@@ -1,7 +1,6 @@
 from APP.core.roles import Roles
 from APP.core.permissions import Permissions
 
-
 class SystemContext:
     """
     Manages the global state of the currently authenticated user in the system.

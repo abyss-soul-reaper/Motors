@@ -58,16 +58,16 @@ class UserManager(BaseDataManager):
         password = user_data.get("password", "")
         hashed_pwd = hash_password(password)
 
-        for usr_data in users.values():
+        for u_id, u_data in users.items():
             if (
-                usr_data["basic_info"]["email"].lower() == email.lower()
-                and usr_data["basic_info"]["password"] == hashed_pwd
+                u_data["basic_info"]["email"].lower() == email.lower()
+                and u_data["basic_info"]["password"] == hashed_pwd
                 ):
                 return {
                 "success": True,
-                "user_id": usr_data["user_id"],
-                "role": usr_data["account"]["role"],
-                "is_profile_complete": usr_data["account"]["is_profile_complete"]
+                "user_id": u_id,
+                "role": u_data["account"]["role"],
+                "is_profile_complete": u_data["account"]["is_profile_complete"]
             }
 
         return {

@@ -1,0 +1,18 @@
+{
+    "e03c4dbf-44d3-4e79-990c-167e5acbb013": {
+        "basic_info": {
+            "name": "Yasseen",
+            "email": "yasseen@gmail.com",
+            "password": "c26e150e637df3f5f3aff66aa582d53eac08abdd4294c4bae90c2aa21a03cce4"
+        },
+        "contact_info": {
+            "phone": "01212042272",
+            "address": "Egypt, Alex"
+        },
+        "account": {
+            "role": "buyer",
+            "is_profile_complete": true,
+            "created_at": "2026-01-19T09:01:42.480076"
+        }
+    }
+}

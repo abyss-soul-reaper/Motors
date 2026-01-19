@@ -88,7 +88,6 @@ class UserInterface:
         action_choice = input("Select action number :")
         while not action_choice.isdigit() or int(action_choice) not in action_map:
             action_choice = input("❌ Invalid choice. Select a valid action number: ").strip()
-        print(action_map[int(action_choice)])
         return action_map[int(action_choice)]
 
     def browse_vehicles(self, paginator):
