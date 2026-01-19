@@ -43,23 +43,17 @@ class SystemController:
         paginator = Paginator(vehicles, per_page=10)
         self.ui.browse_vehicles(paginator)
 
-    def get_group_index_map(self):
-        permissions = self.perms.get_role_perms(self.context.role)
-        index_map = {}
-        for i, group_name in enumerate(permissions.keys(), start=1):
-            index_map[i] = group_name
-        return index_map, permissions
-    
-    def get_action_index_map(self, actions):    
-        action_map = {}
-        for i, act in enumerate(actions, start=1):
-            action_map[i] = act
-        return action_map
+    def get_index_map(self, objects):    
+        object_map = {}
+        for i, act in enumerate(objects, start=1):
+            object_map[i] = act
+        return object_map
     
     def choose_permission(self):
-        index_map, permissions = self.get_group_index_map()
+        permissions = self.perms.get_role_perms(self.context.role)
+        index_map = self.get_index_map(permissions)
         group = self.ui.role_groups(index_map, self.context.role)
-        action_map = self.get_action_index_map(permissions[group])
+        action_map = self.get_index_map(permissions[group])
         feature = self.ui.role_features(action_map, group)
         return feature
         

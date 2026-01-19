@@ -95,6 +95,11 @@ class UserInterface:
         print("\n--- Available Vehicles ---\n")
         page_num = 1
         count = 1
+        commands = {
+        'n': lambda: UserInterface.go_next(page_num, current_page, total_pages, count),
+        'p': lambda: UserInterface.go_prev(page_num, current_page, total_pages, count),
+        'q': lambda: UserInterface.quit_loop(),
+    }
 
         while True:
             page = paginator.get_page(page_num)
@@ -124,24 +129,37 @@ class UserInterface:
             print("n - Next Page | p - Previous Page | q - Quit Browsing")
             cmd = input("Enter command: ").strip().lower()
 
-            if cmd == 'n':
-                if current_page < total_pages:
-                    page_num += 1
-                    count = 1
-                else:
-                    print("\nlast page.")
-                    count = 1
+            action = commands.get(cmd)
 
-            elif cmd == 'p':
-                if current_page > 1:
-                    page_num -= 1
-                    count = 1
+            if action:
+                result = action()
+                if cmd == 'q':
+                    break
                 else:
-                    print("\nfirst page.")
-                    count = 1
-                    
-            elif cmd == 'q':
-                print("\nExiting vehicle browsing.")
-                break
+                    page_num, count = result
+
             else:
-                print("\nInvalid command. Please try again.")
+                print("Invalid command. Please try again.\n")
+                count = 1
+    @staticmethod
+    def go_next(page_num, current_page, total_pages, count):
+        if current_page < total_pages:
+            page_num += 1
+            count = 1
+        else:
+            print("\nlast page.")
+            count = 1
+        return page_num, count
+    @staticmethod
+    def go_prev(page_num, current_page, total_pages, count):
+            if current_page > 1:
+                page_num -= 1
+                count = 1
+            else:
+                print("\nfirst page.")
+                count = 1
+            return page_num, count
+    @staticmethod
+    def quit_loop():
+            print("\nExiting vehicle browsing.")
+            
