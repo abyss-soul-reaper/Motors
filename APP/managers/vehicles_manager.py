@@ -6,8 +6,11 @@ class VehiclesManager(BaseDataManager):
     def __init__(self):
         super().__init__(self.FILE_PATH)
 
+    def get_vehicles_data(self):
+        return self.load_data()
+
     def browse_vehicles(self):
-        vehicles = self.load_data()
+        vehicles = self.get_vehicles_data()
 
         return [
             {
@@ -17,3 +20,13 @@ class VehiclesManager(BaseDataManager):
             for v_id, v_info in vehicles.items()
             if v_info.get("status") == "available"
         ]
+    
+    def vehicle_details(self, v_id):
+        vehicles = self.get_vehicles_data()
+        vehicle_info = vehicles.get(v_id)
+        if vehicle_info:
+            return {
+                "id": v_id,
+                **vehicle_info
+            }
+        return None    

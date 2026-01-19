@@ -9,6 +9,9 @@ class UserManager(BaseDataManager):
     def __init__(self):
         super().__init__(self.FILE_PATH)
 
+    def get_users_data(self):
+        return self.load_data()
+
     def register(self, user_data):
         email = user_data.get("basic_info", {}).get("email", "").lower()
         phone = user_data.get("contact_info", {}).get("phone", "")
@@ -25,7 +28,7 @@ class UserManager(BaseDataManager):
                 "error": "Invalid phone number"
             }
 
-        users = self.load_data()
+        users = self.get_users_data()
 
         for usr_data in users.values():
             if usr_data["basic_info"]["email"].lower() == email:
@@ -49,7 +52,7 @@ class UserManager(BaseDataManager):
     }
 
     def login(self, user_data):
-        users = self.load_data()
+        users = self.get_users_data()
 
         email = user_data.get("email", "").lower()
         password = user_data.get("password", "")

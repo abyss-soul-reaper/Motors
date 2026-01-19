@@ -43,12 +43,23 @@ class SystemController:
         paginator = Paginator(vehicles, per_page=10)
         self.ui.browse_vehicles(paginator)
 
-    def get_index_map(self, objects):    
+    def vehicle_details(self):
+        vehicles = self.v_mgr.get_vehicles_data()
+        ids = list(vehicles.keys())
+        names = [v_info.get("model") for v_info in vehicles.values()]
+        name_map = self.get_index_map(names, ids)
+        return name_map
+
+    def get_index_map(self, keys, values=None):
         object_map = {}
-        for i, act in enumerate(objects, start=1):
-            object_map[i] = act
+        if values:
+            for k, v in zip(keys, values):
+                object_map[k] = v
+        else:
+            for i, obj in enumerate(keys, start=1):
+                object_map[i] = obj
         return object_map
-    
+
     def choose_permission(self):
         permissions = self.perms.get_role_perms(self.context.role)
         index_map = self.get_index_map(permissions)
