@@ -29,4 +29,31 @@ class VehiclesManager(BaseDataManager):
                 "id": v_id,
                 **vehicle_info
             }
-        return None    
+        return None
+    
+    def advanced_search(self, criteria):
+        vehicles = self.get_vehicles_data()
+        results = []
+
+        filters = {
+            "brand": lambda v,c: v.get("brand") == c,
+            "model": lambda v,c: v.get("model") == c,
+            "category": lambda v,c: v.get("category") == c,
+            "year": lambda v,c: v.get("year") == c,
+            "price": lambda v,c: v.get("price") == c
+
+        }
+
+        for v_id, v_info in vehicles.items():
+            if all(
+                filters[key](v_info, value)
+                for key, value in criteria.items()
+                if value is not None
+            ):
+            
+                results.append({
+                    "id": v_id,
+                    **v_info
+                })
+
+        return sorted(results, key=lambda v: v["price"])

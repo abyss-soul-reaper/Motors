@@ -1,19 +1,19 @@
-from APP.core.utils.pagination import Paginator
+from APP.core.utils import helpers
 from APP.ui.user_cli import UserInterface
+from APP.core.context import SystemContext
+from APP.core.utils.pagination import Paginator
+from APP.core.features_registry import Registry
 from APP.managers.user_manager import UserManager
 from APP.managers.vehicles_manager import VehiclesManager
-from APP.core.context import SystemContext
-from APP.core.utils import helpers
-from APP.core.features_registry import Registry
 from APP.controllers.features_dispatcher import dispatcher
 
 class SystemController:
     def __init__(self):
+        self.helpers = helpers
         self.ui = UserInterface()
         self.u_mgr = UserManager()
         self.v_mgr = VehiclesManager()
         self.context = SystemContext()
-        self.helpers = helpers
         self.registry = Registry(self)
         self.dispatcher = dispatcher(self)
         self.perms = self.context.permissions_manager
@@ -31,7 +31,8 @@ class SystemController:
     def browse_vehicles(self):
         vehicles = self.v_mgr.browse_vehicles()
         paginator = Paginator(vehicles, per_page=10)
-        self.ui.browse_vehicles(paginator)
+        render_fn = self.ui.render_vehicle_brief
+        self.ui.paginator_display(paginator, render_fn)
 
     def vehicle_details(self):
         vehicles = self.v_mgr.get_vehicles_data()
@@ -58,6 +59,8 @@ class SystemController:
         return False
         
     def logout_user(self):
+        if not self.context.is_authenticated:
+            raise SystemExit
         self.context.logout()
 
     def run_cycle(self):

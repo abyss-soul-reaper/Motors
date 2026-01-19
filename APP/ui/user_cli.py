@@ -1,6 +1,7 @@
 from datetime import datetime
 from APP.models.user_model import UserModel
 from APP.core.utils.validators import is_valid_email, is_valid_phone, is_valid_role
+from APP.core.utils.pagination import Paginator
 class UserInterface:
     def __init__(self):
         pass
@@ -90,75 +91,93 @@ class UserInterface:
             action_choice = input("❌ Invalid choice. Select a valid action number: ").strip()
         return action_map[int(action_choice)]
 
-    def browse_vehicles(self, paginator):
-        print("\n--- Available Vehicles ---\n")
+    def paginator_display(self, paginator, render_fn):
+        print("\n--- Available Vehicles ---")
         page_num = 1
-        count = 1
         commands = {
-        'n': lambda: UserInterface.go_next(page_num, current_page, total_pages, count),
-        'p': lambda: UserInterface.go_prev(page_num, current_page, total_pages, count),
-        'q': lambda: UserInterface.quit_loop(),
-    }
+        'n': lambda: paginator.next(current_page),
+        'p': lambda: paginator.prev(current_page),
+        'q': lambda: paginator.quit(),
+        }
+        try:
+            while True:
+                count = 1
+                page = paginator.get_page(page_num)
+                items = page.get("items", [])
+                current_page = page.get("current_page", 1)
+                total_pages = page.get("total_pages", 1)
 
-        while True:
-            page = paginator.get_page(page_num)
-            items = page.get("items", [])
-            current_page = page.get("current_page", 1)
-            total_pages = page.get("total_pages", 1)
+                if not items:
+                    print("No available vehicles at the moment.")
+                    return
+                
+                print(f"--- Page {current_page} of {total_pages} ---\n")
 
-            if not items:
-                print("No available vehicles at the moment.")
-                return
-            
-            print(f"--- Page {current_page} of {total_pages} ---\n")
+                for vehicle in items:
+                    render_fn(vehicle, count)
+                    count += 1
 
-            for vehicle in items:
-        
-                print(f"[{count}]")
-                print("-" * 50)
-                print(f"Model    : {vehicle.get('model')}")
-                print(f"Type     : {vehicle.get('type')}")
-                print(f"Category : {vehicle.get('category')}")
-                print(f"Price    : {vehicle.get('price'):,} $")
-                print(f"Year     : {vehicle.get('year')}")
-                print("-" * 50 + "\n")
+                print("\nn - Next Page | p - Previous Page | q - Quit Browsing")
+                cmd = input("\nEnter command: ").strip().lower()
+                action = commands.get(cmd)
 
-                count += 1
-
-            print("n - Next Page | p - Previous Page | q - Quit Browsing")
-            cmd = input("Enter command: ").strip().lower()
-
-            action = commands.get(cmd)
-
-            if action:
-                result = action()
-                if cmd == 'q':
-                    break
+                if action:
+                    page_num, moved = action()
+                    if not moved and cmd in {'n', 'p'}:
+                        print("\nNo more pages in that direction.")
                 else:
-                    page_num, count = result
+                    print("\nInvalid command. Please try again.")
 
-            else:
-                print("Invalid command. Please try again.\n")
-                count = 1
-    @staticmethod
-    def go_next(page_num, current_page, total_pages, count):
-        if current_page < total_pages:
-            page_num += 1
-            count = 1
-        else:
-            print("\nlast page.")
-            count = 1
-        return page_num, count
-    @staticmethod
-    def go_prev(page_num, current_page, total_pages, count):
-            if current_page > 1:
-                page_num -= 1
-                count = 1
-            else:
-                print("\nfirst page.")
-                count = 1
-            return page_num, count
-    @staticmethod
-    def quit_loop():
+        except StopIteration:
             print("\nExiting vehicle browsing.")
-            
+
+    @staticmethod
+    def render_vehicle_brief(vehicle, count):
+        print(f'{str(count).zfill(2)}. (Model): {vehicle.get("model"):<40} | (Price): {vehicle.get("price"):<10,}$')
+    @staticmethod
+    def render_vehicle_details(vehicle, count=None):
+        
+        print("-" * 50)
+        print(f"Model    : {vehicle.get('model'):<40}")
+        print(f"Type     : {vehicle.get('type'):<5}")
+        print(f"Category : {vehicle.get('category'):<15}")
+        print(f"Price    : {vehicle.get('price'):<10,} $")
+        print(f"Year     : {vehicle.get('year'):<5}")
+        print("-" * 50 + "\n")
+
+    def advanced_search_input(self):
+        print("\n--- Advanced Vehicle Search ---")
+
+        PRICE_OPTIONS = {
+            1: ("Under or equal to 50,000", 50_000),
+            2: ("Under or equal to 100,000", 100_000),
+            3: ("Under or equal to 500,000", 500_000),
+            4: ("Under or equal to 1,000,000", 1_000_000),
+            5: ("Under or equal to 3,000,000", 3_000_000),
+            6: ("Any", None)
+        }
+
+        brand = input("Brand (leave blank to skip): ").strip().title()
+        model = input("Model (leave blank to skip): ").strip().title()
+        category = input("Category (leave blank to skip): ").strip().title()
+        
+        year_input = input("Year (leave blank to skip): ").strip()
+        year = int(year_input) if year_input.isdigit() else None
+
+        print("\nPrice Options:")
+        for i,(label, _) in PRICE_OPTIONS.items():
+            print(f"{i}. {label}")
+
+        price_input = int(input("Max Price (leave blank to skip): ").strip())
+        price = PRICE_OPTIONS.get(price_input, (None, None))[1] if price_input else None
+
+        criteria = {
+            "brand": brand if brand else None,
+            "model": model if model else None,
+            "category": category if category else None,
+            "year": year,
+            "price": price
+        }
+
+        return criteria
+    

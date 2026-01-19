@@ -22,3 +22,16 @@ class Paginator:
             "per_page": self.per_page,
             "total_items": self.total
         }
+
+    def next(self, current_page):
+        if current_page < self.total_pages:
+            return self.get_page(current_page + 1), True
+        return self.get_page(current_page), False
+    
+    def prev(self, current_page):
+        if 1 < current_page <= self.total_pages:
+            return self.get_page(current_page - 1), True
+        return self.get_page(current_page), False
+    
+    def quit(self):
+        raise StopIteration
