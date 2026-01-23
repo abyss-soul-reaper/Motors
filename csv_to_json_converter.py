@@ -119,9 +119,12 @@ for types, category in vehicles.items():
             current_category = category_name
 
         for car_name, price in cars.items():
+            words = car_name.split()
             vehicle_id = str(uuid.uuid4())
             vehicles_data[vehicle_id] = {
-                "model": car_name,
+                "full_name": car_name,
+                "brand": words[0],
+                "model": ' '.join(words[1:]),
                 "type": current_type,
                 "category": current_category,
                 "year": random.randint(2020, 2026),

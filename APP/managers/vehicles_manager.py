@@ -40,8 +40,7 @@ class VehiclesManager(BaseDataManager):
             "model": lambda v,c: v.get("model") == c,
             "category": lambda v,c: v.get("category") == c,
             "year": lambda v,c: v.get("year") == c,
-            "price": lambda v,c: v.get("price") == c
-
+            "price": lambda v,c: v.get("price") <= c
         }
 
         for v_id, v_info in vehicles.items():

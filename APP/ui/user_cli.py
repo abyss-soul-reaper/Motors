@@ -1,7 +1,6 @@
 from datetime import datetime
 from APP.models.user_model import UserModel
 from APP.core.utils.validators import is_valid_email, is_valid_phone, is_valid_role
-from APP.core.utils.pagination import Paginator
 class UserInterface:
     def __init__(self):
         pass
@@ -91,12 +90,14 @@ class UserInterface:
             action_choice = input("❌ Invalid choice. Select a valid action number: ").strip()
         return action_map[int(action_choice)]
 
-    def paginator_display(self, paginator, render_fn):
+    def paginator_display(self, paginator, render_fn, controller=None):
         print("\n--- Available Vehicles ---")
         page_num = 1
         commands = {
         'n': lambda: paginator.next(current_page),
         'p': lambda: paginator.prev(current_page),
+        's': lambda: controller.advanced_search() if controller else None,
+        'd': lambda: controller.vehicle_details() if controller else None,
         'q': lambda: paginator.quit(),
         }
         try:
@@ -117,14 +118,19 @@ class UserInterface:
                     render_fn(vehicle, count)
                     count += 1
 
-                print("\nn - Next Page | p - Previous Page | q - Quit Browsing")
+                print("\nn - Next Page | p - Previous Page | s - Search | d - Details | q - Quit Browsing")
                 cmd = input("\nEnter command: ").strip().lower()
                 action = commands.get(cmd)
 
                 if action:
-                    page_num, moved = action()
-                    if not moved and cmd in {'n', 'p'}:
-                        print("\nNo more pages in that direction.")
+                    if cmd in {'s', 'd'} and controller:
+                        action, state = action()
+                        if not state:
+                            print("\nVehicle not found or no results.")
+                    else:
+                        page_num, moved = action()
+                        if not moved and cmd in {'n', 'p'}:
+                            print("\nNo more pages in that direction.")
                 else:
                     print("\nInvalid command. Please try again.")
 
@@ -133,12 +139,16 @@ class UserInterface:
 
     @staticmethod
     def render_vehicle_brief(vehicle, count):
-        print(f'{str(count).zfill(2)}. (Model): {vehicle.get("model"):<40} | (Price): {vehicle.get("price"):<10,}$')
+        print(f'\n{str(count).zfill(2)}. Full Name: {vehicle.get("full_name"):<40} | Price: {vehicle.get("price"):<10,}$')
+        
     @staticmethod
     def render_vehicle_details(vehicle, count=None):
-        
+
+        print("\n--- Vehicle Details ---")
         print("-" * 50)
-        print(f"Model    : {vehicle.get('model'):<40}")
+        print(f"Full Name: {vehicle.get('full_name'):<30}")
+        print(f"Brand    : {vehicle.get('brand'):<10}")
+        print(f"Model    : {vehicle.get('model'):<30}")
         print(f"Type     : {vehicle.get('type'):<5}")
         print(f"Category : {vehicle.get('category'):<15}")
         print(f"Price    : {vehicle.get('price'):<10,} $")
@@ -157,8 +167,8 @@ class UserInterface:
             6: ("Any", None)
         }
 
-        brand = input("Brand (leave blank to skip): ").strip().title()
-        model = input("Model (leave blank to skip): ").strip().title()
+        brand = input("Brand (leave blank to skip): ").strip()
+        model = input("Model (leave blank to skip): ").strip()
         category = input("Category (leave blank to skip): ").strip().title()
         
         year_input = input("Year (leave blank to skip): ").strip()
@@ -168,8 +178,8 @@ class UserInterface:
         for i,(label, _) in PRICE_OPTIONS.items():
             print(f"{i}. {label}")
 
-        price_input = int(input("Max Price (leave blank to skip): ").strip())
-        price = PRICE_OPTIONS.get(price_input, (None, None))[1] if price_input else None
+        price_input = input("Max Price (leave blank to skip): ").strip()
+        price = PRICE_OPTIONS.get(int(price_input), (None, None))[1] if price_input else None
 
         criteria = {
             "brand": brand if brand else None,
@@ -181,3 +191,8 @@ class UserInterface:
 
         return criteria
     
+    def vehicle_details_input(self):
+        v_name = input("Enter Vehicle Full Name for details: ").strip()
+        while not v_name:
+            v_name = input("❌ Vehicle name cannot be empty. Try again: ").strip().title()
+        return v_name

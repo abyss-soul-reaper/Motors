@@ -9,6 +9,6 @@ class Registry:
             "LOGIN": self.sys_ctrl.login_user,
             "LOGOUT": self.sys_ctrl.logout_user,
             "BROWSE_VEHICLES": self.sys_ctrl.browse_vehicles,
-            "ADVANCED_SEARCH": ""
+            "ADVANCED_SEARCH": self.sys_ctrl.advanced_search
         }
         return excute_map

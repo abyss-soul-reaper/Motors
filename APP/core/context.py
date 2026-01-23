@@ -57,6 +57,10 @@ class SystemContext:
         self.is_authenticated = True
         self.is_profile_complete = user_info.get("is_profile_complete", False)
 
+    def set_seen_vehicles(self, vehicles):
+        self.seen_vehicles = vehicles
+
+
     def logout(self):
         """
         Log out the current user and reset context to guest state.

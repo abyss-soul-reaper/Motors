@@ -12,6 +12,7 @@ class SystemController:
         self.helpers = helpers
         self.ui = UserInterface()
         self.u_mgr = UserManager()
+        self.pag = Paginator
         self.v_mgr = VehiclesManager()
         self.context = SystemContext()
         self.registry = Registry(self)
@@ -30,14 +31,36 @@ class SystemController:
         
     def browse_vehicles(self):
         vehicles = self.v_mgr.browse_vehicles()
-        paginator = Paginator(vehicles, per_page=10)
-        render_fn = self.ui.render_vehicle_brief
-        self.ui.paginator_display(paginator, render_fn)
+        paginator = self.pag(vehicles, per_page=10)
+        self.context.set_seen_vehicles(vehicles)
+        self.ui.paginator_display(paginator, self.ui.render_vehicle_brief, controller=self)
+
+    def advanced_search(self):
+        criteria = self.ui.advanced_search_input()
+        results = self.v_mgr.advanced_search(criteria)
+        self.context.set_seen_vehicles(results)
+        paginator = self.pag(results, per_page=10)
+        self.ui.paginator_display(paginator, self.ui.render_vehicle_brief, controller=self)
+        return None, True
 
     def vehicle_details(self):
+        v_name = self.ui.vehicle_details_input()
+        name_map = self.vehicles_map()
+
+        v_id = name_map.get(v_name)
+        if not v_id:
+            return None, False
+        
+        vehicle = self.v_mgr.vehicle_details(v_id)
+        if vehicle:
+            self.ui.render_vehicle_details(vehicle)
+            return None, True
+        return None, False
+
+    def vehicles_map(self):
         vehicles = self.v_mgr.get_vehicles_data()
         ids = list(vehicles.keys())
-        names = [v_info.get("model") for v_info in vehicles.values()]
+        names = [v_info.get("full_name") for v_info in vehicles.values()]
         name_map = self.helpers.mapping_helper(names, ids)
         return name_map
 
