@@ -1,6 +1,5 @@
 from datetime import datetime
-from APP.models.user_model import UserModel
-from APP.core.utils.validators import is_valid_email, is_valid_phone, is_valid_role
+from APP.core.validation.validators import *
 class UserInterface:
     def __init__(self):
         pass
@@ -8,59 +7,64 @@ class UserInterface:
     def register(self):
         print("\n--- Register New Account ---")
 
-        name = input('Name: ').strip().title()
+        name = input('Name: ')
         while not name:
-            name = input('❌ Name is required: ').strip().title()
+            name = input('❌ Name is required: ')
 
-        email = input('Email: ').strip().lower()
+        email = input('Email: ')
         while not (email and is_valid_email(email)):
-            email = input("❌ Invalid Email. Try again: ").strip().lower()
+            email = input("❌ Invalid Email. Try again: ")
 
-        password = input('Password: ').strip()
+        password = input('Password: ')
         while not password:
-            password = input('❌ Password is required: ').strip()
+            password = input('❌ Password is required: ')
 
-        confirm_password = input("Confirm Password: ").strip()
+        confirm_password = input("Confirm Password: ")
         while confirm_password != password:
             print("❌ Passwords do not match!")
-            confirm_password = input("Try again: ").strip()
+            confirm_password = input("Try again: ")
 
-        role = input("Enter role (buyer/seller)(default buyer): ").strip().lower()
+        role = input("Enter role (buyer/seller)(default buyer): ")
         if not (role and is_valid_role(role)):
             print("❌ Invalid role. Defaulting to 'buyer'.")
             role = "buyer"
 
-        user_data = UserModel(None, name, email, password, role=role)
-
+        user_data = {
+            "name": name,
+            "email": email,
+            "password": password,
+            "role": role
+        }
+        
         print("\nOptional: Complete your profile? (y/n)")
-        if input('>> ').strip().lower() == 'y':
+        if input('>> ') == 'y':
             
-            phone = input('Phone: ').strip()
+            phone = input('Phone: ')
             while not (phone and is_valid_phone(phone)):
-                phone = input('❌ Invalid Egyptian Phone: ').strip()
+                phone = input('❌ Invalid Egyptian Phone: ')
 
-            address = input('Address: ').strip().title()
+            address = input('Address: ')
             while not address:
-                address = input('❌ Address can\'t be empty: ').strip().title()
-            
-            user_data.phone = phone
-            user_data.address = address
-            user_data.is_profile_complete = True
+                address = input('❌ Address can\'t be empty: ')
 
-        user_data.created_at = datetime.now().isoformat()
+            user_data["phone"] = phone
+            user_data["address"] = address
+            user_data["is_profile_complete"] = True
 
-        return user_data.dict_info()
+        user_data["created_at"] = datetime.now().isoformat()
+
+        return user_data
 
     def login(self):
         print("\n--- User Login ---")
 
-        email = input('Email: ').strip().lower()
+        email = input('Email: ')
         while not (email and is_valid_email(email)):
-            email = input("❌ Invalid Email. Try again: ").strip().lower()
+            email = input("❌ Invalid Email. Try again: ")
 
-        password = input('Password: ').strip()
+        password = input('Password: ')
         while not password:
-            password = input('❌ Password is required: ').strip()
+            password = input('❌ Password is required: ')
 
         return {"email": email, "password": password}
     
@@ -73,9 +77,9 @@ class UserInterface:
         for i, group in index_map.items():
             print(f"-- {i}. {group} --")
 
-        group_choice = input("Select a group number to view actions: ").strip()
+        group_choice = input("Select a group number to view actions: ")
         while not group_choice.isdigit() or int(group_choice) not in index_map:
-            group_choice = input("❌ Invalid choice. Select a valid group number: ").strip()
+            group_choice = input("❌ Invalid choice. Select a valid group number: ")
 
         return index_map[int(group_choice)]
 
@@ -87,7 +91,7 @@ class UserInterface:
 
         action_choice = input("Select action number :")
         while not action_choice.isdigit() or int(action_choice) not in action_map:
-            action_choice = input("❌ Invalid choice. Select a valid action number: ").strip()
+            action_choice = input("❌ Invalid choice. Select a valid action number: ")
         return action_map[int(action_choice)]
 
     def paginator_display(self, paginator, render_fn, controller=None):
@@ -119,7 +123,7 @@ class UserInterface:
                     count += 1
 
                 print("\nn - Next Page | p - Previous Page | s - Search | d - Details | q - Quit Browsing")
-                cmd = input("\nEnter command: ").strip().lower()
+                cmd = input("\nEnter command: ")
                 action = commands.get(cmd)
 
                 if action:
@@ -167,18 +171,18 @@ class UserInterface:
             6: ("Any", None)
         }
 
-        brand = input("Brand (leave blank to skip): ").strip()
-        model = input("Model (leave blank to skip): ").strip()
-        category = input("Category (leave blank to skip): ").strip().title()
+        brand = input("Brand (leave blank to skip): ")
+        model = input("Model (leave blank to skip): ")
+        category = input("Category (leave blank to skip): ")
         
-        year_input = input("Year (leave blank to skip): ").strip()
+        year_input = input("Year (leave blank to skip): ")
         year = int(year_input) if year_input.isdigit() else None
 
         print("\nPrice Options:")
         for i,(label, _) in PRICE_OPTIONS.items():
             print(f"{i}. {label}")
 
-        price_input = input("Max Price (leave blank to skip): ").strip()
+        price_input = input("Max Price (leave blank to skip): ")
         price = PRICE_OPTIONS.get(int(price_input), (None, None))[1] if price_input else None
 
         criteria = {
@@ -192,7 +196,7 @@ class UserInterface:
         return criteria
     
     def vehicle_details_input(self):
-        v_name = input("Enter Vehicle Full Name for details: ").strip()
+        v_name = input("Enter Vehicle Full Name for details: ")
         while not v_name:
-            v_name = input("❌ Vehicle name cannot be empty. Try again: ").strip().title()
+            v_name = input("❌ Vehicle name cannot be empty. Try again: ")
         return v_name

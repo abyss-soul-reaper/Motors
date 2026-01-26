@@ -1,42 +1,46 @@
-from APP.core.utils import helpers
+from APP.core.helpers import helpers
 from APP.ui.user_cli import UserInterface
-from APP.core.context import SystemContext
-from APP.core.utils.pagination import Paginator
-from APP.core.features_registry import Registry
+from APP.models.user_model import UserModel
+from APP.core.pipeline.registry import Registry
+from APP.core.base.context import SystemContext
 from APP.managers.user_manager import UserManager
+from APP.schemas.system_schema import SYSTEM_SCHEMA
+from APP.core.pagination.pagination import Paginator
+from APP.core.pipeline.dispatchers import dispatcher
 from APP.managers.vehicles_manager import VehiclesManager
-from APP.controllers.features_dispatcher import dispatcher
+from APP.core.pipeline.feature_config import FEATURE_CONFIG
+from APP.core.pipeline.input_pipeline import input_pipeline_dispatcher
 
 class SystemController:
     def __init__(self):
+        self.pag = Paginator
         self.helpers = helpers
+        self.u_model = UserModel
         self.ui = UserInterface()
         self.u_mgr = UserManager()
-        self.pag = Paginator
+        self.config = FEATURE_CONFIG
         self.v_mgr = VehiclesManager()
         self.context = SystemContext()
         self.registry = Registry(self)
+        self.sys_schema = SYSTEM_SCHEMA
         self.dispatcher = dispatcher(self)
         self.perms = self.context.permissions_manager
 
-    def register_user(self):
-        user_data = self.ui.register()
-        result = self.u_mgr.register(user_data)
+    def register_user(self, data):
+        model_result = self.u_model(data).dict_info()
+        result = self.u_mgr.register(model_result)
         return self.helpers.update_context(self.context, result)
 
-    def login_user(self):
-        credentials = self.ui.login()
+    def login_user(self, credentials):
         result = self.u_mgr.login(credentials)
         return self.helpers.update_context(self.context, result)
         
-    def browse_vehicles(self):
-        vehicles = self.v_mgr.browse_vehicles()
+    def browse_vehicles(self, vehicles):
         paginator = self.pag(vehicles, per_page=10)
         self.context.set_seen_vehicles(vehicles)
         self.ui.paginator_display(paginator, self.ui.render_vehicle_brief, controller=self)
 
-    def advanced_search(self):
-        criteria = self.ui.advanced_search_input()
+    def advanced_search(self, criteria):
         results = self.v_mgr.advanced_search(criteria)
         self.context.set_seen_vehicles(results)
         paginator = self.pag(results, per_page=10)
@@ -71,26 +75,54 @@ class SystemController:
         action_map = self.helpers.mapping_helper(permissions[group])
         feature = self.ui.role_features(action_map, group)
         return feature
-        
+    
     def check_permission(self, action):
-        has_perm = self.perms.has_permission(self.context.role, action)
-        if has_perm:
-            if action in self.perms.requires_complete:
-                if not self.context.is_profile_complete:
-                    return False
-            return True
-        return False
-        
+        """
+        Checks if the current user can perform an action.
+        Returns:
+            (bool, str) -> (is_allowed, message)
+        """
+        role = self.context.role
+
+        if not self.perms.has_permission(role, action):
+            return False, f"❌ Your role '{role}' cannot perform '{action}'."
+
+        if action in self.perms.requires_complete and not self.context.is_profile_complete:
+            return False, "❌ Complete your profile to perform this action."
+
+        return True, ""
+
     def logout_user(self):
         if not self.context.is_authenticated:
             raise SystemExit
         self.context.logout()
-
+        return {"status": "logged_out", "role": "guest"}
+    
     def run_cycle(self):
         while True:
             feature = self.choose_permission()
 
-            if not self.check_permission(feature):
-                print("Permission denied or profile incomplete.")
+            has_perm, perm_msg = self.check_permission(feature)
+            if not has_perm:
+                return {"errors": {"permission": perm_msg}}
+            
+            config = self.config.get(feature, {})
 
-            self.dispatcher.dispatch(feature)
+            if config["takes_input"]:
+                raw_data = self.dispatcher.dispatch_feature_input(feature)
+            else: raw_data = None
+
+            if config["use_pipeline"]:
+                schema = self.config.get(feature)["schema"]
+                errors, pipeline_result = input_pipeline_dispatcher(
+                    self, raw_data, schema, self.sys_schema
+                )
+                if errors:
+                    return {"errors": errors}
+
+                data_to_pass = pipeline_result
+            else:
+                data_to_pass = raw_data
+
+            self.dispatcher.dispatch_feature(feature, data_to_pass)
+

@@ -1,4 +1,4 @@
-from APP.core.base import BaseDataManager
+from APP.core.base.base import BaseDataManager
 
 class VehiclesManager(BaseDataManager):
     FILE_PATH = r'data\vehicles.json'
@@ -45,7 +45,7 @@ class VehiclesManager(BaseDataManager):
 
         for v_id, v_info in vehicles.items():
             if all(
-                filters[key](v_info, value)
+                filters[key](v_info, value.lower())
                 for key, value in criteria.items()
                 if value is not None
             ):

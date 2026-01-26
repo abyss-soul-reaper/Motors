@@ -1,7 +1,7 @@
 import uuid
-from APP.core.base import BaseDataManager
-from APP.core.utils.security import hash_password
-from APP.core.utils.validators import is_valid_email, is_valid_phone
+from APP.core.base.base import BaseDataManager
+from APP.core.security.security import hash_password
+from APP.core.validation.validators import is_valid_email, is_valid_phone
 
 class UserManager(BaseDataManager):
     FILE_PATH = r'data\users.json'

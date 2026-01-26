@@ -1,5 +1,5 @@
-from APP.core.base import BaseDataManager
-from APP.core.roles import Roles
+from APP.core.base.base import BaseDataManager
+from APP.core.base.roles import Roles
 
 class Permissions(BaseDataManager):
     """

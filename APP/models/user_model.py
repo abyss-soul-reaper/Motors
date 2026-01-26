@@ -1,15 +1,24 @@
 class UserModel:
-    def __init__(self, user_id, name, email, password, phone=None, address=None,
-                 role="buyer", is_profile_complete=False, created_at=None):
-        self.user_id = user_id
-        self.name = name
-        self.email = email
-        self.password = password
-        self.phone = phone
-        self.address = address
-        self.role = role
-        self.is_profile_complete = is_profile_complete
-        self.created_at = created_at
+    def __init__(self, data):
+        self.user_id = data.get("user_id", None)
+        self.name = data.get("name")
+        self.email = data.get("email")
+        self.password = data.get("password")
+        self.phone = data.get("phone", None)
+        self.address = data.get("address", None)
+        self.role = data.get("role", "buyer")
+        self.is_profile_complete = data.get("is_profile_complete", False)
+        self.created_at = data.get("created_at")
+
+        self.normalize_fields()
+
+    def normalize_fields(self):
+        if self.name:
+            self.name = self.name.title()
+        if self.address:
+            self.address = self.address.title()
+        if self.email:
+            self.email = self.email.lower()
 
     def dict_info(self):
         return {

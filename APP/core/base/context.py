@@ -1,5 +1,5 @@
-from APP.core.roles import Roles
-from APP.core.permissions import Permissions
+from APP.core.base.roles import Roles
+from APP.core.base.permissions import Permissions
 
 class SystemContext:
     """
