@@ -36,7 +36,7 @@ class Dispatcher:
         execution_result["payload"] = payload
         return execution_result
 
-    def dsp_feat(self, feature, data=None):
+    def execute_feat(self, feature, data=None):
         execution_result = {"ok": False,"payload": None,"error": None,"stage": "EXECUTE"}
         config = self.sys_ctrl.config
 
@@ -48,9 +48,13 @@ class Dispatcher:
         if feature not in exe_map:
             execution_result["error"] = {"type": "REGISTRY_ERROR", "reason": "EXECUTE_HANDLER_NOT_FOUND", "feature": feature}
             return execution_result
-        
-        try:
-            payload = exe_map[feature](data)
+
+        try:        
+            requires_data = config[feature].get("requires_input")
+            if not requires_data:
+                payload = exe_map[feature]()
+            else:
+                payload = exe_map[feature](data)
         except Exception as e:
             execution_result["error"] = {"type": "EXECUTE_ERROR", "reason": str(e), "feature": feature}
             return execution_result
@@ -59,59 +63,63 @@ class Dispatcher:
         execution_result["payload"] = payload
         return execution_result
 
+    def execute_input(self, feature):
+        execution_result = {"ok": False,"payload": None,"error": None}
+        data = self.dsp_feat_input(feature)
 
+        if data["ok"]:
+            execution_result["ok"] = True
+            execution_result["payload"] = data["payload"]
+            return execution_result
 
+        execution_result["error"] = data["error"]
+        return execution_result
+    
+    def execute_pipeline(self, config, data):
+        execution_result = {"ok": False,"payload": None,"errors": None, "stage": "NORMALIZE"}
+        schema = config.get("schema")
+        dsp_pipeline = self.sys_ctrl.dsp_pipeline
 
+        results = dsp_pipeline.dsp_pipeline(
+                data, schema, self.sys_ctrl.sys_schema
+                )
 
-
-
-
-
-
-
-
-
-
-
-
-    def dsp_valid(self, field, value):
-        validators_map = self.sys_ctrl.registry.register_validators()
-
-        if field not in validators_map:
-            return False
-
-        return validators_map[field](value)
-
-    def dsp_normalize(self, field, value):
-        normalizers_map = self.sys_ctrl.registry.register_normalizers()
-
-        if field not in normalizers_map:
-            return value
-
-        return normalizers_map[field](value)
+        if results["errors"]:
+            execution_result["errors"] = results["errors"]
+            return execution_result
+        
+        execution_result["ok"] = True
+        execution_result["payload"] = results["correct_data"]
+        return execution_result
 
     def execute(self, feature):
+        execution_result = {"ok": False,"payload": None,"error": None,"stage": "FINAL_EXECUTE"}
         config = self.sys_ctrl.config.get(feature, {})
 
-        if not config.get("requires_input") or config.get("requires_input") == "system":
-            raw_data = None
-        else:
-            raw_data = self.dispatch_feature_input(feature)
+        raw_data = None
+        if config.get("requires_input") in {"user", "mixed"}:
+            result = self.execute_input(feature)
+            if not result["ok"]:
+                execution_result["error"] = result["error"]
+                return execution_result
+            raw_data = result["payload"]
 
         if config.get("use_pipeline"):
-            schema = config.get("schema")
-            errors, pipeline_result = self.sys_ctrl.pipeline_dsp(
-                self.sys_ctrl,
-                raw_data,
-                schema,
-                self.sys_ctrl.sys_schema
-            )
+            pipe_result = self.execute_pipeline(config, raw_data)
+ 
+            if not pipe_result["ok"]:
+                execution_result["error"] =  pipe_result["errors"]
+                return execution_result
+            data_to_pass = pipe_result["payload"]
 
-            if errors:
-                return {"errors": errors}
-
-            data_to_pass = pipeline_result
         else:
             data_to_pass = raw_data
 
-        return self.dispatch_feature(feature, data_to_pass)
+        final_execute = self.execute_feat(feature, data_to_pass)
+        if not final_execute["ok"]:
+            execution_result["error"] = final_execute["error"]
+            return execution_result
+        
+        execution_result["ok"] = True
+        execution_result["payload"] = final_execute["payload"]
+        return execution_result

@@ -3,7 +3,16 @@ from APP.core.validation.validators import *
 class Registry:
     def __init__(self, sys_ctrl):
         self.sys_ctrl = sys_ctrl
-        self._features_registry = self.register_features()
+
+    def input_handlers(self):
+        INPUT_MAP = {
+            "LOGIN": self.sys_ctrl.ui.login,
+            "REGISTER": self.sys_ctrl.ui.register,
+            
+            "ADVANCED_SEARCH": self.sys_ctrl.ui.advanced_search_input,
+            "VEHICLE_DETAILS": self.sys_ctrl.ui.vehicle_details_input
+        }
+        return INPUT_MAP
 
     def execute_handlers(self):
         EXECUTE_MAP = {
@@ -17,17 +26,6 @@ class Registry:
         }
         return EXECUTE_MAP
     
-    def input_handlers(self):
-        INPUT_MAP = {
-            "LOGIN": self.sys_ctrl.ui.login,
-            "REGISTER": self.sys_ctrl.ui.register,
-            
-            "ADVANCED_SEARCH": self.sys_ctrl.ui.advanced_search_input,
-            "VEHICLE_DETAILS": self.sys_ctrl.ui.vehicle_details_input
-        }
-        return INPUT_MAP
-
-
     def validators_handler(self):
         validators_map = {
             "type": is_any,

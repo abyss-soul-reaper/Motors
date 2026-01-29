@@ -9,7 +9,7 @@ from APP.core.pagination.pagination import Paginator
 from APP.core.pipeline.dispatchers import Dispatcher
 from APP.managers.vehicles_manager import VehiclesManager
 from APP.core.pipeline.feature_config import FEATURE_CONFIG
-from APP.core.pipeline.input_pipeline import input_pipeline_dispatcher
+from APP.core.pipeline.input_pipeline import InputPipeline
 
 class SystemController:
     def __init__(self):
@@ -24,7 +24,7 @@ class SystemController:
         self.context = SystemContext()
         self.sys_schema = SYSTEM_SCHEMA
         self.Dispatcher = Dispatcher(self)
-        self.pipeline_dsp = input_pipeline_dispatcher
+        self.dsp_pipeline = InputPipeline(self)
         self.perms = self.context.permissions_manager
 
     def register_user(self, data):
@@ -73,18 +73,17 @@ class SystemController:
         self.ui.paginator_display(paginator, self.ui.render_vehicle_brief, self)
         return execution_result
 
-    def vehicle_details(self):
+    def vehicle_details(self, veh, data):
         execution_result = {"ok": True, "payload": None, "error": None, "next": None}
-        v_name = self.ui.vehicle_details_input()
         name_map = self.vehicles_map()
 
-        v_id = name_map.get(v_name)
+        v_id = name_map.get(veh)
         if not v_id:
             execution_result["ok"] = False
             execution_result["error"] = "Vehicle not found or no results."
             return execution_result
         
-        vehicle = self.v_mgr.vehicle_details(v_id)
+        vehicle = data
         if not vehicle["success"]:
             execution_result["ok"] = False
             execution_result["error"] = vehicle["error"]

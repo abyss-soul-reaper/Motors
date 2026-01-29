@@ -17,8 +17,3 @@ def mapping_helper(keys, values=None):
         for i, obj in enumerate(keys, start=1):
             object_map[i] = obj
     return object_map
-
-def clean_input(input):
-    if isinstance(input, str):
-        return input.strip()
-    return input
