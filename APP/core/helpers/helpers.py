@@ -3,12 +3,10 @@ from APP.core.base.roles import Roles
 def update_context(context, result):
     if result["success"]:
         context.set_user({
-            "user_id": result["user_id"],
-            "role": result.get("role", Roles.BUYER),
-            "is_profile_complete": result.get("is_profile_complete", False)
+            "user_id": result["data"]["user_id"],
+            "role": result["data"].get("role", Roles.BUYER),
+            "is_profile_complete": result["data"].get("is_profile_complete", False)
         })
-        return True
-    return False
 
 def mapping_helper(keys, values=None):
     object_map = {}

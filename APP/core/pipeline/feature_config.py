@@ -4,31 +4,37 @@ from APP.schemas.search_schema import SEARCH_SCHEMA
 
 FEATURE_CONFIG = {
     "REGISTER": {
-        "takes_input": True,
+        "requires_input": "user",
         "use_pipeline": True,
         "schema": USER_SCHEMA,
     },
 
     "LOGIN": {
-        "takes_input": True,
+        "requires_input": "user",
         "use_pipeline": True,
         "schema": LOGIN_SCHEMA,
     },
 
     "ADVANCED_SEARCH": {
-        "takes_input": True,
+        "requires_input": "user",
         "use_pipeline": True,
         "schema": SEARCH_SCHEMA,
     },
 
-    "LOGOUT": {
-        "takes_input": False,
+    "BROWSE_VEHICLES": {
+        "requires_input": "system",
         "use_pipeline": False,
         "schema": None,
     },
 
-    "BROWSE_VEHICLES": {
-        "takes_input": True,
+    "VEHICLE_DETAILS": {
+        "requires_input": "mixed",
+        "use_pipeline": False,
+        "schema": None
+    },
+
+    "LOGOUT": {
+        "requires_input": False,
         "use_pipeline": False,
         "schema": None,
     },

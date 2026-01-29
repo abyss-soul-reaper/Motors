@@ -24,14 +24,22 @@ class Paginator:
         }
 
     def next(self, current_page):
+        result = {"page_num":current_page, "can_move": False, "error": None}
         if current_page < self.total_pages:
-            return current_page + 1, True
-        return current_page, False
+            result["page_num"] = current_page + 1
+            result["can_move"] = True
+        else:
+            result["error"] = f"No more pages in that direction."
+        return result
     
     def prev(self, current_page):
+        result = {"page_num":current_page, "can_move": False, "error": None}
         if 1 < current_page <= self.total_pages:
-            return current_page - 1, True
-        return current_page, False
+            result["page_num"] = current_page - 1
+            result["can_move"] = True
+        else:
+            result["error"] = f"No more pages in that direction."
+        return result
 
     def quit(self):
         raise StopIteration

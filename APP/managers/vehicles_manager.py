@@ -12,28 +12,23 @@ class VehiclesManager(BaseDataManager):
     def browse_vehicles(self):
         vehicles = self.get_vehicles_data()
 
-        return [
-            {
-                "id": v_id,
-                **v_info
-            }
+        result = {"success": True, "data": [], "error": None, "meta": None}
+
+        result["data"] = [
+            {"id": v_id, **v_info}
             for v_id, v_info in vehicles.items()
             if v_info.get("status") == "available"
         ]
-    
-    def vehicle_details(self, v_id):
-        vehicles = self.get_vehicles_data()
-        vehicle_info = vehicles.get(v_id)
-        if vehicle_info:
-            return {
-                "id": v_id,
-                **vehicle_info
-            }
-        return None
-    
+
+        if not result["data"]:
+            result["success"] = False
+            result["error"] = "No available vehicles at the moment."
+
+        return result
+
     def advanced_search(self, criteria):
         vehicles = self.get_vehicles_data()
-        results = []
+        result = {"success": True, "data": [], "error": None, "meta": None}
 
         filters = {
             "brand": lambda v,c: v.get("brand") == c,
@@ -45,14 +40,29 @@ class VehiclesManager(BaseDataManager):
 
         for v_id, v_info in vehicles.items():
             if all(
-                filters[key](v_info, value.lower())
+                filters[key](v_info, value)
                 for key, value in criteria.items()
                 if value is not None
             ):
-            
-                results.append({
-                    "id": v_id,
-                    **v_info
-                })
+                result["data"].append({"id": v_id,**v_info})
 
-        return sorted(results, key=lambda v: v["price"])
+        if not result["data"]:
+            result["success"] = False
+            result["error"] = "No vehicles match the criteria."
+
+        result["data"].sort(key=lambda v: v["price"])
+        return result
+
+    def vehicle_details(self, v_id):
+        vehicles = self.get_vehicles_data()
+        result = {"success": False, "data": None, "error": None, "meta": None}
+
+        vehicle_info = vehicles.get(v_id)
+        if vehicle_info:
+            result["success"] = True
+            result["data"] = {"id": v_id,**vehicle_info}
+
+        else:
+            result["error"] = "Vehicle not found or no results."
+
+        return result

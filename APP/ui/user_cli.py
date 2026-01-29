@@ -94,14 +94,14 @@ class UserInterface:
             action_choice = input("❌ Invalid choice. Select a valid action number: ")
         return action_map[int(action_choice)]
 
-    def paginator_display(self, paginator, render_fn, controller=None):
+    def paginator_display(self, paginator, render_fn, sys_ctrl=None):
         print("\n--- Available Vehicles ---")
         page_num = 1
         commands = {
         'n': lambda: paginator.next(current_page),
         'p': lambda: paginator.prev(current_page),
-        's': lambda: controller.advanced_search() if controller else None,
-        'd': lambda: controller.vehicle_details() if controller else None,
+        's': lambda: sys_ctrl.dispatcher.execute("ADVANCED_SEARCH") if sys_ctrl else None,
+        'd': lambda: sys_ctrl.vehicle_details() if sys_ctrl else None,
         'q': lambda: paginator.quit(),
         }
         try:
@@ -127,14 +127,14 @@ class UserInterface:
                 action = commands.get(cmd)
 
                 if action:
-                    if cmd in {'s', 'd'} and controller:
-                        action, state = action()
-                        if not state:
-                            print("\nVehicle not found or no results.")
+                    if cmd in {'s', 'd'} and sys_ctrl:
+                        result = action()
+                        if not result["ok"]:
+                            print(f"\n{result["error"]}")
                     else:
-                        page_num, moved = action()
-                        if not moved and cmd in {'n', 'p'}:
-                            print("\nNo more pages in that direction.")
+                        result = action()
+                        if not result["can_move"] and cmd in {'n', 'p'}:
+                            print(f"\n{result["error"]}")
                 else:
                     print("\nInvalid command. Please try again.")
 
