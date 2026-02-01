@@ -1,125 +1,158 @@
 class Dispatcher:
     def __init__(self, sys_ctrl):
         self.sys_ctrl = sys_ctrl
-        
-    def dsp_feat_input(self, feature):
-        execution_result = {"ok": False,"payload": None,"error": None,"stage": "INPUT"}
-        config = self.sys_ctrl.config
+        self.ipt_handlers = self.sys_ctrl.Registry.input_handlers()
+        self.sys_handlers = self.sys_ctrl.Registry.system_handlers()
+        self.exe_handlers = self.sys_ctrl.Registry.execute_handlers()
 
-        # 1) feature مش موجود في config
-        if feature not in config:
-            execution_result["error"] = {"type": "CONFIG_ERROR", "reason": "FEATURE_NOT_DEFINED", "feature": feature}
-            return execution_result
+    # ---------------- INPUT ----------------
+    def execute_input(self, config, feature):
+        res = DSPResult(stage="INPUT", feature=feature)
 
-        requires_input = config[feature].get("requires_input")
+        if not config:
+            return res.fail({"type": "CONFIG_ERROR", "reason": "FEATURE_NOT_DEFINED"})
 
-        # 2) feature لا يتطلب input
-        if requires_input not in {"user", "mixed"}:
-            execution_result["error"] = {"type": "DISPATCH_ERROR", "reason": "INPUT_NOT_REQUIRED", "feature": feature}
-            return execution_result
+        if config.get("requires_input") not in {"user", "mixed"}:
+            return res.fail({"type": "DISPATCH_ERROR", "reason": "INPUT_NOT_REQUIRED"})
 
-        # 3) جلب input handlers
-        input_map = self.sys_ctrl.Registry.input_handlers()
-        if feature not in input_map:
-            execution_result["error"] = {"type": "REGISTRY_ERROR", "reason": "INPUT_HANDLER_NOT_FOUND", "feature": feature}
-            return execution_result
+        handlers = self.ipt_handlers
+        if feature not in handlers:
+            return res.fail({"type": "REGISTRY_ERROR", "reason": "INPUT_HANDLER_NOT_FOUND"})
 
-        # 4) تنفيذ input handler
         try:
-            payload = input_map[feature]()
+            res.payload["input"] = handlers[feature]()
+            return res.success()
         except Exception as e:
-            execution_result["error"] = {"type": "INPUT_ERROR", "reason": str(e), "feature": feature}
-            return execution_result
+            return res.fail({"type": "INPUT_ERROR", "reason": str(e)})
 
-        # 5) نجاح
-        execution_result["ok"] = True
-        execution_result["payload"] = payload
-        return execution_result
+    # ---------------- PIPELINE ----------------
+    def execute_pipeline(self, config, data, feature):
+        res = DSPResult(stage="NORMALIZE", feature=feature)
 
-    def execute_feat(self, feature, data=None):
-        execution_result = {"ok": False,"payload": None,"error": None,"stage": "EXECUTE"}
-        config = self.sys_ctrl.config
+        pipeline = self.sys_ctrl.dsp_pipeline
+        result = pipeline.dsp_pipeline(
+            data,
+            config.get("schema", {}),
+            self.sys_ctrl.sys_schema
+        )
 
-        if feature not in config:
-            execution_result["error"] = {"type": "CONFIG_ERROR", "reason": "FEATURE_NOT_DEFINED", "feature": feature}
-            return execution_result
-        
-        exe_map = self.sys_ctrl.Registry.execute_handlers()
-        if feature not in exe_map:
-            execution_result["error"] = {"type": "REGISTRY_ERROR", "reason": "EXECUTE_HANDLER_NOT_FOUND", "feature": feature}
-            return execution_result
+        if result["errors"]:
+            return res.fail({
+                "type": "VALIDATION_ERROR",
+                "reason": "Input validation failed",
+                "details": result["errors"]
+            })
 
-        try:        
-            requires_data = config[feature].get("requires_input")
-            if not requires_data:
-                payload = exe_map[feature]()
-            else:
-                payload = exe_map[feature](data)
+        res.payload["normalized"] = result["correct_data"]
+        return res.success()
+
+    # ---------------- SYSTEM DATA ----------------
+    def execute_system_data(self, config, feature, data):
+        res = DSPResult(stage="SYSTEM_DATA", feature=feature)
+
+        if not config.get("requires_system"):
+            return res.fail({"type": "DISPATCH_ERROR", "reason": "SYSTEM_DATA_NOT_REQUIRED"})
+
+        handlers = self.sys_handlers
+        if feature not in handlers:
+            return res.fail({"type": "REGISTRY_ERROR", "reason": "SYSTEM_HANDLER_NOT_FOUND"})
+
+        try:
+            res.payload["system"] = (
+                handlers[feature](data)
+                if config.get("system_depends_on_input")
+                else handlers[feature]()
+            )
+            return res.success()
         except Exception as e:
-            execution_result["error"] = {"type": "EXECUTE_ERROR", "reason": str(e), "feature": feature}
-            return execution_result
-        
-        execution_result["ok"] = True
-        execution_result["payload"] = payload
-        return execution_result
+            return res.fail({"type": "SYSTEM_ERROR", "reason": str(e)})
 
-    def execute_input(self, feature):
-        execution_result = {"ok": False,"payload": None,"error": None}
-        data = self.dsp_feat_input(feature)
+    # ---------------- EXECUTE FEATURE ----------------
+    def execute_feat(self, config, feature, payload):
+        res = DSPResult(stage="EXECUTE", feature=feature)
 
-        if data["ok"]:
-            execution_result["ok"] = True
-            execution_result["payload"] = data["payload"]
-            return execution_result
+        handlers = self.exe_handlers
+        if feature not in handlers:
+            return res.fail({"type": "REGISTRY_ERROR", "reason": "EXECUTE_HANDLER_NOT_FOUND"})
 
-        execution_result["error"] = data["error"]
-        return execution_result
-    
-    def execute_pipeline(self, config, data):
-        execution_result = {"ok": False,"payload": None,"errors": None, "stage": "NORMALIZE"}
-        schema = config.get("schema")
-        dsp_pipeline = self.sys_ctrl.dsp_pipeline
+        try:
+            res.payload["result"] = (
+                handlers[feature](payload)
+                if config.get("requires_input")
+                else handlers[feature]()
+            )
+            return res.success()
+        except Exception as e:
+            return res.fail({"type": "EXECUTE_ERROR", "reason": str(e)})
 
-        results = dsp_pipeline.dsp_pipeline(
-                data, schema, self.sys_ctrl.sys_schema
-                )
-
-        if results["errors"]:
-            execution_result["errors"] = results["errors"]
-            return execution_result
-        
-        execution_result["ok"] = True
-        execution_result["payload"] = results["correct_data"]
-        return execution_result
-
+    # ---------------- FINAL ----------------
     def execute(self, feature):
-        execution_result = {"ok": False,"payload": None,"error": None,"stage": "FINAL_EXECUTE"}
-        config = self.sys_ctrl.config.get(feature, {})
+        config = self.sys_ctrl.config.get(feature)
+        res = DSPResult(stage="FINAL_EXECUTE", feature=feature)
 
-        raw_data = None
-        if config.get("requires_input") in {"user", "mixed"}:
-            result = self.execute_input(feature)
-            if not result["ok"]:
-                execution_result["error"] = result["error"]
-                return execution_result
-            raw_data = result["payload"]
+        if not config:
+            return res.fail({"type": "CONFIG_ERROR", "reason": "FEATURE_NOT_DEFINED"})
 
+        # INPUT
+        if config.get("requires_input"):
+            inp = self.execute_input(config, feature)
+            if not inp.ok:
+                return inp
+            res.payload["input"] = inp.payload["input"]
+
+        # PIPELINE
         if config.get("use_pipeline"):
-            pipe_result = self.execute_pipeline(config, raw_data)
- 
-            if not pipe_result["ok"]:
-                execution_result["error"] =  pipe_result["errors"]
-                return execution_result
-            data_to_pass = pipe_result["payload"]
-
+            pipe = self.execute_pipeline(config, res.payload["input"], feature)
+            if not pipe.ok:
+                return pipe
+            res.payload["normalized"] = pipe.payload["normalized"]
         else:
-            data_to_pass = raw_data
+            res.payload["normalized"] = res.payload["input"]
 
-        final_execute = self.execute_feat(feature, data_to_pass)
-        if not final_execute["ok"]:
-            execution_result["error"] = final_execute["error"]
-            return execution_result
-        
-        execution_result["ok"] = True
-        execution_result["payload"] = final_execute["payload"]
-        return execution_result
+        # SYSTEM
+        if config.get("requires_system"):
+            sysd = self.execute_system_data(config, feature, res.payload["normalized"])
+            if not sysd.ok:
+                return sysd
+            res.payload["system"] = sysd.payload["system"]
+
+        # EXECUTE
+        exe = self.execute_feat(config, feature, res.payload)
+        if not exe.ok:
+            return exe
+
+        res.payload["result"] = exe.payload["result"]
+        return res.success()
+
+class DSPResult:
+    def __init__(self, stage, feature):
+        self.ok = False
+        self.stage = stage
+        self.feature = feature
+        self.payload = {
+            "input": None,
+            "normalized": None,
+            "system": None,
+            "result": None
+        }
+        self.error = None
+
+    def fail(self, raw_error):
+        self.ok = False
+        self.error = wrap_error(self.stage, self.feature, raw_error)
+        return self
+
+    def success(self):
+        self.ok = True
+        return self
+
+def wrap_error(stage, feature, error):
+    return {
+        "code": error.get("type", "UNKNOWN_ERROR"),
+        "message": error.get("reason", "Execution failed"),
+        "details": {
+            "stage": stage,
+            "feature": feature,
+            "info": error.get("details", None)
+        }
+    }

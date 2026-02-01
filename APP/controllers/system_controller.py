@@ -1,15 +1,17 @@
 from APP.core.helpers import helpers
 from APP.ui.user_cli import UserInterface
-from APP.models.user_model import UserModel
-from APP.core.pipeline.registry import Registry
 from APP.core.base.context import SystemContext
+from APP.core.pipeline.registry import Registry
+from APP.domain.user.user_model import UserModel
 from APP.managers.user_manager import UserManager
+from APP.handlers.user_handler import UserHandler
 from APP.schemas.system_schema import SYSTEM_SCHEMA
 from APP.core.pagination.pagination import Paginator
 from APP.core.pipeline.dispatchers import Dispatcher
+from APP.handlers.vehicle_handler import VehiclesHandler
 from APP.managers.vehicles_manager import VehiclesManager
-from APP.core.pipeline.feature_config import FEATURE_CONFIG
 from APP.core.pipeline.input_pipeline import InputPipeline
+from APP.core.pipeline.feature_config import FEATURE_CONFIG
 
 class SystemController:
     def __init__(self):
@@ -18,13 +20,15 @@ class SystemController:
         self.u_model = UserModel
         self.ui = UserInterface()
         self.u_mgr = UserManager()
-        self.Registry = Registry(self)
         self.config = FEATURE_CONFIG
         self.v_mgr = VehiclesManager()
         self.context = SystemContext()
+        self.Registry = Registry(self)
         self.sys_schema = SYSTEM_SCHEMA
         self.Dispatcher = Dispatcher(self)
         self.dsp_pipeline = InputPipeline(self)
+        self.u_handler = UserHandler(self.u_mgr)
+        self.v_handler = VehiclesHandler(self.v_mgr)
         self.perms = self.context.permissions_manager
 
     def register_user(self, data):
@@ -52,11 +56,15 @@ class SystemController:
         self.helpers.update_context(self.context, result)
         return execution_result
         
-    def browse_vehicles(self, vehicles):
+    def browse_vehicles(self, data):
         execution_result = {"ok": True, "payload": None, "error": None, "next": None}
-        paginator = self.pag(vehicles)
-        self.context.set_seen_vehicles(vehicles)
-        self.ui.paginator_display(paginator, self.ui.render_vehicle_brief, self)
+        if data["error"]:
+            execution_result["error"] = data["error"]
+            return execution_result
+        
+        vehicles = data["data"]
+        display = self.display(self.ui.render_vhicle_brief, vehicles)
+        execution_result["payload"] = display
         return execution_result
 
     def advanced_search(self, criteria):
@@ -68,28 +76,14 @@ class SystemController:
             execution_result["error"] = result["error"]
             return execution_result
         
-        self.context.set_seen_vehicles(result["data"])
-        paginator = self.pag(result["data"])
-        self.ui.paginator_display(paginator, self.ui.render_vehicle_brief, self)
+        display = self.display(self.ui.render_vehicle_brief, result["data"])
+        execution_result["payload"] = display
         return execution_result
 
-    def vehicle_details(self, veh, data):
-        execution_result = {"ok": True, "payload": None, "error": None, "next": None}
+    def v_details_presenter(self, data):
         name_map = self.vehicles_map()
-
-        v_id = name_map.get(veh)
-        if not v_id:
-            execution_result["ok"] = False
-            execution_result["error"] = "Vehicle not found or no results."
-            return execution_result
-        
-        vehicle = data
-        if not vehicle["success"]:
-            execution_result["ok"] = False
-            execution_result["error"] = vehicle["error"]
-
-        self.ui.render_vehicle_details(vehicle)
-        return execution_result
+        v_id = name_map.get(data)
+        # if not v_id:
 
     def vehicles_map(self):
         vehicles = self.v_mgr.get_vehicles_data()
@@ -140,3 +134,11 @@ class SystemController:
                 return {"errors": {"permission": perm_state["error"]}}
             
             self.Dispatcher.execute(feature)
+
+    def display(self, reder_func, data=None):
+        if data:
+            self.context.set_seen_vehicles(data)
+            pagin = self.pag(data)
+            return self.ui.paginator_display(pagin, reder_func, self)
+
+        

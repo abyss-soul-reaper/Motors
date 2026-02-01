@@ -67,7 +67,7 @@ class UserInterface:
             password = input('❌ Password is required: ')
 
         return {"email": email, "password": password}
-    
+
     @staticmethod
     def role_groups(index_map, role):
         """
