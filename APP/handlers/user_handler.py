@@ -1,19 +1,16 @@
-
 import uuid
-from APP.domain.user.user_model import UserModel
 from APP.core.security.security import hash_password
 from APP.core.validation.validators import is_valid_email, is_valid_phone
 
-class UserHandler():
+class UserHandler:
     def __init__(self, u_mgr):
         self.u_mgr = u_mgr
-        self.u_model = UserModel
 
     def register(self, user_data):
         result = {"success": False, "data": None, "error": None, "meta": None}
 
-        email = user_data.get("email", "").lower()
-        phone = user_data.get("phone", "")
+        email = user_data.get("basic_info", {}).get("email", "").lower()
+        phone = user_data.get("contact_info", {}).get("phone", "")
 
         if not is_valid_email(email):
             result["error"] = "Invalid email address"
@@ -26,27 +23,22 @@ class UserHandler():
         users = self.u_mgr.get_all_users()
 
         for usr_data in users.values():
-            if usr_data["email"].lower() == email:
+            if usr_data["basic_info"]["email"].lower() == email:
                 result["error"] = "Email already exists"
                 return result
 
         user_data.pop("user_id", None)
         user_id = str(uuid.uuid4())
-
-        try:
-            user = self.u_model(user_data)
-        except Exception as e:
-                result["error"] = str(e)
-                return result
-        
-        user.password = hash_password(user.password)
-        self.u_mgr.save_user(user_id, user.dict_info())
+        user_data["basic_info"]["password"] = hash_password(
+            user_data["basic_info"]["password"]
+        )
+        self.u_mgr.save_user(user_id, user_data)
 
         result["success"] = True
         result["data"] = {
             "user_id": user_id,
-            "role": user.role,
-            "is_profile_complete": user.is_profile_complete
+            "role": user_data["account"]["role"],
+            "is_profile_complete": user_data["account"]["is_profile_complete"]
         }
 
         return result
@@ -54,7 +46,7 @@ class UserHandler():
     def login(self, user_data):
         result = {"success": False, "data": None, "error": None, "meta": None}
 
-        users = self.u_mgr.get_all_users()
+        users = self.get_users_data()
         email = user_data.get("email", "").lower()
         password = hash_password(user_data.get("password", ""))
 

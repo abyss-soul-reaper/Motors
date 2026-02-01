@@ -58,12 +58,17 @@ class Dispatcher:
             return res.fail({"type": "REGISTRY_ERROR", "reason": "SYSTEM_HANDLER_NOT_FOUND"})
 
         try:
-            res.payload["system"] = (
+            result = self._wrap_result(
                 handlers[feature](data)
                 if config.get("system_depends_on_input")
                 else handlers[feature]()
             )
+            
+            if result["error"]:
+                return res.fail({"type": "HANDLER_ERROR", "reason": result["error"]})
+            res.payload["system"] = result["data"]
             return res.success()
+        
         except Exception as e:
             return res.fail({"type": "SYSTEM_ERROR", "reason": str(e)})
 
@@ -76,11 +81,9 @@ class Dispatcher:
             return res.fail({"type": "REGISTRY_ERROR", "reason": "EXECUTE_HANDLER_NOT_FOUND"})
 
         try:
-            res.payload["result"] = (
-                handlers[feature](payload)
-                if config.get("requires_input")
-                else handlers[feature]()
-            )
+            print("DEBUG FEATURE:", feature, "HANDLER:", handlers[feature])
+            res.payload["result"] = handlers[feature](payload) if config.get("requires_input") else handlers[feature]()
+
             return res.success()
         except Exception as e:
             return res.fail({"type": "EXECUTE_ERROR", "reason": str(e)})
@@ -105,24 +108,38 @@ class Dispatcher:
             pipe = self.execute_pipeline(config, res.payload["input"], feature)
             if not pipe.ok:
                 return pipe
-            res.payload["normalized"] = pipe.payload["normalized"]
+            res.payload["result"] = pipe.payload["normalized"]
         else:
-            res.payload["normalized"] = res.payload["input"]
+            res.payload["result"] = res.payload["input"]
 
         # SYSTEM
         if config.get("requires_system"):
             sysd = self.execute_system_data(config, feature, res.payload["normalized"])
             if not sysd.ok:
                 return sysd
-            res.payload["system"] = sysd.payload["system"]
+            res.payload["result"] = sysd.payload["system"]
 
         # EXECUTE
-        exe = self.execute_feat(config, feature, res.payload)
+        exe = self.execute_feat(config, feature, res.payload["result"])
         if not exe.ok:
             return exe
 
         res.payload["result"] = exe.payload["result"]
         return res.success()
+
+    def _wrap_result(self, result):
+        """
+        Simplifies the handler result for DSP usage.
+        - If there is an error or success is False, returns a dict with the error.
+        - Otherwise, returns a dict with the data.
+        """
+        if not isinstance(result, dict):
+            return {"error": "Invalid result format"}
+
+        if not result.get("success") or result.get("error"):
+            return {"error": result.get("error", "Unknown error")}
+
+        return {"data": result.get("data")}
 
 class DSPResult:
     def __init__(self, stage, feature):

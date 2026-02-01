@@ -23,18 +23,18 @@ class SystemController:
         self.config = FEATURE_CONFIG
         self.v_mgr = VehiclesManager()
         self.context = SystemContext()
+        self.v_handler = VehiclesHandler(self.v_mgr)
         self.Registry = Registry(self)
         self.sys_schema = SYSTEM_SCHEMA
         self.Dispatcher = Dispatcher(self)
         self.dsp_pipeline = InputPipeline(self)
         self.u_handler = UserHandler(self.u_mgr)
-        self.v_handler = VehiclesHandler(self.v_mgr)
         self.perms = self.context.permissions_manager
 
     def register_user(self, data):
         execution_result = {"ok": True, "payload": None, "error": None, "next": None}
         model_result = self.u_model(data).dict_info()
-        result = self.u_mgr.register(model_result)
+        result = self.u_handler.register(model_result)
 
         if not result["success"]:
             execution_result["ok"] = False
@@ -46,7 +46,7 @@ class SystemController:
         
     def login_user(self, credentials):
         execution_result = {"ok": True, "payload": None, "error": None, "next": None}
-        result = self.u_mgr.login(credentials)
+        result = self.u_handler.login(credentials)
 
         if not result["success"]:
             execution_result["ok"] = False
@@ -63,34 +63,34 @@ class SystemController:
             return execution_result
         
         vehicles = data["data"]
-        display = self.display(self.ui.render_vhicle_brief, vehicles)
+        display = self.display(self.ui.render_vehicle_brief, vehicles)
         execution_result["payload"] = display
         return execution_result
 
-    def advanced_search(self, criteria):
-        execution_result = {"ok": True, "payload": None, "error": None, "next": None}
-        result = self.v_mgr.advanced_search(criteria)
+    # def advanced_search(self, criteria):
+    #     execution_result = {"ok": True, "payload": None, "error": None, "next": None}
+    #     result = self.v_mgr.advanced_search(criteria)
 
-        if not result["success"]:
-            execution_result["ok"] = False
-            execution_result["error"] = result["error"]
-            return execution_result
+    #     if not result["success"]:
+    #         execution_result["ok"] = False
+    #         execution_result["error"] = result["error"]
+    #         return execution_result
         
-        display = self.display(self.ui.render_vehicle_brief, result["data"])
-        execution_result["payload"] = display
-        return execution_result
+    #     display = self.display(self.ui.render_vehicle_brief, result["data"])
+    #     execution_result["payload"] = display
+    #     return execution_result
 
-    def v_details_presenter(self, data):
-        name_map = self.vehicles_map()
-        v_id = name_map.get(data)
-        # if not v_id:
+    # def v_details_presenter(self, data):
+    #     name_map = self.vehicles_map()
+    #     v_id = name_map.get(data)
+    #     # if not v_id:
 
-    def vehicles_map(self):
-        vehicles = self.v_mgr.get_vehicles_data()
-        ids = list(vehicles.keys())
-        names = [v_info.get("full_name") for v_info in vehicles.values()]
-        name_map = self.helpers.mapping_helper(names, ids)
-        return name_map
+    # def vehicles_map(self):
+    #     vehicles = self.v_mgr.get_vehicles_data()
+    #     ids = list(vehicles.keys())
+    #     names = [v_info.get("full_name") for v_info in vehicles.values()]
+    #     name_map = self.helpers.mapping_helper(names, ids)
+    #     return name_map
 
     def choose_permission(self):
         permissions = self.perms.get_role_perms(self.context.role)

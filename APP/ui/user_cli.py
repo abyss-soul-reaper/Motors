@@ -199,4 +199,4 @@ class UserInterface:
         v_name = input("Enter Vehicle Full Name for details: ")
         while not v_name:
             v_name = input("❌ Vehicle name cannot be empty. Try again: ")
-        return v_name
+        return {"full_name": v_name}
