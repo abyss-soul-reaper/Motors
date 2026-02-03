@@ -1,6 +1,5 @@
-from APP.schemas.user_schema import USER_SCHEMA
-from APP.schemas.login_schema import LOGIN_SCHEMA
-from APP.schemas.search_schema import SEARCH_SCHEMA
+from APP.domain.user.user_schema import USER_SCHEMA
+from APP.domain.vehicle.vehicle_schema import VEHICLE_SCHEMA
 
 
 FEATURE_CONFIG = {
@@ -20,7 +19,7 @@ FEATURE_CONFIG = {
     "LOGIN": {
         "requires_input": "user",
         "use_pipeline": True,
-        "schema": LOGIN_SCHEMA,
+        "schema": USER_SCHEMA,
 
         "requires_system": False,
         "system_depends_on_input": False,
@@ -55,7 +54,7 @@ FEATURE_CONFIG = {
     "ADVANCED_SEARCH": {
         "requires_input": "user",
         "use_pipeline": True,
-        "schema": SEARCH_SCHEMA,
+        "schema": VEHICLE_SCHEMA,
 
         "requires_system": True,
         "system_depends_on_input": True,

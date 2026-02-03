@@ -1,35 +1,73 @@
+# =========================
+# Core / Base Context
+# =========================
+from APP.core.context.system_context import SystemContext
 from APP.core.helpers import helpers
+
+# =========================
+# UI / Presentation
+# =========================
 from APP.ui.user_cli import UserInterface
-from APP.core.base.context import SystemContext
-from APP.core.pipeline.registry import Registry
+
+# =========================
+# Domain Models & Managers
+# =========================
 from APP.domain.user.user_model import UserModel
-from APP.managers.user_manager import UserManager
-from APP.handlers.user_handler import UserHandler
-from APP.schemas.system_schema import SYSTEM_SCHEMA
-from APP.core.pagination.pagination import Paginator
-from APP.core.pipeline.dispatchers import Dispatcher
-from APP.handlers.vehicle_handler import VehiclesHandler
-from APP.managers.vehicles_manager import VehiclesManager
+from APP.domain.user.user_manager import UserManager
+from APP.domain.vehicle.vehicles_manager import VehiclesManager
+
+# =========================
+# Domain Handlers
+# =========================
+from APP.domain.user.user_handler import UserHandler
+from APP.domain.vehicle.vehicle_handler import VehiclesHandler
+
+# =========================
+# Pipeline / Execution Infrastructure
+# =========================
+from APP.core.pipeline.registry import Registry
+from APP.core.pipeline.dispatcher import Dispatcher
 from APP.core.pipeline.input_pipeline import InputPipeline
 from APP.core.pipeline.feature_config import FEATURE_CONFIG
+from APP.schemas.system_schema import SYSTEM_SCHEMA
+
+# =========================
+# Utilities
+# =========================
+from APP.core.pagination.pagination import Paginator
 
 class SystemController:
     def __init__(self):
-        self.pag = Paginator
-        self.helpers = helpers
-        self.u_model = UserModel
+        # -------- System State --------
+        self.system_context = SystemContext()
+        self.permissions = self.system_context.permissions_manager
+
+        # -------- Helpers & Utilities --------
+        self.helpers = helpers()
+        self.paginator = Paginator
+
+        # -------- UI --------
         self.ui = UserInterface()
-        self.u_mgr = UserManager()
-        self.config = FEATURE_CONFIG
-        self.v_mgr = VehiclesManager()
-        self.context = SystemContext()
-        self.v_handler = VehiclesHandler(self.v_mgr)
-        self.Registry = Registry(self)
-        self.sys_schema = SYSTEM_SCHEMA
-        self.Dispatcher = Dispatcher(self)
-        self.dsp_pipeline = InputPipeline(self)
-        self.u_handler = UserHandler(self.u_mgr)
-        self.perms = self.context.permissions_manager
+
+        # -------- Domain Models --------
+        self.user_model = UserModel
+
+        # -------- Domain Managers --------
+        self.user_manager = UserManager()
+        self.vehicle_manager = VehiclesManager()
+
+        # -------- Domain Handlers --------
+        self.user_handler = UserHandler(self.user_manager)
+        self.vehicle_handler = VehiclesHandler(self.vehicle_manager)
+
+        # -------- Pipeline Configuration --------
+        self.feature_config = FEATURE_CONFIG
+        self.system_schema = SYSTEM_SCHEMA
+
+        # -------- Pipeline Infrastructure --------
+        self.registry = Registry(self)
+        self.input_pipeline = InputPipeline(self)
+        self.dispatcher = Dispatcher(self)
 
     def register_user(self, data):
         execution_result = {"ok": True, "payload": None, "error": None, "next": None}

@@ -1,4 +1,8 @@
-SEARCH_SCHEMA = {
+VEHICLE_SCHEMA = {
+    "full_name": {
+        "type": "string",
+        "required": False
+    },
     "brand": {
         "type": "string",
         "required": False

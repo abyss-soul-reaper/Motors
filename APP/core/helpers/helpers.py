@@ -1,4 +1,4 @@
-from APP.core.base.roles import Roles
+from APP.core.auth.roles import Roles
 
 def update_context(context, result):
     if result["success"]:

@@ -1,5 +1,5 @@
-from APP.core.base.roles import Roles
-from APP.core.base.permissions import Permissions
+from APP.core.auth.roles import Roles
+from APP.core.auth.permissions import Permissions
 
 class SystemContext:
     """
@@ -71,18 +71,3 @@ class SystemContext:
         - permissions_manager remains initialized
         """
         self.reset()
-
-class ResultContext:
-    def __init__(self):
-        self.ok = False
-        self.error = None
-        self.meta = None
-
-    def fail(self, error):
-        self.ok = False
-        self.error = error
-        return self
-    
-    def success(self):
-        self.ok = True
-        return self
