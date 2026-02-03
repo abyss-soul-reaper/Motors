@@ -57,3 +57,21 @@ class VehiclesHandler():
             result["error"] = "Vehicle not found or no results."
 
         return result
+
+
+class VehiclesResult:
+    def __init__(self):
+        self.ok = False
+        self.data = None
+        self.data_type = None
+        self.error = None
+        self.meta = None
+    
+    def fail(self, error):
+        self.ok = False
+        self.error = error
+        return self
+    
+    def success(self):
+        self.ok = True
+        return self

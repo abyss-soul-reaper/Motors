@@ -1,4 +1,5 @@
 from APP.core.validation.validators import *
+from APP.core.base.features_enum import Feature, SpecialFeature
 
 class Registry:
     def __init__(self, sys_ctrl):
@@ -6,31 +7,31 @@ class Registry:
 
     def input_handlers(self):
         INPUT_MAP = {
-            "LOGIN": self.sys_ctrl.ui.login,
-            "REGISTER": self.sys_ctrl.ui.register,
+            Feature.LOGIN: self.sys_ctrl.ui.login,
+            Feature.REGISTER: self.sys_ctrl.ui.register,
             
-            "ADVANCED_SEARCH": self.sys_ctrl.ui.advanced_search_input,
-            "VEHICLE_DETAILS": self.sys_ctrl.ui.vehicle_details_input
+            Feature.ADVANCED_SEARCH: self.sys_ctrl.ui.advanced_search_input,
+            SpecialFeature.VEHICLE_DETAILS: self.sys_ctrl.ui.vehicle_details_input
         }
         return INPUT_MAP
 
     def system_handlers(self):
         SYSTEM_MAP = {
-            "BROWSE_VEHICLES": self.sys_ctrl.v_handler.browse_vehicles,
-            "ADVANCED_SEARCH": self.sys_ctrl.v_handler.advanced_search,
-            "VEHICLE_DETAILS" : self.sys_ctrl.v_handler.vehicle_details
+            Feature.BROWSE_VEHICLES: self.sys_ctrl.v_handler.browse_vehicles,
+            Feature.ADVANCED_SEARCH: self.sys_ctrl.v_handler.advanced_search,
+            SpecialFeature.VEHICLE_DETAILS: self.sys_ctrl.v_handler.vehicle_details
         }
         return SYSTEM_MAP
 
     def execute_handlers(self):
         EXECUTE_MAP = {
-            "LOGIN": self.sys_ctrl.login_user,
-            "REGISTER": self.sys_ctrl.register_user,
-            "LOGOUT": self.sys_ctrl.logout_user,
+            Feature.LOGIN: self.sys_ctrl.login_user,
+            Feature.REGISTER: self.sys_ctrl.register_user,
+            Feature.LOGOUT: self.sys_ctrl.logout_user,
 
-            "BROWSE_VEHICLES": self.sys_ctrl.browse_vehicles,
-            # "ADVANCED_SEARCH": self.sys_ctrl.advanced_search,
-            # "VEHICLE_DETAILS": self.sys_ctrl.vehicle_details,
+            Feature.BROWSE_VEHICLES: self.sys_ctrl.browse_vehicles,
+            # Feature.ADVANCED_SEARCH: self.sys_ctrl.advanced_search,
+            # SpecialFeature.VEHICLE_DETAILS: self.sys_ctrl.vehicle_details
         }
         return EXECUTE_MAP
     

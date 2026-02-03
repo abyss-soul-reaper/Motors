@@ -64,10 +64,10 @@ class Dispatcher:
                 else handlers[feature]()
             )
             
-            if result["error"]:
-                return res.fail({"type": "HANDLER_ERROR", "reason": result["error"]})
-            res.payload["system"] = result["data"]
-            return res.success()
+            if not result.get("error"):
+                res.payload["system"] = result["data"]
+                return res.success()
+            return res.fail({"type": "HANDLER_ERROR", "reason": result["error"]})
         
         except Exception as e:
             return res.fail({"type": "SYSTEM_ERROR", "reason": str(e)})
@@ -81,8 +81,7 @@ class Dispatcher:
             return res.fail({"type": "REGISTRY_ERROR", "reason": "EXECUTE_HANDLER_NOT_FOUND"})
 
         try:
-            print("DEBUG FEATURE:", feature, "HANDLER:", handlers[feature])
-            res.payload["result"] = handlers[feature](payload) if config.get("requires_input") else handlers[feature]()
+            res.payload["result"] = handlers[feature](payload) if config.get("execute_accepts_payload") else handlers[feature]()
 
             return res.success()
         except Exception as e:
@@ -96,31 +95,34 @@ class Dispatcher:
         if not config:
             return res.fail({"type": "CONFIG_ERROR", "reason": "FEATURE_NOT_DEFINED"})
 
+        current_data = None
+
         # INPUT
         if config.get("requires_input"):
             inp = self.execute_input(config, feature)
             if not inp.ok:
                 return inp
-            res.payload["input"] = inp.payload["input"]
+            current_data = inp.payload["input"]
+            res.payload["input"] = current_data
 
         # PIPELINE
         if config.get("use_pipeline"):
-            pipe = self.execute_pipeline(config, res.payload["input"], feature)
+            pipe = self.execute_pipeline(config, current_data, feature)
             if not pipe.ok:
                 return pipe
-            res.payload["result"] = pipe.payload["normalized"]
-        else:
-            res.payload["result"] = res.payload["input"]
+            current_data = pipe.payload["normalized"]
+            res.payload["normalized"] = current_data
 
         # SYSTEM
         if config.get("requires_system"):
-            sysd = self.execute_system_data(config, feature, res.payload["normalized"])
+            sysd = self.execute_system_data(config, feature, current_data)
             if not sysd.ok:
                 return sysd
-            res.payload["result"] = sysd.payload["system"]
+            current_data = sysd.payload["system"]
+            res.payload["system"] = current_data
 
         # EXECUTE
-        exe = self.execute_feat(config, feature, res.payload["result"])
+        exe = self.execute_feat(config, feature, current_data)
         if not exe.ok:
             return exe
 
@@ -133,7 +135,9 @@ class Dispatcher:
         - If there is an error or success is False, returns a dict with the error.
         - Otherwise, returns a dict with the data.
         """
+
         if not isinstance(result, dict):
+            # result = {result}
             return {"error": "Invalid result format"}
 
         if not result.get("success") or result.get("error"):

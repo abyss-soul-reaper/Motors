@@ -58,12 +58,11 @@ class SystemController:
         
     def browse_vehicles(self, data):
         execution_result = {"ok": True, "payload": None, "error": None, "next": None}
-        if data["error"]:
-            execution_result["error"] = data["error"]
+        if data.get("error"):
+            execution_result["error"] = data.get("error")
             return execution_result
         
-        vehicles = data["data"]
-        display = self.display(self.ui.render_vehicle_brief, vehicles)
+        display = self.display(self.ui.render_vehicle_brief, data)
         execution_result["payload"] = display
         return execution_result
 

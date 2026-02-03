@@ -46,7 +46,7 @@ class UserHandler:
     def login(self, user_data):
         result = {"success": False, "data": None, "error": None, "meta": None}
 
-        users = self.get_users_data()
+        users = self.u_mgr.get_all_users()
         email = user_data.get("email", "").lower()
         password = hash_password(user_data.get("password", ""))
 

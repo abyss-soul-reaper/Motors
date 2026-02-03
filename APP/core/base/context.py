@@ -60,7 +60,6 @@ class SystemContext:
     def set_seen_vehicles(self, vehicles):
         self.seen_vehicles = vehicles
 
-
     def logout(self):
         """
         Log out the current user and reset context to guest state.
@@ -72,3 +71,18 @@ class SystemContext:
         - permissions_manager remains initialized
         """
         self.reset()
+
+class ResultContext:
+    def __init__(self):
+        self.ok = False
+        self.error = None
+        self.meta = None
+
+    def fail(self, error):
+        self.ok = False
+        self.error = error
+        return self
+    
+    def success(self):
+        self.ok = True
+        return self
