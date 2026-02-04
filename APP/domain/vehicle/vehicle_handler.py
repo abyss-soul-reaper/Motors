@@ -37,17 +37,17 @@ class VehiclesHandler:
         """
         res = VehiclesResult()
 
-        res.data = [
+        res.payload = [
             {"id": v_id, **v_info}
             for v_id, v_info in self.v_mgr.get_all_vehicles().items()
             if v_info.get("status") == "available"
         ]
 
-        if not res.data:
+        if not res.payload:
             res.fail("No available vehicles at the moment.")
 
-        res.meta = {"total_count": len(res.data)}
-        res.data.sort(key=lambda v: v["price"])
+        res.meta = {"total_count": len(res.payload)}
+        res.payload.sort(key=lambda v: v["price"])
         return res.success()
 
     def advanced_search(self, criteria: dict) -> VehiclesResult:
@@ -86,13 +86,13 @@ class VehiclesHandler:
             ):
                 data.append({"id": v_id, **v_info})
 
-        res.data = data
+        res.payload = data
 
-        if not res.data:
+        if not res.payload:
             return res.fail("No vehicles match the criteria.")
 
-        res.meta = {"total_count": len(res.data)}
-        res.data.sort(key=lambda v: v["price"])
+        res.meta = {"total_count": len(res.payload)}
+        res.payload.sort(key=lambda v: v["price"])
         return res.success()
 
     def vehicle_details(self, v_id) -> VehiclesResult:
@@ -112,7 +112,7 @@ class VehiclesHandler:
         vehicle_info = self.v_mgr.get_vehicle_by_id(v_id)
 
         if vehicle_info:
-            res.data = [{"id": v_id, **vehicle_info}]
+            res.payload = [{"id": v_id, **vehicle_info}]
         else:
             res.fail("Vehicle not found or no results.")
 

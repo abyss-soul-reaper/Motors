@@ -140,7 +140,7 @@ class Dispatcher:
         if not result.ok or result.error:
             return {"error": result.error}
         
-        return {"data": result.data, "meta": result.meta}
+        return {"payload": result.payload, "meta": result.meta}
 
 class DSPResult:
     def __init__(self, stage, feature):

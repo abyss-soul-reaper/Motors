@@ -1,6 +1,7 @@
 class BaseResult:
     def __init__(self):
         self.ok = False
+        self.payload = None
         self.error = None
         self.meta = None
 

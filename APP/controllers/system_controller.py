@@ -1,7 +1,8 @@
-from APP.core.initializer.initializer import Initializer
 from APP.core.pipeline.registry import Registry
-from APP.core.pipeline.input_pipeline import InputPipeline
+from APP.core.result.base_result import BaseResult
 from APP.core.pipeline.dispatcher import Dispatcher
+from APP.core.initializer.initializer import Initializer
+from APP.core.pipeline.input_pipeline import InputPipeline
 
 class SystemController:
     """
@@ -55,38 +56,39 @@ class SystemController:
         )
 
     def register_user(self, data):
-        execution_result = {"ok": True, "payload": None, "error": None, "next": None}
+        res = BaseResult()
         model_result = self.user_model(data).dict_info()
         result = self.user_handler.register(model_result)
 
-        if not result["success"]:
-            execution_result["ok"] = False
-            execution_result["error"] = result["error"]
-            return execution_result
+        if not result.ok:
+            return res.fail(result.error) 
 
-        self.helpers.update_context(self.system_context, result)
-        return execution_result
+        self.helpers.update_context(self.system_context, result.payload)
+        return res.success()
         
     def login_user(self, credentials):
-        execution_result = {"ok": True, "payload": None, "error": None, "next": None}
+        res = BaseResult()
         result = self.user_handler.login(credentials)
 
-        if not result["success"]:
-            execution_result["ok"] = False
-            execution_result["error"] = result["error"]
-            return execution_result
+        if not result.ok:
+            return res.fail(result.error)
 
-        self.helpers.update_context(self.system_context, result)
-        return execution_result
+        self.helpers.update_context(self.system_context, result.payload)
+        return res.success()
         
     def browse_vehicles(self, data):
-        execution_result = {"ok": True, "payload": None, "error": None, "next": None}
-
+        res = BaseResult()
+        res.meta = data.get("meta")
         final_data = data.get("data")
         
-        display = self.display(self.ui.render_vehicle_brief, final_data)
-        execution_result["payload"] = display
-        return execution_result
+        self.display(self.ui.render_vehicle_brief, final_data)
+        return res.success()
+
+    def display(self, reder_func, data=None):
+        if data:
+            self.system_context.set_seen_vehicles(data)
+            pagin = self.paginator(data)
+            return self.ui.paginator_display(pagin, reder_func, self)
 
     # def advanced_search(self, criteria):
     #     execution_result = {"ok": True, "payload": None, "error": None, "next": None}
@@ -100,11 +102,6 @@ class SystemController:
     #     display = self.display(self.ui.render_vehicle_brief, result["data"])
     #     execution_result["payload"] = display
     #     return execution_result
-
-    # def v_details_presenter(self, data):
-    #     name_map = self.vehicles_map()
-    #     v_id = name_map.get(data)
-    #     # if not v_id:
 
     # def vehicles_map(self):
     #     vehicles = self.v_mgr.get_vehicles_data()
@@ -155,11 +152,3 @@ class SystemController:
                 return {"errors": {"permission": perm_state["error"]}}
             
             self.dispatcher.execute(feature)
-
-    def display(self, reder_func, data=None):
-        if data:
-            self.system_context.set_seen_vehicles(data)
-            pagin = self.paginator(data)
-            return self.ui.paginator_display(pagin, reder_func, self)
-
-        
