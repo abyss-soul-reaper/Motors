@@ -1,8 +1,9 @@
 class InputPipeline:
-    def __init__(self, sys_ctrl):
-        self.sys_ctrl = sys_ctrl
+    def __init__(self, registry, system_schema):
+        self.registry = registry
+        self.system_schema = system_schema
 
-    def dsp_pipeline(self, info, schema, system_schema):
+    def dsp_pipeline(self, info, schema):
         result = {"correct_data": {}, "errors": {}}
 
         for field, value in info.items():
@@ -26,7 +27,7 @@ class InputPipeline:
                 else:
                     result["correct_data"][field] = normalized
 
-            elif field in system_schema:
+            elif field in self.system_schema:
                 result["correct_data"][field] = value
 
             else:
@@ -38,11 +39,11 @@ class InputPipeline:
         return value.strip() if isinstance(value, str) else value
 
     def dsp_valid(self, field, value):
-        validators = self.sys_ctrl.Registry.validators_handler()
+        validators = self.registry.validators_handler()
         return validators.get(field, lambda _: False)(value)
 
     def dsp_normalize(self, field, value):
-        normalizers = self.sys_ctrl.Registry.normalizers_handler()
+        normalizers = self.registry.normalizers_handler()
         return normalizers.get(field, lambda x: x)(value)
 
 

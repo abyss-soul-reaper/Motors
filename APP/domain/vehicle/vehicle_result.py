@@ -2,6 +2,7 @@ from APP.core.result.base_result import BaseResult
 
 class VehiclesResult(BaseResult):
     def __init__(self):
-        self.data = None
+        super().__init__()
+        self.data = []
         self.data_type = None
 

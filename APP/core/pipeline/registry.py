@@ -17,9 +17,9 @@ class Registry:
 
     def system_handlers(self):
         SYSTEM_MAP = {
-            Feature.BROWSE_VEHICLES: self.sys_ctrl.v_handler.browse_vehicles,
-            Feature.ADVANCED_SEARCH: self.sys_ctrl.v_handler.advanced_search,
-            SpecialFeature.VEHICLE_DETAILS: self.sys_ctrl.v_handler.vehicle_details
+            Feature.BROWSE_VEHICLES: self.sys_ctrl.vehicle_handler.browse_vehicles,
+            Feature.ADVANCED_SEARCH: self.sys_ctrl.vehicle_handler.advanced_search,
+            SpecialFeature.VEHICLE_DETAILS: self.sys_ctrl.vehicle_handler.vehicle_details
         }
         return SYSTEM_MAP
 

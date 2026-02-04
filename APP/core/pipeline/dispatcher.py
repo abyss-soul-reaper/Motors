@@ -1,9 +1,12 @@
 class Dispatcher:
-    def __init__(self, sys_ctrl):
-        self.sys_ctrl = sys_ctrl
-        self.ipt_handlers = self.sys_ctrl.Registry.input_handlers()
-        self.sys_handlers = self.sys_ctrl.Registry.system_handlers()
-        self.exe_handlers = self.sys_ctrl.Registry.execute_handlers()
+    def __init__(self, registry, system_schema, input_pipeline, feature_config):
+        self.registry = registry
+        self.system_schema = system_schema
+        self.input_pipeline = input_pipeline
+        self.feature_config = feature_config
+        self.ipt_handlers = self.registry.input_handlers()
+        self.sys_handlers = self.registry.system_handlers()
+        self.exe_handlers = self.registry.execute_handlers()
 
     # ---------------- INPUT ----------------
     def execute_input(self, config, feature):
@@ -29,11 +32,10 @@ class Dispatcher:
     def execute_pipeline(self, config, data, feature):
         res = DSPResult(stage="NORMALIZE", feature=feature)
 
-        pipeline = self.sys_ctrl.dsp_pipeline
+        pipeline = self.input_pipeline
         result = pipeline.dsp_pipeline(
             data,
             config.get("schema", {}),
-            self.sys_ctrl.sys_schema
         )
 
         if result["errors"]:
@@ -65,7 +67,7 @@ class Dispatcher:
             )
             
             if not result.get("error"):
-                res.payload["system"] = result["data"]
+                res.payload["system"] = result
                 return res.success()
             return res.fail({"type": "HANDLER_ERROR", "reason": result["error"]})
         
@@ -89,8 +91,8 @@ class Dispatcher:
 
     # ---------------- FINAL ----------------
     def execute(self, feature):
-        config = self.sys_ctrl.config.get(feature)
-        res = DSPResult(stage="FINAL_EXECUTE", feature=feature)
+        enum_feat, config = self.feature_config.resolve(feature)
+        res = DSPResult(stage="FINAL_EXECUTE", feature=enum_feat)
 
         if not config:
             return res.fail({"type": "CONFIG_ERROR", "reason": "FEATURE_NOT_DEFINED"})
@@ -99,7 +101,7 @@ class Dispatcher:
 
         # INPUT
         if config.get("requires_input"):
-            inp = self.execute_input(config, feature)
+            inp = self.execute_input(config, enum_feat)
             if not inp.ok:
                 return inp
             current_data = inp.payload["input"]
@@ -107,7 +109,7 @@ class Dispatcher:
 
         # PIPELINE
         if config.get("use_pipeline"):
-            pipe = self.execute_pipeline(config, current_data, feature)
+            pipe = self.execute_pipeline(config, current_data, enum_feat)
             if not pipe.ok:
                 return pipe
             current_data = pipe.payload["normalized"]
@@ -115,14 +117,14 @@ class Dispatcher:
 
         # SYSTEM
         if config.get("requires_system"):
-            sysd = self.execute_system_data(config, feature, current_data)
+            sysd = self.execute_system_data(config, enum_feat, current_data)
             if not sysd.ok:
                 return sysd
             current_data = sysd.payload["system"]
             res.payload["system"] = current_data
 
         # EXECUTE
-        exe = self.execute_feat(config, feature, current_data)
+        exe = self.execute_feat(config, enum_feat, current_data)
         if not exe.ok:
             return exe
 
@@ -135,15 +137,10 @@ class Dispatcher:
         - If there is an error or success is False, returns a dict with the error.
         - Otherwise, returns a dict with the data.
         """
-
-        if not isinstance(result, dict):
-            # result = {result}
-            return {"error": "Invalid result format"}
-
-        if not result.get("success") or result.get("error"):
-            return {"error": result.get("error", "Unknown error")}
-
-        return {"data": result.get("data")}
+        if not result.ok or result.error:
+            return {"error": result.error}
+        
+        return {"data": result.data, "meta": result.meta}
 
 class DSPResult:
     def __init__(self, stage, feature):
