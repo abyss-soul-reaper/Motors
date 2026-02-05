@@ -101,7 +101,7 @@ class UserInterface:
         'n': lambda: paginator.next(current_page),
         'p': lambda: paginator.prev(current_page),
         's': lambda: sys_ctrl.dispatcher.execute("ADVANCED_SEARCH") if sys_ctrl else None,
-        'd': lambda: sys_ctrl.vehicle_details() if sys_ctrl else None,
+        'd': lambda: sys_ctrl.dispatcher.execute("VEHICLE_DETAILS") if sys_ctrl else None,
         'q': lambda: paginator.quit(),
         }
         try:

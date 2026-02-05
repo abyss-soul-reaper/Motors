@@ -1,8 +1,12 @@
+# APP/core/initializer/initializer.py
+
 # =========================
 # Core / Base Context
 # =========================
 from APP.core.context.system_context import SystemContext
-from APP.core.helpers import helpers
+from APP.core.helpers import collection_helpers
+from APP.core.context import context_helpers
+from APP.core.presentation import view_services
 
 # =========================
 # UI / Presentation
@@ -38,6 +42,7 @@ class Initializer:
     """
     Builds all independent system components.
     Does NOT depend on SystemController to avoid circular dependency.
+    Provides helpers, context, UI, domain models, managers, handlers, and view services.
     """
 
     def __init__(self):
@@ -45,12 +50,19 @@ class Initializer:
         self.system_context = SystemContext()
         self.permissions = self.system_context.permissions_manager
 
-        # ---------------- Helpers & Utilities ----------------
-        self.helpers = helpers
-        self.paginator = Paginator
-
         # ---------------- UI ----------------
         self.ui = UserInterface()
+
+        # ---------------- Utilities ----------------
+        self.paginator = Paginator
+
+        # ---------------- Helpers ----------------
+        self.collection_helpers = collection_helpers
+        self.context_helpers = context_helpers
+
+        # ---------------- View Services ----------------
+        # Bound view services ready to use in SystemController
+        self.view_services = view_services
 
         # ---------------- Domain Models ----------------
         self.user_model = UserModel
@@ -60,7 +72,7 @@ class Initializer:
         self.vehicle_manager = VehiclesManager()
 
         # ---------------- Domain Handlers ----------------
-        self.user_handler = UserHandler(self.user_manager)
+        self.user_handler = UserHandler(self.user_manager, self.user_model)
         self.vehicle_handler = VehiclesHandler(self.vehicle_manager)
 
         # ---------------- Pipeline Configuration ----------------

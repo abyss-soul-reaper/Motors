@@ -4,14 +4,15 @@ from APP.core.security.security import hash_password
 from APP.core.validation.validators import is_valid_email, is_valid_phone
 
 class UserHandler:
-    def __init__(self, u_mgr):
+    def __init__(self, u_mgr, u_model):
         self.u_mgr = u_mgr
+        self.u_model = u_model
 
     def register(self, user_data):
         res = AuthResult()
 
-        email = user_data.get("basic_info", {}).get("email", "").lower()
-        phone = user_data.get("contact_info", {}).get("phone", "")
+        email = user_data.get("email", "").lower()
+        phone = user_data.get("phone", "")
 
         if not is_valid_email(email):
             return res.fail("Invalid email address")
@@ -27,14 +28,13 @@ class UserHandler:
 
         user_data.pop("user_id", None)
         user_id = str(uuid.uuid4())
-        user_data["basic_info"]["password"] = hash_password(
-            user_data["basic_info"]["password"]
-        )
-        self.u_mgr.save_user(user_id, user_data)
+        user_data["password"] = hash_password(user_data["password"])
+        data = self.u_model(user_data).dict_info()
+        self.u_mgr.save_user(user_id, data)
 
         res.payload["user_id"] = user_id
-        res.payload["role"] = user_data["account"]["role"]
-        res.payload["is_profile_complete"] = user_data["account"]["is_profile_complete"]
+        res.payload["role"] = data["account"]["role"]
+        res.payload["is_profile_complete"] = data["account"]["is_profile_complete"]
 
         return res.success()
 

@@ -31,7 +31,7 @@ class Registry:
 
             Feature.BROWSE_VEHICLES: self.sys_ctrl.browse_vehicles,
             Feature.ADVANCED_SEARCH: self.sys_ctrl.advanced_search,
-            # SpecialFeature.VEHICLE_DETAILS: self.sys_ctrl.vehicle_details
+            SpecialFeature.VEHICLE_DETAILS: self.sys_ctrl.vehicle_details
         }
         return EXECUTE_MAP
     
