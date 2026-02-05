@@ -94,7 +94,7 @@ FEATURE_CONFIG = {
     SpecialFeature.VEHICLE_DETAILS: {
         "requires_input": "mixed",
         "use_pipeline": True,
-        "schema": None,
+        "schema": VEHICLE_SCHEMA,
 
         "requires_system": True,
         "system_depends_on_input": True,

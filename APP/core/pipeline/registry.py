@@ -30,7 +30,7 @@ class Registry:
             Feature.LOGOUT: self.sys_ctrl.logout_user,
 
             Feature.BROWSE_VEHICLES: self.sys_ctrl.browse_vehicles,
-            # Feature.ADVANCED_SEARCH: self.sys_ctrl.advanced_search,
+            Feature.ADVANCED_SEARCH: self.sys_ctrl.advanced_search,
             # SpecialFeature.VEHICLE_DETAILS: self.sys_ctrl.vehicle_details
         }
         return EXECUTE_MAP

@@ -79,8 +79,15 @@ class SystemController:
     def browse_vehicles(self, data):
         res = BaseResult()
         res.meta = data.get("meta")
-        final_data = data.get("data")
+        final_data = data.get("payload")
         
+        self.display(self.ui.render_vehicle_brief, final_data)
+        return res.success()
+
+    def advanced_search(self, data):
+        res = BaseResult()
+        res.meta = data.get("meta")
+        final_data = data.get("payload")
         self.display(self.ui.render_vehicle_brief, final_data)
         return res.success()
 
@@ -89,19 +96,6 @@ class SystemController:
             self.system_context.set_seen_vehicles(data)
             pagin = self.paginator(data)
             return self.ui.paginator_display(pagin, reder_func, self)
-
-    # def advanced_search(self, criteria):
-    #     execution_result = {"ok": True, "payload": None, "error": None, "next": None}
-    #     result = self.v_mgr.advanced_search(criteria)
-
-    #     if not result["success"]:
-    #         execution_result["ok"] = False
-    #         execution_result["error"] = result["error"]
-    #         return execution_result
-        
-    #     display = self.display(self.ui.render_vehicle_brief, result["data"])
-    #     execution_result["payload"] = display
-    #     return execution_result
 
     # def vehicles_map(self):
     #     vehicles = self.v_mgr.get_vehicles_data()

@@ -84,7 +84,6 @@ class Dispatcher:
 
         try:
             res.payload["result"] = handlers[feature](payload) if config.get("execute_accepts_payload") else handlers[feature]()
-
             return res.success()
         except Exception as e:
             return res.fail({"type": "EXECUTE_ERROR", "reason": str(e)})
