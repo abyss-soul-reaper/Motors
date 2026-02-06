@@ -7,6 +7,7 @@ from APP.core.context.system_context import SystemContext
 from APP.core.helpers import collection_helpers
 from APP.core.context import context_helpers
 from APP.core.presentation import view_services
+from APP.controllers.system_helpers import SystemHelpers
 
 # =========================
 # UI / Presentation
@@ -56,13 +57,9 @@ class Initializer:
         # ---------------- Utilities ----------------
         self.paginator = Paginator
 
-        # ---------------- Helpers ----------------
+        # ---------------- Helpers (low-level) ----------------
         self.collection_helpers = collection_helpers
         self.context_helpers = context_helpers
-
-        # ---------------- View Services ----------------
-        # Bound view services ready to use in SystemController
-        self.view_services = view_services
 
         # ---------------- Domain Models ----------------
         self.user_model = UserModel
@@ -71,9 +68,16 @@ class Initializer:
         self.user_manager = UserManager()
         self.vehicle_manager = VehiclesManager()
 
+        # ---------------- System Helpers (depends on managers) ----------------
+        self.system_helpers = SystemHelpers()
+
         # ---------------- Domain Handlers ----------------
         self.user_handler = UserHandler(self.user_manager, self.user_model)
         self.vehicle_handler = VehiclesHandler(self.vehicle_manager)
+
+        # ---------------- View Services ----------------
+        # Bound view services ready to use in SystemController
+        self.view_services = view_services
 
         # ---------------- Pipeline Configuration ----------------
         self.feature_config = FeatureResolver()

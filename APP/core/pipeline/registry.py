@@ -17,6 +17,9 @@ class Registry:
 
     def system_handlers(self):
         SYSTEM_MAP = {
+            Feature.REGISTER: self.sys_ctrl.user_handler.register,
+            Feature.LOGIN: self.sys_ctrl.user_handler.login,
+
             Feature.BROWSE_VEHICLES: self.sys_ctrl.vehicle_handler.browse_vehicles,
             Feature.ADVANCED_SEARCH: self.sys_ctrl.vehicle_handler.advanced_search,
             SpecialFeature.VEHICLE_DETAILS: self.sys_ctrl.vehicle_handler.vehicle_details
@@ -25,12 +28,12 @@ class Registry:
 
     def execute_handlers(self):
         EXECUTE_MAP = {
-            Feature.LOGIN: self.sys_ctrl.login_user,
-            Feature.REGISTER: self.sys_ctrl.register_user,
+            Feature.LOGIN: self.sys_ctrl.auth_flow,
+            Feature.REGISTER: self.sys_ctrl.auth_flow,
             Feature.LOGOUT: self.sys_ctrl.logout_user,
 
-            Feature.BROWSE_VEHICLES: self.sys_ctrl.browse_vehicles,
-            Feature.ADVANCED_SEARCH: self.sys_ctrl.advanced_search,
+            Feature.BROWSE_VEHICLES: self.sys_ctrl.vehicles_flow,
+            Feature.ADVANCED_SEARCH: self.sys_ctrl.vehicles_flow,
             SpecialFeature.VEHICLE_DETAILS: self.sys_ctrl.vehicle_details
         }
         return EXECUTE_MAP

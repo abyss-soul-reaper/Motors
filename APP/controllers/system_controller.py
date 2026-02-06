@@ -22,8 +22,10 @@ class SystemController:
         self.permissions = init.permissions
 
         # ---------------- Helpers & Utilities ----------------
+        
         self.collection_helpers = init.collection_helpers
         self.context_helpers = init.context_helpers
+        self.system_helpers = init.system_helpers
         self.paginator = init.paginator
 
         # ---------------- UI ----------------
@@ -63,66 +65,38 @@ class SystemController:
             self.feature_config,
         )
 
-    def register_user(self, data):
+    def auth_flow(self, data):
         res = BaseResult()
-        result = self.user_handler.register(data)
-
-        if not result.ok:
-            return res.fail(result.error) 
-
-        self.context_helpers.apply_user_context(self.system_context, result.payload)
-        return res.success()
-        
-    def login_user(self, credentials):
-        res = BaseResult()
-        result = self.user_handler.login(credentials)
-
-        if not result.ok:
-            return res.fail(result.error)
-
-        self.context_helpers.apply_user_context(self.system_context, result.payload)
-        return res.success()
-
-
-    def prepare_display_data(self, render_func, data):
-        meta = data.get("meta")
-        final_data = data.get("payload")
-        self.context_helpers.set_seen_vehicles(self.system_context, final_data)
-        self.view_services.render_paginated_view(self.ui, self.paginator, render_func, final_data)
-        return meta
-
-
-    def browse_vehicles(self, data):
-        res = BaseResult()
-        meta = self.prepare_display_data(self.ui.render_vehicle_brief, data)
+        meta, ext_data = self.system_helpers.extract(data)
         res.meta = meta
+        self.context_helpers.apply_user_context(self.system_context, ext_data)
         return res.success()
 
-    def advanced_search(self, data):
+    def vehicles_flow(self, data):
         res = BaseResult()
-        meta = self.prepare_display_data(self.ui.render_vehicle_brief, data)
+        meta, ext_data = self.system_helpers.extract(data)
         res.meta = meta
+        self.context_helpers.set_seen_vehicles(self.system_context, ext_data)
+        self.view_services.render_paginated_view(self.ui, self.paginator, self.ui.render_vehicle_brief, ext_data)
         return res.success()
+
+
+
+
+
+
+
+
+
 
     def vehicle_details(self, data):
         res = BaseResult()
-        res.meta = data.get("meta")
-        final_data = data.get("payload")
+        meta, ext_data = self.system_helpers.extract(data)
+        res.meta = meta
+        self.context_helpers.set_seen_vehicles(self.system_context, ext_data)
+        self.view_services.render_paginated_view(self.ui, self.paginator, self.ui.render_vehicle_details, ext_data)
+        return res.success()
 
-        name_map = self.vehicles_map()
-        if final_data in name_map:
-            meta = self.prepare_display_data(self.ui.render_vehicle_details, data)
-            res.meta = meta
-            return res.success()
-
-        return res.fail("error")
-
-    def vehicles_map(self):
-        vehicles = self.vehicle_manager.get_all_vehicles()
-        ids = list(vehicles.keys())
-        names = [v_info.get("full_name") for v_info in vehicles.values()]
-        name_map = self.helpers.mapping_helper(names, ids)
-        return name_map
 
     def choose_permission(self):
         permissions = self.permissions.get_role_perms(self.system_context.role)
@@ -131,10 +105,6 @@ class SystemController:
         action_map = self.collection_helpers.mapping_helper(permissions[group])
         feature = self.ui.role_features(action_map, group)
         return feature
-    
-
-
-
 
     def check_permission(self, action):
         """
@@ -152,13 +122,16 @@ class SystemController:
             return res.fail("❌ Complete your profile to perform this action.")
         
         return res.success()
-
+    
     def logout_user(self):
+        res = BaseResult()
         if not self.system_context.is_authenticated:
             raise SystemExit
+            # return res.fail("Not logged in")
+
         self.system_context.logout()
-        return {"status": "logged_out", "role": "guest"}
-    
+        return res.success({"role": "guest"})
+
     def run_cycle(self):
         res = BaseResult()
         while True:

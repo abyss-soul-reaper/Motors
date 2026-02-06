@@ -9,6 +9,12 @@ class VehiclesManager(BaseDataManager):
     def get_all_vehicles(self):
         return self.load_data()
 
-    def get_vehicle_by_id(self, v_id):
+    def get_vehicle_by_name(self, v_name):
         vehicles = self.get_all_vehicles()
-        return vehicles.get(v_id)
+        details = [
+            {"id": v_id, **v_info}
+            for v_id, v_info in vehicles.items()
+            if v_info.get("full_name") == v_name
+        ]
+
+        return details

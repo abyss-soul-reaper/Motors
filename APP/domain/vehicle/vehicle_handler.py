@@ -95,25 +95,18 @@ class VehiclesHandler:
         res.payload.sort(key=lambda v: v["price"])
         return res.success()
 
-    def vehicle_details(self, v_id) -> VehiclesResult:
-        """
-        Retrieve detailed information for a specific vehicle by ID.
-
-        Args:
-            v_id: Vehicle ID to retrieve
-
-        Returns:
-            VehiclesResult: Contains:
-                - data: list with single vehicle dict if found, empty list if not
-                - ok: True if vehicle exists, False if not
-                - error: error message if vehicle not found
-        """
+    def vehicle_details(self, v_name) -> VehiclesResult:
         res = VehiclesResult()
-        vehicle_info = self.v_mgr.get_vehicle_by_id(v_id)
 
-        if vehicle_info:
-            res.payload = [{"id": v_id, **vehicle_info}]
-        else:
+        info = self.v_mgr.get_vehicle_by_name(v_name)
+
+        if len(info) < 1:
             res.fail("Vehicle not found or no results.")
 
+        elif len(info) > 1:
+            res.meta = {"message": "More than one vehicle exists!", "count": len(info)} # len(info)
+            res.payload = info
+
+        else:
+            res.payload = info
         return res.success()
