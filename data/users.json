@@ -14,5 +14,21 @@
             "is_profile_complete": true,
             "created_at": "2026-01-19T09:01:42.480076"
         }
+    },
+    "aa100ef3-a699-48ba-8660-36d71a72109d": {
+        "basic_info": {
+            "name": "Marah",
+            "email": "marah@gmail.com",
+            "password": "686f746a95b6f836d7d70567c302c3f9ebb5ee0def3d1220ee9d4e9f34f5e131"
+        },
+        "contact_info": {
+            "phone": "01212042272",
+            "address": "Russia"
+        },
+        "account": {
+            "role": "admin",
+            "is_profile_complete": true,
+            "created_at": "2026-02-07T22:25:47.844056"
+        }
     }
 }

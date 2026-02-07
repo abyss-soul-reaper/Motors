@@ -53,7 +53,8 @@ class Registry:
             "email": is_valid_email,
             "phone": is_valid_phone,
             "address": is_non_empty,
-            "password": is_non_empty
+            "password": is_non_empty,
+            "full_name": is_non_empty
         }
         return validators_map
 
@@ -73,6 +74,6 @@ class Registry:
             "category": lambda v: v.strip(),
             "role": lambda v: v.strip().lower(),
             "email": lambda v: v.strip().lower(),
-            "full_name": lambda v: v.strip().lower()
+            "full_name": lambda v: v.strip()
         }
         return normalizations_map

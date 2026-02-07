@@ -1,30 +1,45 @@
 from datetime import datetime
+
 from APP.core.validation.validators import *
+from APP.ui.user.cli_helper import *
+
+
 class UserInterface:
-    def __init__(self):
-        pass
+    """
+    CLI layer responsible ONLY for:
+    - Collecting user input
+    - Displaying data
+    - Orchestrating CLI flows (loops, menus)
+
+    No business logic here.
+    """
+
+    # ======================================================
+    # AUTH INPUTS
+    # ======================================================
 
     def register(self):
+        """Collect registration data from user"""
         print("\n--- Register New Account ---")
 
-        name = input('Name: ')
+        name = input("Name: ")
         while not name:
-            name = input('❌ Name is required: ')
+            name = input("❌ Name is required: ")
 
-        email = input('Email: ')
+        email = input("Email: ")
         while not (email and is_valid_email(email)):
             email = input("❌ Invalid Email. Try again: ")
 
-        password = input('Password: ')
+        password = input("Password: ")
         while not password:
-            password = input('❌ Password is required: ')
+            password = input("❌ Password is required: ")
 
         confirm_password = input("Confirm Password: ")
         while confirm_password != password:
             print("❌ Passwords do not match!")
             confirm_password = input("Try again: ")
 
-        role = input("Enter role (buyer/seller)(default buyer): ")
+        role = input("Enter role (buyer/seller) (default buyer): ")
         if not (role and is_valid_role(role)):
             print("❌ Invalid role. Defaulting to 'buyer'.")
             role = "buyer"
@@ -33,170 +48,212 @@ class UserInterface:
             "name": name,
             "email": email,
             "password": password,
-            "role": role
+            "role": role,
+            "created_at": datetime.now().isoformat()
         }
-        
+
         print("\nOptional: Complete your profile? (y/n)")
-        if input('>> ') == 'y':
-            
-            phone = input('Phone: ')
+        if input(">> ").lower() == "y":
+            phone = input("Phone: ")
             while not (phone and is_valid_phone(phone)):
-                phone = input('❌ Invalid Egyptian Phone: ')
+                phone = input("❌ Invalid Egyptian Phone: ")
 
-            address = input('Address: ')
+            address = input("Address: ")
             while not address:
-                address = input('❌ Address can\'t be empty: ')
+                address = input("❌ Address can't be empty: ")
 
-            user_data["phone"] = phone
-            user_data["address"] = address
-            user_data["is_profile_complete"] = True
-
-        user_data["created_at"] = datetime.now().isoformat()
+            user_data.update({
+                "phone": phone,
+                "address": address,
+                "is_profile_complete": True
+            })
 
         return user_data
 
     def login(self):
+        """Collect login credentials"""
         print("\n--- User Login ---")
 
-        email = input('Email: ')
+        email = input("Email: ")
         while not (email and is_valid_email(email)):
             email = input("❌ Invalid Email. Try again: ")
 
-        password = input('Password: ')
+        password = input("Password: ")
         while not password:
-            password = input('❌ Password is required: ')
+            password = input("❌ Password is required: ")
 
         return {"email": email, "password": password}
 
+    # ======================================================
+    # ROLE & PERMISSIONS DISPLAY
+    # ======================================================
+
     @staticmethod
     def role_groups(index_map, role):
-        """
-        Print all permission groups.
-        """
+        """Display role groups and return selected group"""
         print(f"\n=== {role} Features ===")
+
         for i, group in index_map.items():
             print(f"-- {i}. {group} --")
 
-        group_choice = input("Select a group number to view actions: ")
-        while not group_choice.isdigit() or int(group_choice) not in index_map:
-            group_choice = input("❌ Invalid choice. Select a valid group number: ")
+        choice = input("Select a group number: ")
+        while not choice.isdigit() or int(choice) not in index_map:
+            choice = input("❌ Invalid choice. Try again: ")
 
-        return index_map[int(group_choice)]
+        return index_map[int(choice)]
 
     @staticmethod
     def role_features(action_map, group):
+        """Display actions for a selected group"""
         print(f"\n=== {group} Actions ===")
+
         for i, act in action_map.items():
             print(f"-- {i}. {act} --")
 
-        action_choice = input("Select action number :")
-        while not action_choice.isdigit() or int(action_choice) not in action_map:
-            action_choice = input("❌ Invalid choice. Select a valid action number: ")
-        return action_map[int(action_choice)]
+        choice = input("Select action number: ")
+        while not choice.isdigit() or int(choice) not in action_map:
+            choice = input("❌ Invalid choice. Try again: ")
 
-    def paginator_display(self, paginator, render_fn, sys_ctrl=None):
+        return action_map[int(choice)]
+
+    # ======================================================
+    # PAGINATOR FLOW (ORCHESTRATOR)
+    # ======================================================
+
+    def paginator_display(self, sys_ctrl, pag, render_fn):
+        """
+        Main browsing loop.
+        Acts as orchestrator, NOT renderer.
+        """
         print("\n--- Available Vehicles ---")
+
         page_num = 1
-        commands = {
-        'n': lambda: paginator.next(current_page),
-        'p': lambda: paginator.prev(current_page),
-        's': lambda: sys_ctrl.dispatcher.execute("ADVANCED_SEARCH") if sys_ctrl else None,
-        'd': lambda: sys_ctrl.dispatcher.execute("VEHICLE_DETAILS") if sys_ctrl else None,
-        'q': lambda: paginator.quit(),
-        }
-        try:
-            while True:
-                count = 1
-                page = paginator.get_page(page_num)
-                items = page.get("items", [])
-                current_page = page.get("current_page", 1)
-                total_pages = page.get("total_pages", 1)
+        commands = resolve_command
 
-                if not items:
-                    print("No available vehicles at the moment.")
-                    return
-                
-                print(f"--- Page {current_page} of {total_pages} ---\n")
+        while True:
+            page_state = get_page_state(pag, page_num)
 
-                for vehicle in items:
-                    render_fn(vehicle, count)
-                    count += 1
+            if not page_state["ok"]:
+                print(page_state["reason"])
+                return
 
-                print("\nn - Next Page | p - Previous Page | s - Search | d - Details | q - Quit Browsing")
-                cmd = input("\nEnter command: ")
-                action = commands.get(cmd)
+            page = page_state["page"]
+            items = page.payload.get("items", [])
+            curt_page = page.payload.get("curt_page", 1)
 
-                if action:
-                    if cmd in {'s', 'd'} and sys_ctrl:
-                        result = action()
-                        if not result["ok"]:
-                            print(f"\n{result["error"]}")
-                    else:
-                        result = action()
-                        if not result["can_move"] and cmd in {'n', 'p'}:
-                            print(f"\n{result["error"]}")
+            total_pages = page.meta.get("total_pages", 1)
+            total_items = page.meta.get("total_items", 0)
+
+            # -------- Display --------
+            print(f"\nPage {curt_page} of {total_pages} | Total Vehicles: {total_items}")
+            render_fn(items)
+
+            # -------- Input --------
+            print("\nCommands: [n] Next | [p] Prev | [s] Search | [d] Details | [q] Quit")
+            command = input("Enter command: ")
+            action = commands(command)
+
+            # -------- Actions --------
+            if action["type"] == "NAVIGATION":
+                nav_result = update_navigation_state(
+                    action["action"], curt_page, pag
+                )
+                nav_state = handle_navigation_result(nav_result)
+
+                if nav_state["ok"]:
+                    page_num = nav_state["next_page"]
                 else:
-                    print("\nInvalid command. Please try again.")
+                    print(f"❌ {nav_state['error']}")
 
-        except StopIteration:
-            print("\nExiting vehicle browsing.")
+            elif action["type"] == "SYSTEM":
+                system_command_handler(sys_ctrl, action["action"])
+
+            elif action["type"] == "EXIT":
+                print("Exiting vehicle browsing.")
+                break
+
+            else:
+                print(f"❌ {action.get('error', 'Invalid command')}")
+
+    # ======================================================
+    # VEHICLE DISPLAY
+    # ======================================================
 
     @staticmethod
-    def render_vehicle_brief(vehicle, count):
-        print(f'\n{str(count).zfill(2)}. Full Name: {vehicle.get("full_name"):<40} | Price: {vehicle.get("price"):<10,}$')
-        
-    @staticmethod
-    def render_vehicle_details(vehicle, count=None):
+    def render_vehicle_brief(vehicles):
+        """Render brief vehicle list"""
+        print("-" * 60)
 
+        for idx, vehicle in enumerate(vehicles, 1):
+            print(
+                f"\n{str(idx).zfill(2)}. "
+                f"{vehicle.get('full_name'):<40} | "
+                f"{vehicle.get('price', 0):<10,} $"
+            )
+
+        print("-" * 60)
+
+    @staticmethod
+    def render_vehicle_details(vehicle):
+        """Render full vehicle details"""
         print("\n--- Vehicle Details ---")
         print("-" * 50)
-        print(f"Full Name: {vehicle.get('full_name'):<30}")
-        print(f"Brand    : {vehicle.get('brand'):<10}")
-        print(f"Model    : {vehicle.get('model'):<30}")
-        print(f"Type     : {vehicle.get('type'):<5}")
-        print(f"Category : {vehicle.get('category'):<15}")
-        print(f"Price    : {vehicle.get('price'):<10,} $")
-        print(f"Year     : {vehicle.get('year'):<5}")
-        print("-" * 50 + "\n")
+
+        print(f"Full Name: {vehicle.get('full_name')}")
+        print(f"Brand    : {vehicle.get('brand')}")
+        print(f"Model    : {vehicle.get('model')}")
+        print(f"Type     : {vehicle.get('type')}")
+        print(f"Category : {vehicle.get('category')}")
+        print(f"Price    : {vehicle.get('price', 0):,} $")
+        print(f"Year     : {vehicle.get('year')}")
+
+        print("-" * 50)
+
+    # ======================================================
+    # VEHICLE INPUTS
+    # ======================================================
+
+    @staticmethod
+    def select_vehicle(vehicles):
+        """Select one vehicle from a list"""
+        if not vehicles:
+            return None
+
+        if len(vehicles) == 1:
+            return vehicles[0]
+
+        print("\nMultiple vehicles found:")
+        for i, v in enumerate(vehicles, 1):
+            print(
+                f"[{i}] {v.get('full_name')} | "
+                f"{v.get('price', 0):,} $ | "
+                f"Year: {v.get('year', 'N/A')}"
+            )
+
+        choice = input("Select vehicle number: ")
+        return vehicles[int(choice) - 1]
+
+    def vehicle_details_input(self):
+        """Input for vehicle details search"""
+        name = input("Enter Vehicle Full Name for details: ")
+        while not name:
+            name = input("❌ Vehicle name cannot be empty: ")
+        return {"full_name": name}
 
     def advanced_search_input(self):
+        """Collect advanced search filters"""
         print("\n--- Advanced Vehicle Search ---")
 
-        PRICE_OPTIONS = {
-            1: ("Under or equal to 50,000", 50_000),
-            2: ("Under or equal to 100,000", 100_000),
-            3: ("Under or equal to 500,000", 500_000),
-            4: ("Under or equal to 1,000,000", 1_000_000),
-            5: ("Under or equal to 3,000,000", 3_000_000),
-            6: ("Any", None)
-        }
+        brand = input("Brand (optional): ") or None
+        model = input("Model (optional): ") or None
+        category = input("Category (optional): ") or None
 
-        brand = input("Brand (leave blank to skip): ")
-        model = input("Model (leave blank to skip): ")
-        category = input("Category (leave blank to skip): ")
-        
-        year_input = input("Year (leave blank to skip): ")
+        year_input = input("Year (optional): ")
         year = int(year_input) if year_input.isdigit() else None
 
-        print("\nPrice Options:")
-        for i,(label, _) in PRICE_OPTIONS.items():
-            print(f"{i}. {label}")
-
-        price_input = input("Max Price (leave blank to skip): ")
-        price = PRICE_OPTIONS.get(int(price_input), (None, None))[1] if price_input else None
-
-        criteria = {
-            "brand": brand if brand else None,
-            "model": model if model else None,
-            "category": category if category else None,
-            "year": year,
-            "price": price
+        return {
+            "brand": brand,
+            "model": model,
+            "category": category,
+            "year": year
         }
-
-        return criteria
-    
-    def vehicle_details_input(self):
-        v_name = input("Enter Vehicle Full Name for details: ")
-        while not v_name:
-            v_name = input("❌ Vehicle name cannot be empty. Try again: ")
-        return {"full_name": v_name}

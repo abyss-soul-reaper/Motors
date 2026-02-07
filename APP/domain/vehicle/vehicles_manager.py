@@ -14,7 +14,7 @@ class VehiclesManager(BaseDataManager):
         details = [
             {"id": v_id, **v_info}
             for v_id, v_info in vehicles.items()
-            if v_info.get("full_name") == v_name
+            if v_info.get("full_name") == v_name.get("full_name")
         ]
 
         return details

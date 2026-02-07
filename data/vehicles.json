@@ -1105,6 +1105,20 @@
         "owner_id": null,
         "created_at": "2026-01-20T00:08:58.793557"
     },
+    "12cd900f-b1cb-4190-8779-27a9454f5bff": {
+        "full_name": "Kawasaki ZX-10R KRT Edition",
+        "brand": "Kawasaki",
+        "model": "ZX-10R KRT Edition",
+        "type": "Bike",
+        "category": "Sport",
+        "year": 2022,
+        "price": 17000,
+        "quantity": 2,
+        "status": "available",
+        "owner_type": "system",
+        "owner_id": null,
+        "created_at": "2026-01-20T00:08:58.793148"
+    },
     "0f4187fe-4dca-4ef9-bbc3-6a85871461cf": {
         "full_name": "Super Soco TC Max",
         "brand": "Super",

@@ -12,7 +12,7 @@ from APP.controllers.system_helpers import SystemHelpers
 # =========================
 # UI / Presentation
 # =========================
-from APP.ui.user_cli import UserInterface
+from APP.ui.user.user_cli import UserInterface
 
 # =========================
 # Domain Models & Managers
@@ -37,17 +37,19 @@ from APP.schemas.system_schema import SYSTEM_SCHEMA
 # Utilities
 # =========================
 from APP.core.pagination.pagination import Paginator
-
+from APP.controllers.permissions_service import PermissionFlow
 
 class Initializer:
     """
     Builds all independent system components.
-    Does NOT depend on SystemController to avoid circular dependency.
-    Provides helpers, context, UI, domain models, managers, handlers, and view services.
+
+    Notes:
+    - No dependency on SystemController
+    - Safe against circular dependencies
     """
 
     def __init__(self):
-        # ---------------- System State ----------------
+        # ---------------- Context & Permissions ----------------
         self.system_context = SystemContext()
         self.permissions = self.system_context.permissions_manager
 
@@ -57,28 +59,29 @@ class Initializer:
         # ---------------- Utilities ----------------
         self.paginator = Paginator
 
-        # ---------------- Helpers (low-level) ----------------
+        # ---------------- Helpers ----------------
         self.collection_helpers = collection_helpers
         self.context_helpers = context_helpers
+        self.system_helpers = SystemHelpers()
 
-        # ---------------- Domain Models ----------------
+        # ---------------- Domain ----------------
         self.user_model = UserModel
-
-        # ---------------- Domain Managers ----------------
         self.user_manager = UserManager()
         self.vehicle_manager = VehiclesManager()
 
-        # ---------------- System Helpers (depends on managers) ----------------
-        self.system_helpers = SystemHelpers()
-
-        # ---------------- Domain Handlers ----------------
         self.user_handler = UserHandler(self.user_manager, self.user_model)
         self.vehicle_handler = VehiclesHandler(self.vehicle_manager)
 
         # ---------------- View Services ----------------
-        # Bound view services ready to use in SystemController
         self.view_services = view_services
 
-        # ---------------- Pipeline Configuration ----------------
+        # ---------------- Permissions Flow ----------------
+        self.permission_flow = PermissionFlow(
+            self.permissions,
+            self.collection_helpers,
+            self.ui,
+        )
+
+        # ---------------- Pipeline ----------------
         self.feature_config = FeatureResolver()
         self.system_schema = SYSTEM_SCHEMA

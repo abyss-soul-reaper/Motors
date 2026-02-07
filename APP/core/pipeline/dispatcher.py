@@ -1,16 +1,20 @@
+from APP.core.pipeline.dispatcher_result import DispatcherResult
+
 class Dispatcher:
     def __init__(self, registry, system_schema, input_pipeline, feature_config):
         self.registry = registry
+        
         self.system_schema = system_schema
         self.input_pipeline = input_pipeline
         self.feature_config = feature_config
+
         self.ipt_handlers = self.registry.input_handlers()
         self.sys_handlers = self.registry.system_handlers()
         self.exe_handlers = self.registry.execute_handlers()
 
     # ---------------- INPUT ----------------
     def execute_input(self, config, feature):
-        res = DSPResult(stage="INPUT", feature=feature)
+        res = DispatcherResult(stage="INPUT", feature=feature)
 
         if not config:
             return res.fail({"type": "CONFIG_ERROR", "reason": "FEATURE_NOT_DEFINED"})
@@ -30,7 +34,7 @@ class Dispatcher:
 
     # ---------------- PIPELINE ----------------
     def execute_pipeline(self, config, data, feature):
-        res = DSPResult(stage="NORMALIZE", feature=feature)
+        res = DispatcherResult(stage="NORMALIZE", feature=feature)
 
         pipeline = self.input_pipeline
         result = pipeline.dsp_pipeline(
@@ -50,7 +54,7 @@ class Dispatcher:
 
     # ---------------- SYSTEM DATA ----------------
     def execute_system_data(self, config, feature, data):
-        res = DSPResult(stage="SYSTEM_DATA", feature=feature)
+        res = DispatcherResult(stage="SYSTEM_DATA", feature=feature)
 
         if not config.get("requires_system"):
             return res.fail({"type": "DISPATCH_ERROR", "reason": "SYSTEM_DATA_NOT_REQUIRED"})
@@ -76,7 +80,7 @@ class Dispatcher:
 
     # ---------------- EXECUTE FEATURE ----------------
     def execute_feat(self, config, feature, payload):
-        res = DSPResult(stage="EXECUTE", feature=feature)
+        res = DispatcherResult(stage="EXECUTE", feature=feature)
 
         handlers = self.exe_handlers
         if feature not in handlers:
@@ -91,7 +95,7 @@ class Dispatcher:
     # ---------------- FINAL ----------------
     def execute(self, feature):
         enum_feat, config = self.feature_config.resolve(feature)
-        res = DSPResult(stage="FINAL_EXECUTE", feature=enum_feat)
+        res = DispatcherResult(stage="FINAL_EXECUTE", feature=enum_feat)
 
         if not config:
             return res.fail({"type": "CONFIG_ERROR", "reason": "FEATURE_NOT_DEFINED"})
@@ -141,35 +145,3 @@ class Dispatcher:
         
         return {"payload": result.payload, "meta": result.meta}
 
-class DSPResult:
-    def __init__(self, stage, feature):
-        self.ok = False
-        self.stage = stage
-        self.feature = feature
-        self.payload = {
-            "input": None,
-            "normalized": None,
-            "system": None,
-            "result": None
-        }
-        self.error = None
-
-    def fail(self, raw_error):
-        self.ok = False
-        self.error = wrap_error(self.stage, self.feature, raw_error)
-        return self
-
-    def success(self):
-        self.ok = True
-        return self
-
-def wrap_error(stage, feature, error):
-    return {
-        "code": error.get("type", "UNKNOWN_ERROR"),
-        "message": error.get("reason", "Execution failed"),
-        "details": {
-            "stage": stage,
-            "feature": feature,
-            "info": error.get("details", None)
-        }
-    }

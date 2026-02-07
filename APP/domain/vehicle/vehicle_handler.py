@@ -104,7 +104,7 @@ class VehiclesHandler:
             res.fail("Vehicle not found or no results.")
 
         elif len(info) > 1:
-            res.meta = {"message": "More than one vehicle exists!", "count": len(info)} # len(info)
+            res.meta = {"message": "More than one vehicle exists!", "count": len(info)}
             res.payload = info
 
         else:

@@ -5,7 +5,7 @@ class Pagination_result(BaseResult):
         super().__init__()
         self.payload = {
             "items": None,
-            "current_page": None
+            "curt_page": None
         }
         self.meta = {
             "total_pages": None,
