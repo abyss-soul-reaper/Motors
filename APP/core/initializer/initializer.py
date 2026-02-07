@@ -19,7 +19,7 @@ from APP.ui.user.user_cli import UserInterface
 # =========================
 from APP.domain.user.user_model import UserModel
 from APP.domain.user.user_manager import UserManager
-from APP.domain.vehicle.vehicles_manager import VehiclesManager
+from APP.domain.vehicle.vehicle_manager import VehiclesManager
 
 # =========================
 # Domain Handlers

@@ -1,4 +1,4 @@
-from APP.core.pagination.pagintaion_result import Pagination_result
+from APP.core.pagination.pagination_result import Pagination_result
 
 class Paginator:
     def __init__(self, items, per_page=10):
